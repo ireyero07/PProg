@@ -38,7 +38,7 @@ Status player_destroy(Player* player);
  * @author Jian Feng Yin Chen
  *
  * @param player a pointer to the player
- * @return the id of player
+ * @return the id of the player
  */
 Id player_get_id(Player* player);
 
@@ -62,109 +62,52 @@ Status player_set_name(Player* player, char* name);
 const char* player_get_name(Player* player);
 
 /**
- * @brief It sets the id of the space located at the north from the player location
+ * @brief It sets the location of the player
  * @author Jian Feng Yin Chen
  *
  * @param player a pointer to the player
- * @param id the id number of the space from the player location located at the north
+ * @param id the id number of the space where the player is located
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status player_set_north(Player* player, Id id);
+Status player_set_location(Player* player, Id id);
 
 /**
- * @brief It gets the id of the space located at the north from the player location
+ * @brief It gets the location of the player
  * @author Jian Feng Yin Chen
  *
  * @param player a pointer to the player
- * @return the id number of the space located at the north from the player location
+ * @return the id number of the space where the player is located
  */
-Id player_get_north(Player* player);
+Id player_get_location(Player* player);
 
 /**
- * @brief It sets the id of the space located at the south from the player location
+ * @brief It sets the object carried by the player
  * @author Jian Feng Yin Chen
  *
  * @param player a pointer to the player
- * @param id the id number of the space from the player location located at the south
+ * @param id the id number of the object carried by the player
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status player_set_south(Player* player, Id id);
+Status player_set_object(Player* player, Id id);
 
 /**
- * @brief It gets the id of the space located at the south from the player location
+ * @brief It gets the object carried by the player
  * @author Jian Feng Yin Chen
  *
  * @param player a pointer to the player
- * @return the id number of the space located at the south from the player location
+ * @return the id number of the object carried by the player
  */
-Id player_get_south(Player* player);
-
-/**
- * @brief It sets the id of the space located at the east from the player location
- * @author Jian Feng Yin Chen
- *
- * @param player a pointer to the player
- * @param id the id number of the space from the player location located at the east
- * @return OK, if everything goes well or ERROR if there was some mistake
- */
-Status player_set_east(Player* player, Id id);
-
-/**
- * @brief It gets the id of the space located at the east from the player location
- * @author Jian Feng Yin Chen
- *
- * @param player a pointer to the player
- * @return the id number of the space located at the east from the player location
- */
-Id player_get_east(Player* player);
-
-/**
- * @brief It sets the id of the space located at the west from the player location
- * @author Jian Feng Yin Chen
- *
- * @param player a pointer to the player
- * @param id the id number of the space from the player location located at the west
- * @return OK, if everything goes well or ERROR if there was some mistake
- */
-Status player_set_west(Player* player, Id id);
-
-/**
- * @brief It gets the id of the space located at the west from the player location
- * @author Jian Feng Yin Chen
- *
- * @param player a pointer to the player
- * @return the id number of the space located at the west from the player location
- */
-Id player_get_west(Player* player);
-
-/**
- * @brief It sets whether the player has an object or not
- * @author Jian Feng Yin Chen
- *
- * @param player a pointer to the player
- * @param value a boolean, specifying if in the player there is an object (TRUE) or not (FALSE)
- * @return OK, if everything goes well or ERROR if there was some mistake
- */
-Status player_set_object(Player* player, Bool value);
-
-/**
- * @brief It gets whether the player has an object or not
- * @author Jian Feng Yin Chen
- *
- * @param player a pointer to the player
- * @return a boolean, specifying if the player has an object (TRUE) or not (FALSE)
- */
-Bool player_get_object(Player* player);
+Id player_get_object(Player* player);
 
 /**
  * @brief It prints the player information
  * @author Jian Feng Yin Chen
  *
- * This function shows the id and name of the player, the spaces that surround it and whether it has an object or not.
+ * This function shows the id, name, location and carried object of the player.
+ *
  * @param player a pointer to the player
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status player_print(Player* player);
-
 
 #endif
