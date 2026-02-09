@@ -117,7 +117,6 @@ Id game_get_object_location(Game *game) {
   return game->object_location;
 }
 
-
 /**
  * @brief It sets the object location
  */
