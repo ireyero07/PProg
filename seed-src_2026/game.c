@@ -86,6 +86,7 @@ Space *game_get_space(Game *game, Id id) {
   return NULL;
 }
 
+
 /**
  * @brief It gets the player location
  */
