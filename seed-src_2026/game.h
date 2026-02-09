@@ -4,7 +4,7 @@
  * @file game.h
  * @author Profesores PPROG && Ivan
  * @version 1
- * @date 03-02-2026
+ * @date 09-02-2026
  * @copyright GNU Public License
  */
 
@@ -15,6 +15,8 @@
 #include "space.h"
 #include "types.h"
 #include "game_reader.h"
+#include "player.h"
+#include "object.h"
 
 #define MAX_SPACES 100
 
@@ -24,7 +26,8 @@
  * This struct stores all the information related to the game state.
  */
 typedef struct _Game {
-  Id player_location;            /*!< Id of the space where the player is located */
+  Player *player;                /*!< Pointer to the player of the game */
+  Object *object;                /*!< Pointer to the object of the game */
   Id object_location;            /*!< Id of the space where the object is located */
   Space *spaces[MAX_SPACES];     /*!< Array of pointers to the spaces of the game */
   int n_spaces;                  /*!< Number of spaces currently in the game */
