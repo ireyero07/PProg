@@ -19,9 +19,9 @@
  * @brief It creates a new game and initializes its members
  */
 Status game_create(Game *game) {
-  if (!game) return ERROR;
-
   int i;
+
+  if (!game) return ERROR;
 
   /* Initialize the spaces array */
   for (i = 0; i < MAX_SPACES; i++) {
@@ -49,9 +49,9 @@ Status game_create(Game *game) {
  * @brief It destroys the game, freeing all allocated memory
  */
 Status game_destroy(Game *game) {
-  if (!game) return ERROR;
-
   int i = 0;
+
+  if (!game) return ERROR;
 
   /* Destroy all the spaces */
   for (i = 0; i < game->n_spaces; i++) {
@@ -138,6 +138,7 @@ Id game_get_object_location(Game *game) {
  */
 Status game_set_object_location(Game *game, Id id) {
   int i;
+  Space *space;
 
     if (!game || id == NO_ID) return ERROR;
 
@@ -154,7 +155,7 @@ Status game_set_object_location(Game *game, Id id) {
     }
 
     /* 3. Place the object in the new space */
-    Space *space = game_get_space(game, id);
+    space = game_get_space(game, id);
     if (!space)
       return ERROR;
 
@@ -176,8 +177,6 @@ Command* game_get_last_command(Game *game) {
  * @brief It sets the last command
  */
 Status game_set_last_command(Game *game, Command *command) {
-  if (!game || !command) return NULL;
-
   game->last_cmd = command;
   return OK;
 }
@@ -186,8 +185,6 @@ Status game_set_last_command(Game *game, Command *command) {
  * @brief It gets the finished flag
  */
 Bool game_get_finished(Game *game) {
-  if (!game) return NULL;
-
   return game->finished;
 }
 
@@ -195,8 +192,6 @@ Bool game_get_finished(Game *game) {
  * @brief It sets the finished flag
  */
 Status game_set_finished(Game *game, Bool finished) {
-  if (!game) return NULL;
-
   game->finished = finished;
   return OK;
 }
@@ -205,8 +200,6 @@ Status game_set_finished(Game *game, Bool finished) {
  * @brief It prints the game information
  */
 void game_print(Game *game) {
-  if (!game) return NULL;
-
   int i = 0;
 
   printf("\n\n-------------\n\n");

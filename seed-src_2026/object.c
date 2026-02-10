@@ -19,10 +19,10 @@
  *
  * This struct stores all the information of an object.
  */
-typedef struct _Object {
+struct _Object {
   Id id;                    /*!< Id number of the object, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the object */
-} Object;
+};
 
 
 /** 

@@ -14,7 +14,6 @@
 #include "command.h"
 #include "space.h"
 #include "types.h"
-#include "game_reader.h"
 #include "player.h"
 #include "object.h"
 
