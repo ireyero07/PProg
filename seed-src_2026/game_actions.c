@@ -164,22 +164,22 @@ void game_actions_back(Game *game) {
  * @param game Pointer to the game to be updated
  */
 void game_actions_take(Game *game){
-  Id object_location=NO_ID;
-  Id player_location=NO_ID;
-  
-  if(!game){
+  Id object_location = NO_ID;
+  Id player_location = NO_ID;
+  Id obj_id = NO_ID;
+
+  if (!game) {
     return;
   }
-  
-  object_location=game_get_object_location(game);
-  player_location=game_get_player_location(game);
+  object_location = game_get_object_location(game);
+  player_location = game_get_player_location(game);
 
-  if(object_location==NO_ID||player_location==NO_ID||object_location!=player_location){
-    return;
+  if (object_location == player_location && player_get_object(game->player) == NO_ID) {
+    obj_id = object_get_id(game->object);
+    space_set_object(game_get_space(game, player_location), NO_ID);
+
+    player_set_object(game->player, obj_id);
   }
-
-  game_set_object_location(game,NO_ID);
-  return;
 }
 
 /**
@@ -189,22 +189,21 @@ void game_actions_take(Game *game){
  * @param game Pointer to the game to be updated
  */
 void game_actions_drop(Game *game){
-  Id object_location=NO_ID;
-  Id player_location=NO_ID;
-  
-  if(!game){
+  Id player_location = NO_ID;
+  Id obj_id = NO_ID;
+
+  if (!game) {
     return;
   }
 
-  object_location=game_get_object_location(game);
-  player_location=game_get_player_location(game);
-
-  if(player_location==NO_ID||object_location!=NO_ID){
-    return;
-  }
-
-  game_set_object_location(game,player_location);
+  player_location = game_get_player_location(game);
   
-  return;
+  if (player_get_object(game->player) != NO_ID) {
+    obj_id = player_get_object(game->player);
+    player_set_object(game->player, NO_ID);
+
+    space_set_object(game_get_space(game, player_location), obj_id);
+  }
 }
+
 
