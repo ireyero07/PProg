@@ -51,6 +51,21 @@ void game_actions_next(Game *game);
 void game_actions_back(Game *game);
 
 /**
+ * @brief The player takes the object from the space if there is an object.
+ * @author Jian Feng Yin Chen
+ *
+ * @param game Pointer to the game to be updated
+ */
+void game_actions_take(Game *game);
+
+/**
+ * @brief The player drops the object on the space if the player has it.
+ * @author Jian Feng Yin Chen
+ *
+ * @param game Pointer to the game to be updated
+ */
+void game_actions_drop(Game *game);
+/**
    Game actions implementation
 */
 
@@ -78,6 +93,14 @@ Status game_actions_update(Game *game, Command *command) {
       game_actions_back(game);
       break;
 
+    case TAKE:
+      game_actions_take(game);
+      break;
+
+    case DROP:
+      game_actions_drop(game);
+      break;
+
     default:
       break;
   }
@@ -89,28 +112,10 @@ Status game_actions_update(Game *game, Command *command) {
    Calls implementation for each action
 */
 
-/**
- * @brief Handles an unknown command.
- * @author Jian Feng Yin Chen
- *
- * @param game Pointer to the game.
- */
 void game_actions_unknown(Game *game) {}
 
-/**
- * @brief Handles the exit command.
- * @author Jian Feng Yin Chen
- *
- * @param game Pointer to the game.
- */
 void game_actions_exit(Game *game) {}
 
-/**
- * @brief Moves the player to the next space.
- * @author Jian Feng Yin Chen
- *
- * @param game Pointer to the game to be updated
- */
 void game_actions_next(Game *game) {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
@@ -151,3 +156,55 @@ void game_actions_back(Game *game) {
 
   return;
 }
+
+/**
+ * @brief The player takes the object from the space if there is an object.
+ * @author Jian Feng Yin Chen
+ *
+ * @param game Pointer to the game to be updated
+ */
+void game_actions_take(Game *game){
+  Id object_location=NO_ID;
+  Id player_location=NO_ID;
+  
+  if(!game){
+    return;
+  }
+  
+  object_location=game_get_object_location(game);
+  player_location=game_get_player_location(game);
+
+  if(object_location==NO_ID||player_location==NO_ID||object_location!=player_location){
+    return;
+  }
+
+  game_set_object_location(game,NO_ID);
+  return;
+}
+
+/**
+ * @brief The player drops the object on the space if the player has it.
+ * @author Jian Feng Yin Chen
+ *
+ * @param game Pointer to the game to be updated
+ */
+void game_actions_drop(Game *game){
+  Id object_location=NO_ID;
+  Id player_location=NO_ID;
+  
+  if(!game){
+    return;
+  }
+
+  object_location=game_get_object_location(game);
+  player_location=game_get_player_location(game);
+
+  if(player_location==NO_ID||object_location!=NO_ID){
+    return;
+  }
+
+  game_set_object_location(game,player_location);
+  
+  return;
+}
+
