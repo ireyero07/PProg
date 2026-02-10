@@ -12,9 +12,7 @@
 #define GAME_READER_H
 
 #include "types.h"
-
-typedef struct _Game Game;
-typedef struct _Space Space;
+#include "game.h"
 
 /**
  * @brief It creates a game from a file

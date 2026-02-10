@@ -28,7 +28,6 @@
 typedef struct _Game {
   Player *player;                /*!< Pointer to the player of the game */
   Object *object;                /*!< Pointer to the object of the game */
-  Id object_location;            /*!< Id of the space where the object is located */
   Space *spaces[MAX_SPACES];     /*!< Array of pointers to the spaces of the game */
   int n_spaces;                  /*!< Number of spaces currently in the game */
   Command *last_cmd;             /*!< Last command introduced by the player */

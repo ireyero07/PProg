@@ -36,8 +36,6 @@ Status game_create(Game *game) {
   game->object = object_create(1);
   if (!game->object) return ERROR;
 
-  game->object_location = NO_ID;
-
   game->last_cmd = command_create();
   game->finished = FALSE;
 
@@ -115,7 +113,7 @@ Id game_get_object_location(Game *game) {
   if (!game)
     return NO_ID;
 
-  return game->object_location;
+  //acabar esta funcion
 }
 
 /**
@@ -126,7 +124,6 @@ Status game_set_object_location(Game *game, Id id) {
     return ERROR;
   }
 
-  game->object_location = id;
   space_set_object(game_get_space(game, id), object_get_id(game->object));
 
   return OK;
@@ -177,6 +174,5 @@ void game_print(Game *game) {
 
   player_print(game->player);
   object_print(game->object);
-  printf("=> Object location: %ld\n", game->object_location);
 }
 

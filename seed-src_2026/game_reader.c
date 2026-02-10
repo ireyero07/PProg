@@ -15,7 +15,7 @@
 #include <string.h>
 
 #include "space.h"
-#include "game.h"
+
 
 /**
  * Private functions
