@@ -4,7 +4,7 @@
  * @file game.c
  * @author Profesores PPROG && Ivan
  * @version 1
- * @date 03-02-2026
+ * @date 10-02-2026
  * @copyright GNU Public License
  */
 
@@ -34,7 +34,10 @@ Status game_create(Game *game) {
   if (!game->player) return ERROR;
 
   game->object = object_create(1);
-  if (!game->object) return ERROR;
+    if (!game->object) {
+      player_destroy(game->player);
+      return ERROR;
+    }
 
   game->last_cmd = command_create();
   game->finished = FALSE;
@@ -46,6 +49,8 @@ Status game_create(Game *game) {
  * @brief It destroys the game, freeing all allocated memory
  */
 Status game_destroy(Game *game) {
+  if (!game) return ERROR;
+
   int i = 0;
 
   /* Destroy all the spaces */
@@ -71,7 +76,7 @@ Status game_destroy(Game *game) {
 Space *game_get_space(Game *game, Id id) {
   int i = 0;
 
-  if (id == NO_ID) {
+  if (!game || id == NO_ID) {
     return NULL;
   }
 
@@ -110,29 +115,60 @@ Status game_set_player_location(Game *game, Id id) {
  * @brief It gets the object location
  */
 Id game_get_object_location(Game *game) {
+  int i;
+
   if (!game)
     return NO_ID;
 
-  //acabar esta funcion
+    /* Si el jugador tiene el objeto */
+  if (player_get_object(game->player) == TRUE)
+    return player_get_location(game->player);
+
+    /* Buscar en los espacios */
+  for (i = 0; i < game->n_spaces; i++) {
+    if (space_get_object(game->spaces[i]) != NO_ID)
+      return space_get_id(game->spaces[i]);
+  }
+
+  return NO_ID;
 }
 
 /**
  * @brief It sets the object location
  */
 Status game_set_object_location(Game *game, Id id) {
-  if (id == NO_ID) {
-    return ERROR;
-  }
+  int i;
 
-  space_set_object(game_get_space(game, id), object_get_id(game->object));
+    if (!game || id == NO_ID) return ERROR;
 
-  return OK;
+    /* 1. Remove the item from the player if they had it. */
+    if (player_get_object(game->player) == TRUE) {
+        player_set_object(game->player, FALSE);
+    }
+
+    /* 2. Remove the object from all the spaces */
+    for (i = 0; i < game->n_spaces; i++) {
+        if (space_get_object(game->spaces[i]) != NO_ID) {
+            space_set_object(game->spaces[i], NO_ID);
+        }
+    }
+
+    /* 3. Place the object in the new space */
+    Space *space = game_get_space(game, id);
+    if (!space)
+      return ERROR;
+
+    space_set_object(space, object_get_id(game->object));
+
+    return OK;
 }
 
 /**
  * @brief It gets the last command
  */
 Command* game_get_last_command(Game *game) {
+  if (!game) return NULL;
+  
   return game->last_cmd;
 }
 
@@ -140,6 +176,8 @@ Command* game_get_last_command(Game *game) {
  * @brief It sets the last command
  */
 Status game_set_last_command(Game *game, Command *command) {
+  if (!game || !command) return NULL;
+
   game->last_cmd = command;
   return OK;
 }
@@ -148,6 +186,8 @@ Status game_set_last_command(Game *game, Command *command) {
  * @brief It gets the finished flag
  */
 Bool game_get_finished(Game *game) {
+  if (!game) return NULL;
+
   return game->finished;
 }
 
@@ -155,6 +195,8 @@ Bool game_get_finished(Game *game) {
  * @brief It sets the finished flag
  */
 Status game_set_finished(Game *game, Bool finished) {
+  if (!game) return NULL;
+
   game->finished = finished;
   return OK;
 }
@@ -163,6 +205,8 @@ Status game_set_finished(Game *game, Bool finished) {
  * @brief It prints the game information
  */
 void game_print(Game *game) {
+  if (!game) return NULL;
+
   int i = 0;
 
   printf("\n\n-------------\n\n");

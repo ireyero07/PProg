@@ -4,7 +4,7 @@ CFLAGS= -Wall -ansi -pedantic
 
 
 $(EXE): command.o game_actions.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o
-	$(CC) $(CFLAGS) -o $@ $^ -L. -lscreen
+	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L.
 
 command.o: command.c command.h types.h
 	$(CC) $(CFLAGS) -c command.c 
