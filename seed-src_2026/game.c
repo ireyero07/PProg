@@ -121,7 +121,7 @@ Id game_get_object_location(Game *game) {
     return NO_ID;
 
     /* Si el jugador tiene el objeto */
-  if (player_get_object(game->player) == TRUE)
+  if (player_get_object(game->player) != NO_ID)
     return player_get_location(game->player);
 
     /* Buscar en los espacios */
@@ -143,8 +143,8 @@ Status game_set_object_location(Game *game, Id id) {
     if (!game || id == NO_ID) return ERROR;
 
     /* 1. Remove the item from the player if they had it. */
-    if (player_get_object(game->player) == TRUE) {
-        player_set_object(game->player, FALSE);
+    if (player_get_object(game->player) != NO_ID) {
+        player_set_object(game->player, NO_ID);
     }
 
     /* 2. Remove the object from all the spaces */
