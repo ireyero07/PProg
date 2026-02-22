@@ -39,3 +39,7 @@ clear:
 clean:
 	rm -rf *.o $(EXE)
 
+# runv:
+# 	@echo ">>>>>>Running castle with valgrind"
+# 	valgrind --leak-check=full ./castle
+

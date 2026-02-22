@@ -37,7 +37,7 @@ int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name);
  * @param game Game structure to be destroyed (passed by value).
  * @param gengine Pointer to the graphic engine to be destroyed.
  */
-void game_loop_cleanup(Game game, Graphic_engine *gengine);
+void game_loop_cleanup(Game *game, Graphic_engine *gengine);
 
 /**
  * @brief Runs the game loop.
@@ -50,7 +50,7 @@ void game_loop_cleanup(Game game, Graphic_engine *gengine);
  * @return 0 if the program ends normally, 1 if there was any initialization error.
  */
 int main(int argc, char *argv[]) {
-  Game game;
+  Game *game=NULL;
   Graphic_engine *gengine;
   int result;
   Command *last_cmd;
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  result = game_loop_init(&game, &gengine, argv[1]);
+  result = game_loop_init(game, &gengine, argv[1]);
 
   if (result == 1) {
     fprintf(stderr, "Error while initializing game.\n");
@@ -70,12 +70,12 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  last_cmd = game_get_last_command(&game);
+  last_cmd = game_get_last_command(game);
 
-  while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(&game) == FALSE)) {
-    graphic_engine_paint_game(gengine, &game);
+  while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE)) {
+    graphic_engine_paint_game(gengine, game);
     command_get_user_input(last_cmd);
-    game_actions_update(&game, last_cmd);
+    game_actions_update(game, last_cmd);
   }
 
   game_loop_cleanup(game, gengine);
@@ -96,7 +96,7 @@ int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name) {
   return 0;
 }
 
-void game_loop_cleanup(Game game, Graphic_engine *gengine) {
-  game_destroy(&game);
+void game_loop_cleanup(Game *game, Graphic_engine *gengine) {
+  game_destroy(game);
   graphic_engine_destroy(gengine);
 }

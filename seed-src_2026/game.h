@@ -17,21 +17,7 @@
 #include "player.h"
 #include "object.h"
 
-#define MAX_SPACES 100
-
-/**
- * @brief Game
- *
- * This struct stores all the information related to the game state.
- */
-typedef struct _Game {
-  Player *player;                /*!< Pointer to the player of the game */
-  Object *object;                /*!< Pointer to the object of the game */
-  Space *spaces[MAX_SPACES];     /*!< Array of pointers to the spaces of the game */
-  int n_spaces;                  /*!< Number of spaces currently in the game */
-  Command *last_cmd;             /*!< Last command introduced by the player */
-  Bool finished;                 /*!< Flag that indicates if the game has finished */
-} Game;
+typedef struct _Game Game;
 
 /**
  * @brief It creates a new game and initializes its members
@@ -52,6 +38,35 @@ Status game_create(Game *game);
 Status game_destroy(Game *game);
 
 /**
+ * @brief Adds a space to the game.
+ * @author Ivan
+ *
+ * @param game Pointer to the game.
+ * @param space Pointer to the space to add.
+ * @return OK if everything goes well, ERROR otherwise.
+ */
+Status game_add_space(Game *game, Space *space);
+
+/**
+ * @brief Gets a space by its position in the array.
+ * @author Ivan
+ *
+ * @param game Pointer to the game.
+ * @param position Position of the space.
+ * @return Pointer to the space or NULL if invalid.
+ */
+Space *game_get_space_at(Game *game, int position);
+
+/**
+ * @brief Gets the number of spaces in the game.
+ * @author Ivan
+ *
+ * @param game Pointer to the game.
+ * @return Number of spaces.
+ */
+int game_get_n_spaces(Game *game);
+
+/**
  * @brief It gets a space by its id
  * @author Ivan
  *
@@ -60,6 +75,17 @@ Status game_destroy(Game *game);
  * @return a pointer to the space or NULL if it does not exist
  */
 Space *game_get_space(Game *game, Id id);
+
+/**
+ * @brief It gets the player of the game
+ * @author Ivan
+ *
+ * This function returns a pointer to the player stored in the game.
+ *
+ * @param game a pointer to the game structure
+ * @return a pointer to the player, or NULL if there was an error
+ */
+Player *game_get_player(Game *game);
 
 /**
  * @brief It gets the player location
@@ -79,6 +105,17 @@ Id game_get_player_location(Game *game);
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status game_set_player_location(Game *game, Id id);
+
+/**
+ * @brief It gets the object of the game
+ * @author Ivan
+ *
+ * This function returns a pointer to the object stored in the game.
+ *
+ * @param game a pointer to the game structure
+ * @return a pointer to the object, or NULL if there was an error
+ */
+Object *game_get_object(Game *game);
 
 /**
  * @brief It gets the object location

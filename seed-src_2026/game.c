@@ -14,6 +14,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_SPACES 100
+
+/**
+ * @brief Game
+ *
+ * This struct stores all the information related to the game state.
+ */
+struct _Game {
+  Player *player;                /*!< Pointer to the player of the game */
+  Object *object;                /*!< Pointer to the object of the game */
+  Space *spaces[MAX_SPACES];     /*!< Array of pointers to the spaces of the game */
+  int n_spaces;                  /*!< Number of spaces currently in the game */
+  Command *last_cmd;             /*!< Last command introduced by the player */
+  Bool finished;                 /*!< Flag that indicates if the game has finished */
+};
+
 
 /**
  * @brief It creates a new game and initializes its members
@@ -71,6 +87,36 @@ Status game_destroy(Game *game) {
 }
 
 /**
+ * @brief Adds a space to the game.
+ */
+Status game_add_space(Game *game, Space *space) {
+  if (!game || !space || game->n_spaces >= MAX_SPACES) return ERROR;
+
+  game->spaces[game->n_spaces] = space;
+  game->n_spaces++;
+
+  return OK;
+}
+
+/**
+ * @brief Gets a space by its position in the array.
+ */
+Space *game_get_space_at(Game *game, int position) {
+  if (!game || position < 0 || position >= game->n_spaces) return NULL;
+
+  return game->spaces[position];
+}
+
+/**
+ * @brief Gets the number of spaces in the game.
+ */
+int game_get_n_spaces(Game *game) {
+  if (!game) return -1;
+
+  return game->n_spaces;
+}
+
+/**
  * @brief It gets a space by its id
  */
 Space *game_get_space(Game *game, Id id) {
@@ -89,6 +135,16 @@ Space *game_get_space(Game *game, Id id) {
   return NULL;
 }
 
+/**
+ * @brief It gets the player of the game
+ */
+Player *game_get_player(Game *game) {
+  if (!game) {
+    return NULL;
+  }
+
+  return game->player;
+}
 
 /**
  * @brief It gets the player location
@@ -131,6 +187,17 @@ Id game_get_object_location(Game *game) {
   }
 
   return NO_ID;
+}
+
+/**
+ * @brief It gets the object of the game
+ */
+Object *game_get_object(Game *game) {
+  if (!game) {
+    return NULL;
+  }
+
+  return game->object;
 }
 
 /**

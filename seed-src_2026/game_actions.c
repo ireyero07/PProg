@@ -174,11 +174,11 @@ void game_actions_take(Game *game){
   object_location = game_get_object_location(game);
   player_location = game_get_player_location(game);
 
-  if (object_location == player_location && player_get_object(game->player) == NO_ID) {
-    obj_id = object_get_id(game->object);
+  if (object_location == player_location && player_get_object(game_get_player(game)) == NO_ID) {
+    obj_id = object_get_id(game_get_object(game));
     space_set_object(game_get_space(game, player_location), NO_ID);
 
-    player_set_object(game->player, obj_id);
+    player_set_object(game_get_player(game), obj_id);
   }
 }
 
@@ -198,9 +198,9 @@ void game_actions_drop(Game *game){
 
   player_location = game_get_player_location(game);
   
-  if (player_get_object(game->player) != NO_ID) {
-    obj_id = player_get_object(game->player);
-    player_set_object(game->player, NO_ID);
+  if (player_get_object(game_get_player(game)) != NO_ID) {
+    obj_id = player_get_object(game_get_player(game));
+    player_set_object(game_get_player(game), NO_ID);
 
     space_set_object(game_get_space(game, player_location), obj_id);
   }

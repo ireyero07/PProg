@@ -22,26 +22,6 @@
  */
 
 /**
- * @brief Adds a space to the game 
- * @author Ivan
- *
- * @param game a pointer to the game structure
- * @param space a pointer to the space structure
- * @return OK, if everything goes well or ERROR if there was some mistake
- */
-Status game_reader_add_space(Game *game, Space *space);
-
-/**
- * @brief Gets the id of the space at a given position
- * @author Ivan
- *
- * @param game a pointer to the game structure
- * @param position the position of the space
- * @return Id of the space
- */
-Id game_reader_get_space_id_at(Game *game, int position);
-
-/**
  * @brief It loads the game spaces from a file
  * @author Ivan
  *
@@ -63,6 +43,8 @@ Status game_reader_load_spaces(Game *game, const char *filename);
  * @brief It creates a game from a file
  */
 Status game_reader_create_from_file(Game *game, char *filename) {
+  Space *space = game_get_space_at(game, 0);
+
   if (game_create(game) == ERROR) {
     return ERROR;
   }
@@ -72,36 +54,10 @@ Status game_reader_create_from_file(Game *game, char *filename) {
   }
 
   /* The player and the object are located in the first space */
-  game_set_player_location(game, game_reader_get_space_id_at(game, 0));
-  game_set_object_location(game, game_reader_get_space_id_at(game, 0));
+  game_set_player_location(game, space_get_id(space));
+  game_set_object_location(game, space_get_id(space));
 
   return OK;
-}
-
-
-/**
- * @brief Adds a space to the game
- */
-Status game_reader_add_space(Game *game, Space *space) {
-  if ((space == NULL) || (game->n_spaces >= MAX_SPACES)) {
-    return ERROR;
-  }
-
-  game->spaces[game->n_spaces] = space;
-  game->n_spaces++;
-
-  return OK;
-}
-
-/**
- * @brief Gets the id of the space at a given position
- */
-Id game_reader_get_space_id_at(Game *game, int position) {
-  if (position < 0 || position >= game->n_spaces) {
-    return NO_ID;
-  }
-
-  return space_get_id(game->spaces[position]);
 }
 
 /**
@@ -164,7 +120,7 @@ Status game_reader_load_spaces(Game *game, const char *filename) {
         space_set_east(space, east);
         space_set_south(space, south);
         space_set_west(space, west);
-        game_reader_add_space(game, space);
+        game_add_space(game, space);
       }
     }
   }
