@@ -23,10 +23,9 @@ typedef struct _Game Game;
  * @brief It creates a new game and initializes its members
  * @author Ivan
  *
- * @param game a pointer to the game structure
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @return a pointer to the newly created game, or NULL if there was an error
  */
-Status game_create(Game *game);
+Game *game_create();
 
 /**
  * @brief It destroys the game, freeing all allocated memory

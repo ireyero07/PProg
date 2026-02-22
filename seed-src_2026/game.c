@@ -34,10 +34,12 @@ struct _Game {
 /**
  * @brief It creates a new game and initializes its members
  */
-Status game_create(Game *game) {
+Game *game_create() {
   int i;
+  Game *game = NULL;
 
-  if (!game) return ERROR;
+  game = (Game *)malloc(sizeof(Game));
+  if (!game) return NULL;
 
   /* Initialize the spaces array */
   for (i = 0; i < MAX_SPACES; i++) {
@@ -47,18 +49,22 @@ Status game_create(Game *game) {
   game->n_spaces = 0;
   
   game->player = player_create(1);
-  if (!game->player) return ERROR;
+  if (!game->player) {
+    free(game);
+    return NULL;
+  }
 
   game->object = object_create(1);
-    if (!game->object) {
-      player_destroy(game->player);
-      return ERROR;
-    }
+  if (!game->object) {
+    player_destroy(game->player);
+    free(game);
+    return NULL;
+  }
 
   game->last_cmd = command_create();
   game->finished = FALSE;
 
-  return OK;
+  return game;
 }
 
 /**
@@ -82,6 +88,8 @@ Status game_destroy(Game *game) {
 
   /* Destroy the last command */
   command_destroy(game->last_cmd);
+
+  free(game);
 
   return OK;
 }

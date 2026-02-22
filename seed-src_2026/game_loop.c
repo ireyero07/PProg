@@ -27,7 +27,7 @@
  * @param file_name Name of the data file with the game description.
  * @return 0 if everything goes well, 1 if there is any error.
  */
-int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name);
+int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
 
 /**
  * @brief Cleans up resources used by the game loop.
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  result = game_loop_init(game, &gengine, argv[1]);
+  result = game_loop_init(&game, &gengine, argv[1]);
 
   if (result == 1) {
     fprintf(stderr, "Error while initializing game.\n");
@@ -83,14 +83,14 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name) {
+int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name) {
   if (game_reader_create_from_file(game, file_name) == ERROR) {
     return 1;
   }
 
   if ((*gengine = graphic_engine_create()) == NULL) {
-    game_destroy(game);
-    return 1;
+    game_destroy(*game);
+    return 2;
   }
 
   return 0;

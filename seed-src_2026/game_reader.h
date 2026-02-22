@@ -24,6 +24,6 @@
  * @param filename the name of the file with the spaces information
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status game_reader_create_from_file(Game *game, char *filename);
+Status game_reader_create_from_file(Game **game, char *filename);
 
 #endif

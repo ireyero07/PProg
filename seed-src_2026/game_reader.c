@@ -42,20 +42,32 @@ Status game_reader_load_spaces(Game *game, const char *filename);
 /**
  * @brief It creates a game from a file
  */
-Status game_reader_create_from_file(Game *game, char *filename) {
-  Space *space = game_get_space_at(game, 0);
+Status game_reader_create_from_file(Game **game, char *filename) {
+  Space *space = NULL;
 
-  if (game_create(game) == ERROR) {
+  if (!game || !filename) return ERROR;
+
+  *game = game_create();
+  if (!*game) {
     return ERROR;
   }
 
-  if (game_reader_load_spaces(game, filename) == ERROR) {
+  if (game_reader_load_spaces(*game, filename) == ERROR) {
+    game_destroy(*game);
+    *game = NULL;
     return ERROR;
   }
 
   /* The player and the object are located in the first space */
-  game_set_player_location(game, space_get_id(space));
-  game_set_object_location(game, space_get_id(space));
+  space = game_get_space_at(*game, 0);
+  if (!space) {
+    game_destroy(*game);
+    *game = NULL;
+    return ERROR;
+  }
+
+  game_set_player_location(*game, space_get_id(space));
+  game_set_object_location(*game, space_get_id(space));
 
   return OK;
 }
