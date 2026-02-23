@@ -41,5 +41,5 @@ clean:
 
 # runv:
 # 	@echo ">>>>>>Running castle with valgrind"
-# 	valgrind --leak-check=full ./castle
+# 	valgrind --leak-check=full ./castle castle.dat
 

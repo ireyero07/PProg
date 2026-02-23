@@ -27,6 +27,7 @@ struct _Space {
   Id east;                  /*!< Id of the space at the east */
   Id west;                  /*!< Id of the space at the west */
   Id object;              /*!< Id of the object in the space*/
+  Id character;            /*!< Id of the character in the space*/
 };
 
 /** space_create allocates memory for a new space
@@ -51,6 +52,7 @@ Space* space_create(Id id) {
   newSpace->east = NO_ID;
   newSpace->west = NO_ID;
   newSpace->object = NO_ID;
+  newSpace->character = NO_ID;
 
   return newSpace;
 }
@@ -164,12 +166,39 @@ Id space_get_object(Space* space) {
   return space->object;
 }
 
+Status space_set_character(Space* space, Id id) {
+  if (!space) {
+    return ERROR;
+  }
+  space->character = id;
+  return OK;
+}
+
+Id space_get_character(Space* space) {
+  if (!space) {
+    return NO_ID;
+  }
+  return space->character;
+}
+
 Id space_object_here(Space* space){
   if (!space) {
     return NO_ID;
   }
   if(space->object!=NO_ID){
     return space->object;
+  }
+  else{
+    return NO_ID;
+  }
+}
+
+Id space_character_here(Space* space){
+  if (!space) {
+    return NO_ID;
+  }
+  if(space->character!=NO_ID){
+    return space->character;
   }
   else{
     return NO_ID;
@@ -219,6 +248,13 @@ Status space_print(Space* space) {
     fprintf(stdout, "---> Object in the space: %ld.\n", idaux);
   } else {
     fprintf(stdout, "---> No object in the space.\n");
+  }
+
+  idaux = space_get_character(space);
+  if (idaux != NO_ID) {
+    fprintf(stdout, "---> Character in the space: %ld.\n", idaux);
+  } else {
+    fprintf(stdout, "---> No character in the space.\n");
   }
 
   return OK;

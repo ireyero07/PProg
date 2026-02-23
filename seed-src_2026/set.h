@@ -58,10 +58,10 @@ Status set_del(Set* set, Id id);
  * @author Ivan
  *
  * @param set a pointer to set
- * @param id 
- * @return TRUE if it found the id, FALSE if there was an error or it didn´t find the id
+ * @param id
+ * @return the position of the id if everithing goes well or -1 if there was some mistake
  */
-Bool set_find(Set* set, Id id);
+int set_find(Set* set, Id id);
 
 /**
  * @brief Gets number of ids stored

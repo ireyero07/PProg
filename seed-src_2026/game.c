@@ -15,6 +15,8 @@
 #include <string.h>
 
 #define MAX_SPACES 100
+#define MAX_OBJECTS 10
+#define MAX_CHARACTERS 10
 
 /**
  * @brief Game
@@ -23,7 +25,10 @@
  */
 struct _Game {
   Player *player;                /*!< Pointer to the player of the game */
-  Object *object;                /*!< Pointer to the object of the game */
+  Object *object[MAX_OBJECTS];                /*!< Array of pointers to the object of the game */
+  int n_objects;                  /*!< Number of objects currently in the game */
+  Character *character[MAX_CHARACTERS];          /*!< Array of pointers to the character of the game */
+  int n_characters;                  /*!< Number of characters currently in the game */
   Space *spaces[MAX_SPACES];     /*!< Array of pointers to the spaces of the game */
   int n_spaces;                  /*!< Number of spaces currently in the game */
   Command *last_cmd;             /*!< Last command introduced by the player */
@@ -40,23 +45,29 @@ Game *game_create() {
 
   game = (Game *)malloc(sizeof(Game));
   if (!game) return NULL;
-
+  
   /* Initialize the spaces array */
   for (i = 0; i < MAX_SPACES; i++) {
     game->spaces[i] = NULL;
   }
 
   game->n_spaces = 0;
-  
-  game->player = player_create(1);
-  if (!game->player) {
-    free(game);
-    return NULL;
+
+  for (i = 0; i < MAX_CHARACTERS; i++) {
+    game->character[i] = NULL;
   }
 
-  game->object = object_create(1);
-  if (!game->object) {
-    player_destroy(game->player);
+  game->n_characters = 0;
+  
+  for (i = 0; i < MAX_OBJECTS; i++) {
+    game->object[i] = NULL;
+  }
+
+  game->n_objects = 0;
+ 
+
+  game->player = player_create(1);
+  if (!game->player) {
     free(game);
     return NULL;
   }
@@ -84,7 +95,14 @@ Status game_destroy(Game *game) {
   player_destroy(game->player);
 
   /* Destroy the object */
-  object_destroy(game->object);
+  for (i = 0; i < game->n_objects; i++) {
+    object_destroy(game->object[i]);
+  }
+
+  /* Destroy the character */
+  for (i = 0; i < game->n_characters; i++) {
+    character_destroy(game->character[i]);
+  }
 
   /* Destroy the last command */
   command_destroy(game->last_cmd);

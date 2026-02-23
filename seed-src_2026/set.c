@@ -52,14 +52,12 @@ Status set_destroy(Set* set) {
  * @brief Adds an id to the set
  */
 Status set_add(Set* set, Id id) {
-  int i;
-
   if (!set || id == NO_ID || set->n_ids >= MAX_IDS) return ERROR;
 
   /* avoid duplicates */
-  for (i = 0; i < set->n_ids; i++)
-    if (set->ids[i] == id)
-      return ERROR;
+  if (set_find(set, id)!=-1) {
+    return ERROR;
+  }
 
   set->ids[set->n_ids] = id;
   set->n_ids++;
@@ -71,18 +69,14 @@ Status set_add(Set* set, Id id) {
  * @brief Deletes an id from the set
  */
 Status set_del(Set* set, Id id) {
-  int i, pos = -1;
+  int i, pos;
 
-  if (!set) return ERROR;
+  if (!set || id == NO_ID || set->n_ids >= MAX_IDS) return ERROR;
 
-  for (i = 0; i < set->n_ids; i++) {
-    if (set->ids[i] == id) {
-      pos = i;
-      break;
-    }
+  pos = set_find(set, id);
+  if (pos==-1) {
+    return ERROR;
   }
-
-  if (pos == -1) return ERROR;
 
   /* compact array */
   for (i = pos; i < set->n_ids - 1; i++) {
@@ -97,16 +91,20 @@ Status set_del(Set* set, Id id) {
 /**
  * @brief Checks if id exists
  */
-Bool set_find(Set* set, Id id) {
-  int i;
+int set_find(Set* set, Id id) {
+  int i, position;
 
-  if (!set) return FALSE;
+  if (!set)
+    return -1;
 
-  for (i = 0; i < set->n_ids; i++)
-    if (set->ids[i] == id)
-      return TRUE;
+  for (i = 0; i < set->n_ids; i++) {
+    if (set->ids[i] == id) {
+      position=i;
+      return position;
+    }
+  }
 
-  return FALSE;
+  return -1;
 }
 
 /**

@@ -1,0 +1,40 @@
+Funcion set_add:
+Declaro variables de entrada set e id
+
+Compruebo que set no sea nulo, que el id no sea -1 y que el numero 
+de ids no supere el maximo. Si alguna falla: 
+    devuelve ERROR
+
+Para evitar que se dupliquen los ids, llamamos a la funcion que busca los ids 
+repetidos (set_find). Si devuelve algun valor distinto de -1:
+    la funcion de añadir devuelve ERROR
+
+Guardo el nuevo id en la ultima posicion del set, y aumento en numero de ids
+
+Devuelvo OK si todo fue bien
+
+
+Funcion set_del:
+Declaro variables de entrada set e id
+
+
+
+Status set_del(Set* set, Id id) {
+  int i, pos;
+
+  if (!set || id == NO_ID || set->n_ids >= MAX_IDS) return ERROR;
+
+  pos = set_find(set, id);
+  if (pos==-1) {
+    return ERROR;
+  }
+
+  /* compact array */
+  for (i = pos; i < set->n_ids - 1; i++) {
+    set->ids[i] = set->ids[i + 1];
+  }
+
+  set->n_ids--;
+
+  return OK;
+}

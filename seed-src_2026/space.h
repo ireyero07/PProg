@@ -159,13 +159,41 @@ Status space_set_object(Space* space, Id id);
 Id space_get_object(Space* space);
 
 /**
+ * @brief It sets the id of the character contained in the space
+ * @author Jian Feng Yin Chen
+ *
+ * @param space a pointer to the space
+ * @param id id of the character in this space
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status space_set_character(Space* space, Id id);
+
+/**
+ * @brief It gets the id of the character contained in the space
+ * @author Jian Feng Yin Chen
+ *
+ * @param space a pointer to the space
+ * @return id of the character in this space, or NO_ID if there is none
+ */
+Id space_get_character(Space* space);
+
+/**
  * @brief Returns the id of the object if there is one in this space
  * @author Jian Feng Yin Chen
  *
  * @param space a pointer to the space
- * @return id of the object in the space, or NO_ID
+ * @return id of the character in the space, or NO_ID
  */
 Id space_object_here(Space* space);
+
+/**
+ * @brief Returns the id of the character if there is one in this space
+ * @author Jian Feng Yin Chen
+ *
+ * @param space a pointer to the space
+ * @return id of the character in the space, or NO_ID
+ */
+Id space_character_here(Space* space);
 
 /**
  * @brief It prints the space information
