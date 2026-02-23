@@ -20,7 +20,9 @@
  * This struct stores all the information of a player.
  */
 struct _Player {
-  Id id;                         /*!< Id number of the player */
+  Id id;                        /*!< Id number of the player */
+  char gdesc[6];
+  int health;
   char name[WORD_SIZE + 1];      /*!< Name of the player */
   Id location;                   /*!< Space where the player is located */
   Id object;                     /*!< Object carried by the player */
@@ -32,12 +34,17 @@ struct _Player {
  */
 Player* player_create(Id id) {
   Player* newPlayer = NULL;
+  int i;
 
   if (id == NO_ID) return NULL;
 
   newPlayer = (Player*)calloc(1, sizeof(Player));
   if (!newPlayer) return NULL;
 
+    for(i = 0; i<6; i++){
+        newPlayer->gdesc[i]= '\0';
+    }
+  newPlayer->health = 0;
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;
@@ -130,6 +137,31 @@ Id player_get_object(Player* player) {
   return player->object;
 }
 
+int player_get_health(Player* player){
+  if (!player) return -1;
+
+  return player->health;
+}
+
+Status player_set_health(Player* player, int health){
+  if (!player || health < 0) return ERROR;
+
+  player->health = health;
+  return OK;
+}
+
+const char* player_get_gdesc(Player* player){
+  if (!player) return NULL;
+
+  return player->gdesc;
+}
+
+Status player_set_gdesc(Player* player, char* gdesc){
+  if (!player || !gdesc) return ERROR;
+
+  strcpy(player->gdesc,gdesc);
+  return OK;
+}
 
 /**
  * @brief It prints the player information
@@ -150,6 +182,10 @@ Status player_print(Player* player) {
     fprintf(stdout, "---> Carrying object: %ld\n", player->object);
   else
     fprintf(stdout, "---> No object\n");
+
+  fprintf(stdout, "---> Health: %d\n", player->health);
+  
+  fprintf(stdout, "---> gdesc: %s\n", player->gdesc);
 
   return OK;
 }
