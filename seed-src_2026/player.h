@@ -100,6 +100,44 @@ Status player_set_object(Player* player, Id id);
 Id player_get_object(Player* player);
 
 /**
+ * @brief It gets the health of the player
+ * @author Jian Feng Yin Chen
+ *
+ * @param player a pointer to the player
+ * @return the health of the player
+ */
+int player_get_health(Player* player);
+
+/**
+ * @brief It sets the health of the player
+ * @author Jian Feng Yin Chen
+ *
+ * @param player a pointer to the player
+ * @param health the health of the player
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status player_set_health(Player* player, int health);
+
+/**
+ * @brief It gets the graphic description of the player
+ * @author Jian Feng Yin Chen
+ *
+ * @param player a pointer to the player
+ * @return the graphic description of the player
+ */
+const char* player_get_gdesc(Player* player);
+
+/**
+ * @brief It sets the graphic description of the player
+ * @author Jian Feng Yin Chen
+ *
+ * @param player a pointer to the player
+ * @param gdesc the graphic description of the player
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status player_set_gdesc(Player* player, char* gdesc);
+
+/**
  * @brief It prints the player information
  * @author Jian Feng Yin Chen
  *
@@ -111,3 +149,4 @@ Id player_get_object(Player* player);
 Status player_print(Player* player);
 
 #endif
+
