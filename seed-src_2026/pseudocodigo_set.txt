@@ -5,8 +5,8 @@ Compruebo que set no sea nulo, que el id no sea -1 y que el numero
 de ids no supere el maximo. Si alguna falla: 
     devuelve ERROR
 
-Para evitar que se dupliquen los ids, llamamos a la funcion que busca los ids 
-repetidos (set_find). Si devuelve algun valor distinto de -1:
+Buscamos si los ids se repiten (con la funcion set_find). Si devuelve 
+algun valor distinto de -1:
     la funcion de añadir devuelve ERROR
 
 Guardo el nuevo id en la ultima posicion del set, y aumento en numero de ids
@@ -17,24 +17,21 @@ Devuelvo OK si todo fue bien
 Funcion set_del:
 Declaro variables de entrada set e id
 
+Compruebo que set no sea nulo, que el id no sea -1 y que el numero 
+de ids no supere el maximo. Si alguna falla: 
+    devuelve ERROR
 
+Buscamos si los ids se repiten (con la funcion set_find). 
+    devuelve la posicion en la que se repiten
 
-Status set_del(Set* set, Id id) {
-  int i, pos;
+Si esa posicion es -1: 
+    devuelve ERROR
 
-  if (!set || id == NO_ID || set->n_ids >= MAX_IDS) return ERROR;
+Igualamos una variable a la posicion donde los ids se repiten, y la 
+va a recorrer hasta que iguale el numero total de ids, sumando de una
+en una. En ella, copiara el id que esta el la siguiente posicion en la 
+posicion actual del id, para conseguir ajustar el array de set->ids.
 
-  pos = set_find(set, id);
-  if (pos==-1) {
-    return ERROR;
-  }
+Restamos 1 el numero de ids total
 
-  /* compact array */
-  for (i = pos; i < set->n_ids - 1; i++) {
-    set->ids[i] = set->ids[i + 1];
-  }
-
-  set->n_ids--;
-
-  return OK;
-}
+Devuelvo OK si todo fue bien
