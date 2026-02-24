@@ -26,8 +26,35 @@ int main(int argc, char** argv){
 
 
 
+  if (all || test == 1) test1_character_create();
+  if (all || test == 2) test2_character_create();
+  if (all || test == 3) test1_character_get_id();
+  if (all || test == 4) test2_character_get_id();
+  if (all || test == 5) test1_character_get_name();
+  if (all || test == 6) test2_character_get_name();
+  if (all || test == 7) test1_character_get_gdesc();
+  if (all || test == 8) test2_character_get_gdesc();
+  if (all || test == 9) test1_character_get_health();
+  if (all || test == 10) test2_character_get_health();
+  if (all || test == 11) test1_character_get_friendly();
+  if (all || test == 12) test2_character_get_friendly();
+  if (all || test == 13) test1_character_get_message();
+  if (all || test == 14) test2_character_get_message();
+  if (all || test == 15) test1_character_set_name();
+  if (all || test == 16) test2_character_set_name();
+  if (all || test == 17) test1_character_set_gdesc();
+  if (all || test == 18) test2_character_set_gdesc();
+  if (all || test == 19) test1_character_set_health();
+  if (all || test == 20) test2_character_set_health();
+  if (all || test == 21) test1_character_set_friendly();
+  if (all || test == 22) test2_character_set_friendly();
+  if (all || test == 23) test1_character_set_message();
+  if (all || test == 24) test2_character_set_message();
 
-    return 0;
+
+  PRINT_PASSED_PERCENTAGE;
+
+  return 1;
 }
 
 void test1_character_create() {
@@ -46,14 +73,14 @@ void test2_character_create() {
   character_destroy(c);
 }
 
-void test1_space_get_id() {
+void test1_character_get_id() {
   Character *c;
   c = character_create(1);
   PRINT_TEST_RESULT(character_get_id(c) == 1);
   character_destroy(c);
 }
 
-void test2_space_get_id() {
+void test2_character_get_id() {
   Character *c = NULL;
   PRINT_TEST_RESULT(character_get_id(c) == NO_ID);
 }
@@ -61,8 +88,8 @@ void test2_space_get_id() {
 void test1_character_get_name() {
   Character *c;
   c = character_create(1);
-  character_set_name(c, "adios");
-  PRINT_TEST_RESULT(strcmp(character_get_name(c), "adios") == 0);
+  character_set_name(c, "hola");
+  PRINT_TEST_RESULT(strcmp(character_get_name(c), "hola") == 0);
   character_destroy(c);
 }
 
@@ -72,11 +99,11 @@ void test2_character_get_name() {
 }
 
 void test1_character_get_gdesc(){
-    Character *c;
-    c=character_create(1);
-    character_set_gdesc(c, " (o)1 ");
-    PRINT_TEST_RESULT(strcmp(character_get_name(c), " (o)1 ") == 0);
-    character_destroy(c);
+  Character *c;
+  c=character_create(1);
+  character_set_gdesc(c, "hola");
+  PRINT_TEST_RESULT(strcmp(character_get_gdesc(c), "hola") == 0);
+  character_destroy(c);
 }
 
 void test2_character_get_gdesc() {
@@ -84,106 +111,104 @@ void test2_character_get_gdesc() {
   PRINT_TEST_RESULT(character_get_gdesc(c) == NULL);
 }
 
+void test1_character_get_health(){
+  Character *c;
+  c=character_create(1);
+  character_set_health(c, 1);
+  PRINT_TEST_RESULT(character_get_health(c) == 1);
+  character_destroy(c);
+}
 
+void test2_character_get_health() {
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_get_health(c) == NULL);
+}
 
+void test1_character_get_friendly(){
+  Character *c;
+  c=character_create(1);
+  character_set_friendly(c, TRUE);
+  PRINT_TEST_RESULT(character_get_friendly(c) == TRUE);
+  character_destroy(c);
+}
 
-Status character_destroy(Character* character);
+void test2_character_get_friendly() {
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_get_friendly(c) == NULL);
+}
 
-/**
- * @brief It gets the graphical description of a character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @return the graphical description, NULL if error
- */
-const char* character_get_gdesc(Character* character);
+void test1_character_get_message(){
+  Character *c;
+  c=character_create(1);
+  character_set_message(c, "hola");
+  PRINT_TEST_RESULT(strcmp(character_get_message(c), "hola") == 0);
+  character_destroy(c);
+}
 
-/**
- * @brief It gets the health of a character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @return the health, -1 if error
- */
-int character_get_health(Character* character);
+void test2_character_get_message() {
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_get_message(c) == NULL);
+}
 
-/**
- * @brief It gets if a character is friendly
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @return TRUE if friendly, FALSE if not, FALSE if error
- */
-Bool character_get_friendly(Character* character);
+void test1_character_set_name() {
+  Character *c;
+  c = character_create(1);
+  PRINT_TEST_RESULT(character_set_name(c, "hola") == OK);
+  character_destroy(c);
+}
 
-/**
- * @brief It gets the message of a character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @return the message, NULL if error
- */
-const char* character_get_message(Character* character);
+void test2_character_set_name() {
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_set_name(c, "hola") == ERROR);
+}
 
-/**
- * @brief It sets the id of a character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @param id the new identification number
- * @return OK if successful, ERROR if not
- */
-Status character_set_id(Character* character, Id id);
+void test1_character_set_gdesc() {
+  Character *c;
+  c = character_create(1);
+  PRINT_TEST_RESULT(character_set_gdesc(c, "hola") == OK);
+  character_destroy(c);
+}
 
-/**
- * @brief It sets the name of a character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @param name the new name
- * @return OK if successful, ERROR if not
- */
-Status character_set_name(Character* character, char* name);
+void test2_character_set_gdesc() {
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_set_gdesc(c, "hola") == ERROR);
+}
 
-/**
- * @brief It sets the graphical description of a character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @param gdesc the new graphical description
- * @return OK if successful, ERROR if not
- */
-Status character_set_gdesc(Character* character, char* gdesc);
+void test1_character_set_health() {
+  Character *c;
+  c = character_create(1);
+  PRINT_TEST_RESULT(character_set_health(c, 1) == OK);
+  character_destroy(c);
+}
 
-/**
- * @brief It sets the health of a character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @param health the new health value
- * @return OK if successful, ERROR if not
- */
-Status character_set_health(Character* character, int health);
+void test2_character_set_health() {
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_set_health(c, 1) == ERROR);
+}
 
-/**
- * @brief It sets if a character is friendly
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @param friendly TRUE if friendly, FALSE if not
- * @return OK if successful, ERROR if not
- */
-Status character_set_friendly(Character* character, Bool friendly);
+void test1_character_set_friendly() {
+  Character *c;
+  c = character_create(1);
+  PRINT_TEST_RESULT(character_set_friendly(c, TRUE) == OK);
+  character_destroy(c);
+}
 
-/**
- * @brief It sets the message of a character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @param message the new message
- * @return OK if successful, ERROR if not
- */
-Status character_set_message(Character* character, char* message);
+void test2_character_set_friendly() {
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_set_friendly(c, TRUE) == ERROR);
+}
+
+void test1_character_set_message() {
+  Character *c;
+  c = character_create(1);
+  PRINT_TEST_RESULT(character_set_message(c, "hola") == OK);
+  character_destroy(c);
+}
+
+void test2_character_set_message() {
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_set_message(c, "hola") == ERROR);
+}
 
 /**
  * @brief It prints a character
