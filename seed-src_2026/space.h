@@ -2,9 +2,9 @@
  * @brief It defines the space module interface
  *
  * @file space.h
- * @author Profesores PPROG
+ * @author Profesores PPROG && Ivan
  * @version 0
- * @date 27-01-2025
+ * @date 25-02-2026
  * @copyright GNU Public License
  */
 
@@ -12,6 +12,7 @@
 #define SPACE_H
 
 #include "types.h"
+#include "set.h"
 
 
 typedef struct _Space Space;
@@ -140,14 +141,38 @@ Status space_set_west(Space* space, Id id);
 Id space_get_west(Space* space);
 
 /**
- * @brief It sets the id of the object contained in the space
- * @author Profesores PPROG
+ * @brief Adds an object to a space
  *
- * @param space a pointer to the space
- * @param id id of the object in this space
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * Inserts an object identifier into the space object set.
+ *
+ * @param space Pointer to the space
+ * @param object Object id
+ * @return OK if successful, ERROR otherwise
  */
-Status space_set_object(Space* space, Id id);
+Status space_add_object(Space* space, Id object);
+
+/**
+ * @brief Removes an object from a space
+ *
+ * Deletes an object identifier from the space object set.
+ *
+ * @param space Pointer to the space
+ * @param object Object id
+ * @return OK if successful, ERROR otherwise
+ */
+Status space_del_object(Space* space, Id object);
+
+/**
+ * @brief Checks whether an object is in a space
+ *
+ * Searches the object set to determine if the object
+ * is located in the space.
+ *
+ * @param space Pointer to the space
+ * @param object Object id
+ * @return TRUE if the object is in the space, FALSE otherwise
+ */
+Bool space_has_object(Space* space, Id object);
 
 /**
  * @brief It gets the id of the object contained in the space
@@ -156,7 +181,7 @@ Status space_set_object(Space* space, Id id);
  * @param space a pointer to the space
  * @return id of the object in this space, or NO_ID if there is none
  */
-Id space_get_object(Space* space);
+Set *space_get_objects(Space* space);
 
 /**
  * @brief It sets the id of the character contained in the space
@@ -176,15 +201,6 @@ Status space_set_character(Space* space, Id id);
  * @return id of the character in this space, or NO_ID if there is none
  */
 Id space_get_character(Space* space);
-
-/**
- * @brief Returns the id of the object if there is one in this space
- * @author Jian Feng Yin Chen
- *
- * @param space a pointer to the space
- * @return id of the character in the space, or NO_ID
- */
-Id space_object_here(Space* space);
 
 /**
  * @brief Returns the id of the character if there is one in this space

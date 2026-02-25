@@ -2,9 +2,9 @@
  * @brief It implements the space module
  *
  * @file space.c
- * @author Profesores PPROG
+ * @author Profesores PPROG && Ivan
  * @version 0
- * @date 24-01-2026
+ * @date 25-02-2026
  * @copyright GNU Public License
  */
 
@@ -26,8 +26,8 @@ struct _Space {
   Id south;                 /*!< Id of the space at the south */
   Id east;                  /*!< Id of the space at the east */
   Id west;                  /*!< Id of the space at the west */
-  Id object;              /*!< Id of the object in the space*/
-  Id character;            /*!< Id of the character in the space*/
+  Set *objects;             /*!< Id of the object in the space*/
+  Id character;             /*!< Id of the character in the space*/
 };
 
 /** space_create allocates memory for a new space
@@ -51,7 +51,13 @@ Space* space_create(Id id) {
   newSpace->south = NO_ID;
   newSpace->east = NO_ID;
   newSpace->west = NO_ID;
-  newSpace->object = NO_ID;
+  
+  newSpace->objects = set_create();
+    if (!newSpace->objects) {
+        free(newSpace);
+        return NULL;
+    }
+
   newSpace->character = NO_ID;
 
   return newSpace;
@@ -61,6 +67,8 @@ Status space_destroy(Space* space) {
   if (!space) {
     return ERROR;
   }
+
+  set_destroy(space->objects);
 
   free(space);
   return OK;
@@ -151,19 +159,32 @@ Id space_get_west(Space* space) {
   return space->west;
 }
 
-Status space_set_object(Space* space, Id id) {
-  if (!space) {
+Status space_add_object(Space* space, Id object){
+  if(!space || object == NO_ID)
     return ERROR;
-  }
-  space->object = id;
-  return OK;
+
+  return set_add(space->objects, object);
 }
 
-Id space_get_object(Space* space) {
-  if (!space) {
-    return NO_ID;
-  }
-  return space->object;
+Status space_del_object(Space* space, Id object){
+  if(!space || object == NO_ID)
+    return ERROR;
+
+  return set_del(space->objects, object);
+}
+
+Set* space_get_objects(Space* space){
+  if(!space)
+    return NULL;
+
+  return space->objects;
+}
+
+Bool space_has_object(Space* space, Id object){
+  if(!space || object == NO_ID)
+    return FALSE;
+
+  return set_find(space->objects, object);
 }
 
 Status space_set_character(Space* space, Id id) {
@@ -179,18 +200,6 @@ Id space_get_character(Space* space) {
     return NO_ID;
   }
   return space->character;
-}
-
-Id space_object_here(Space* space){
-  if (!space) {
-    return NO_ID;
-  }
-  if(space->object!=NO_ID){
-    return space->object;
-  }
-  else{
-    return NO_ID;
-  }
 }
 
 Id space_character_here(Space* space){
@@ -243,13 +252,14 @@ Status space_print(Space* space) {
   }
 
   /* 3. Print if there is an object in the space or not */
-  idaux = space_get_object(space);
+  idaux = space_get_objects(space);
   if (idaux != NO_ID) {
     fprintf(stdout, "---> Object in the space: %ld.\n", idaux);
   } else {
     fprintf(stdout, "---> No object in the space.\n");
   }
 
+  /* 4. Print if there is a character in the space or not */
   idaux = space_get_character(space);
   if (idaux != NO_ID) {
     fprintf(stdout, "---> Character in the space: %ld.\n", idaux);
