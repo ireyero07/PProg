@@ -40,9 +40,9 @@ Character* character_create(Id id) {
     newCharacter = (Character*)calloc(1, sizeof(Character));
     if (!newCharacter) return NULL;
 
-    newCharacter->id = 0;
+    newCharacter->id = id;
     newCharacter->name[0] = '\0';
-    newCharacter->health =0 ;
+    newCharacter->health = 5;
 
     for(i = 0; i<6; i++){
         newCharacter->gdesc[i]= '\0';

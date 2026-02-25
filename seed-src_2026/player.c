@@ -44,7 +44,7 @@ Player* player_create(Id id) {
     for(i = 0; i<6; i++){
         newPlayer->gdesc[i]= '\0';
     }
-  newPlayer->health = 0;
+  newPlayer->health = 5;
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;

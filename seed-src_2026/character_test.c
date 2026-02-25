@@ -1,3 +1,12 @@
+/** 
+ * @brief It tests character module
+ * 
+ * @file character_test.c
+ * @author Jian Feng Yin Chen
+ * @version 0.0 
+ * @date 25-02-2026
+ * @copyright GNU Public License
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,14 +51,15 @@ int main(int argc, char** argv){
   if (all || test == 14) test2_character_get_message();
   if (all || test == 15) test1_character_set_name();
   if (all || test == 16) test2_character_set_name();
-  if (all || test == 17) test1_character_set_gdesc();
-  if (all || test == 18) test2_character_set_gdesc();
-  if (all || test == 19) test1_character_set_health();
-  if (all || test == 20) test2_character_set_health();
-  if (all || test == 21) test1_character_set_friendly();
-  if (all || test == 22) test2_character_set_friendly();
-  if (all || test == 23) test1_character_set_message();
-  if (all || test == 24) test2_character_set_message();
+  if (all || test == 17) test3_character_set_name();
+  if (all || test == 18) test1_character_set_gdesc();
+  if (all || test == 19) test2_character_set_gdesc();
+  if (all || test == 20) test1_character_set_health();
+  if (all || test == 21) test2_character_set_health();
+  if (all || test == 22) test1_character_set_friendly();
+  if (all || test == 23) test2_character_set_friendly();
+  if (all || test == 24) test1_character_set_message();
+  if (all || test == 25) test2_character_set_message();
 
 
   PRINT_PASSED_PERCENTAGE;
@@ -121,7 +131,7 @@ void test1_character_get_health(){
 
 void test2_character_get_health() {
   Character *c = NULL;
-  PRINT_TEST_RESULT(character_get_health(c) == NULL);
+  PRINT_TEST_RESULT(character_get_health(c) == 0);
 }
 
 void test1_character_get_friendly(){
@@ -134,7 +144,7 @@ void test1_character_get_friendly(){
 
 void test2_character_get_friendly() {
   Character *c = NULL;
-  PRINT_TEST_RESULT(character_get_friendly(c) == NULL);
+  PRINT_TEST_RESULT(character_get_friendly(c) == FALSE);
 }
 
 void test1_character_get_message(){
@@ -160,6 +170,13 @@ void test1_character_set_name() {
 void test2_character_set_name() {
   Character *c = NULL;
   PRINT_TEST_RESULT(character_set_name(c, "hola") == ERROR);
+}
+
+void test3_character_set_name() {
+  Character *c;
+  c = character_create(5);
+  PRINT_TEST_RESULT(character_set_name(c, NULL) == ERROR);
+  character_destroy(c);
 }
 
 void test1_character_set_gdesc() {
@@ -209,12 +226,3 @@ void test2_character_set_message() {
   Character *c = NULL;
   PRINT_TEST_RESULT(character_set_message(c, "hola") == ERROR);
 }
-
-/**
- * @brief It prints a character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @return OK if successful, ERROR if not
- */
-Status character_print(Character* character);
