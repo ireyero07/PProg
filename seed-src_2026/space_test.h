@@ -164,18 +164,88 @@ void test3_space_set_west();
 void test4_space_set_west();
 
 /**
- * @test Test space_set_object
+ * @test Test space_add_object
  * @pre Valid space and object Id
- * @post Output==OK
+ * @post Output == OK
  */
-void test1_space_set_object();
+void test1_space_add_object();
 
 /**
- * @test Test space_set_object
+ * @test Test space_add_object
  * @pre NULL space
- * @post Output==ERROR
+ * @post Output == ERROR
  */
-void test2_space_set_object();
+void test2_space_add_object();
+
+/**
+ * @test Test space_add_object duplicate
+ * @pre Valid space and existing object Id
+ * @post Output == ERROR
+ */
+void test3_space_add_object();
+
+/**
+ * @test Test space_del_object
+ * @pre Valid space with object
+ * @post Output == OK
+ */
+void test1_space_del_object();
+
+/**
+ * @test Test space_del_object
+ * @pre NULL space
+ * @post Output == ERROR
+ */
+void test2_space_del_object();
+
+/**
+ * @test Test deleting non-existing object
+ * @pre Valid space without object
+ * @post Output == ERROR
+ */
+void test3_space_del_object();
+
+/**
+ * @test Test space_has_object
+ * @pre Space containing object
+ * @post Returns TRUE
+ */
+void test1_space_has_object();
+
+/**
+ * @test Test space_has_object
+ * @pre Space without object
+ * @post Returns FALSE
+ */
+void test2_space_has_object();
+
+/**
+ * @test Test space_has_object with NULL space
+ * @pre NULL space pointer
+ * @post Returns FALSE
+ */
+void test3_space_has_object();
+
+/**
+ * @test Test space_object_here
+ * @pre Space with object
+ * @post Returns object Id
+ */
+void test1_space_object_here();
+
+/**
+ * @test Test space_object_here
+ * @pre Space without object
+ * @post Returns NO_ID
+ */
+void test2_space_object_here();
+
+/**
+ * @test Test space_object_here
+ * @pre NULL space
+ * @post Returns NO_ID
+ */
+void test3_space_object_here();
 
 /**
  * @test Test space_get_id
@@ -261,24 +331,4 @@ void test1_space_get_west();
  */
 void test2_space_get_west();
 
-/**
- * @test Test space_get_object
- * @pre Space with set object
- * @post Returns correct object Id
- */
-void test1_space_get_object();
-
-/**
- * @test Test space_get_object
- * @pre NULL space
- * @post Returns NO_ID
- */
-void test2_space_get_object();
-
-/**
- * @test Test space_get_object
- * @pre Empty object field
- * @post Returns NO_ID
- */
-void test3_space_get_object();
 #endif
