@@ -2,6 +2,7 @@ EXE=castle
 CC=gcc
 CFLAGS= -Wall -ansi -pedantic
 
+all: $(EXE)
 
 $(EXE): command.o game_actions.o game_loop.o game_reader.o game.o graphic_engine.o object.o player.o space.o
 	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L.
@@ -39,7 +40,8 @@ clear:
 clean:
 	rm -rf *.o $(EXE)
 
-# runv:
-# 	@echo ">>>>>>Running castle with valgrind"
-# 	valgrind --leak-check=full ./castle castle.dat
+runv:
+	@echo ">>>>>>Running castle with valgrind"
+	valgrind --leak-check=full ./castle castle.dat
 
+#run_character_test

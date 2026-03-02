@@ -26,8 +26,8 @@ struct _Space {
   Id south;                 /*!< Id of the space at the south */
   Id east;                  /*!< Id of the space at the east */
   Id west;                  /*!< Id of the space at the west */
-  Set *objects;             /*!< Id of the object in the space*/
-  Id character;             /*!< Id of the character in the space*/
+  Set *objects;             /*!< Set of objects in the space*/
+  Set *characters;           /*!< Ser of characters in the space*/
 };
 
 /** space_create allocates memory for a new space
@@ -58,7 +58,11 @@ Space* space_create(Id id) {
         return NULL;
     }
 
-  newSpace->character = NO_ID;
+  newSpace->characters = set_create();
+    if (!newSpace->characters) {
+        free(newSpace);
+        return NULL;
+    }
 
   return newSpace;
 }
@@ -187,31 +191,32 @@ Bool space_has_object(Space* space, Id object){
   return set_find(space->objects, object);
 }
 
-Status space_set_character(Space* space, Id id) {
-  if (!space) {
+Status space_add_character(Space* space, Id character){
+  if(!space || character == NO_ID)
     return ERROR;
-  }
-  space->character = id;
-  return OK;
+
+  return set_add(space->characters, character);
 }
 
-Id space_get_character(Space* space) {
-  if (!space) {
-    return NO_ID;
-  }
-  return space->character;
+Status space_del_character(Space* space, Id character){
+  if(!space || character == NO_ID)
+    return ERROR;
+
+  return set_del(space->characters, character);
 }
 
-Id space_character_here(Space* space){
+Set* space_get_character(Space* space) {
   if (!space) {
-    return NO_ID;
+    return NULL;
   }
-  if(space->character!=NO_ID){
-    return space->character;
-  }
-  else{
-    return NO_ID;
-  }
+  return space->characters;
+}
+
+Bool space_has_character(Space* space, Id character){
+  if(!space || character == NO_ID)
+    return FALSE;
+
+  return set_find(space->characters, character);
 }
 
 Status space_print(Space* space) {

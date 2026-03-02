@@ -162,6 +162,62 @@ Space *game_get_space(Game *game, Id id) {
 }
 
 /**
+ * @brief Gets the number of objects in the game.
+ */
+int game_get_n_objects(Game *game) {
+  if (!game) return -1;
+
+  return game->n_objects;
+}
+
+/**
+ * @brief It gets a object by its id
+ */
+Object *game_get_object(Game *game, Id id) {
+  int i = 0;
+
+  if (!game || id == NO_ID) {
+    return NULL;
+  }
+
+  for (i = 0; i < game->n_objects; i++) {
+    if (id == object_get_id(game->object[i])) {
+      return game->object[i];
+    }
+  }
+
+  return NULL;
+}
+
+/**
+ * @brief Gets the number of characters in the game.
+ */
+int game_get_n_characters(Game *game) {
+  if (!game) return -1;
+
+  return game->n_characters;
+}
+
+/**
+ * @brief It gets a character by its id
+ */
+Object *game_get_character(Game *game, Id id) {
+  int i = 0;
+
+  if (!game || id == NO_ID) {
+    return NULL;
+  }
+
+  for (i = 0; i < game->n_characters; i++) {
+    if (id == object_get_id(game->character[i])) {
+      return game->character[i];
+    }
+  }
+
+  return NULL;
+}
+
+/**
  * @brief It gets the player of the game
  */
 Player *game_get_player(Game *game) {
@@ -196,7 +252,7 @@ Status game_set_player_location(Game *game, Id id) {
 /**
  * @brief It gets the object location
  */
-Id game_get_object_location(Game *game) {
+Id game_get_object_location(Game *game, Id id) {
   int i;
 
   if (!game)
@@ -211,6 +267,22 @@ Id game_get_object_location(Game *game) {
     if (space_get_object(game->spaces[i]) != NO_ID)
       return space_get_id(game->spaces[i]);
   }
+
+  return NO_ID;
+}
+
+/**
+ * @brief It gets the character location
+ */
+Id game_get_character_location(Game *game, Id id) {
+  int i;
+
+  if (!game)
+    return NO_ID;
+
+  
+  
+
 
   return NO_ID;
 }

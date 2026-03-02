@@ -77,6 +77,44 @@ int game_get_n_spaces(Game *game);
 Space *game_get_space(Game *game, Id id);
 
 /**
+ * @brief Gets the number of objects in the game.
+ * @author Jian Feng
+ *
+ * @param game Pointer to the game.
+ * @return Number of objects.
+ */
+int game_get_n_objects(Game *game);
+
+/**
+ * @brief It gets a object by its id
+ * @author Jian Feng
+ *
+ * @param game a pointer to the game structure
+ * @param id the id of the object
+ * @return a pointer to the object or NULL if it does not exist
+ */
+Object *game_get_object(Game *game, Id id);
+
+/**
+ * @brief Gets the number of characters in the game.
+ * @author Jian Feng
+ *
+ * @param game Pointer to the game.
+ * @return Number of characters.
+ */
+int game_get_n_characters(Game *game);
+
+/**
+ * @brief It gets a character by its id
+ * @author Jian Feng
+ *
+ * @param game a pointer to the game structure
+ * @param id the id of the character
+ * @return a pointer to the character or NULL if it does not exist
+ */
+Object *game_get_character(Game *game, Id id);
+
+/**
  * @brief It gets the player of the game
  * @author Ivan
  *
@@ -105,17 +143,6 @@ Id game_get_player_location(Game *game);
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status game_set_player_location(Game *game, Id id);
-
-/**
- * @brief It gets the object of the game
- * @author Ivan
- *
- * This function returns a pointer to the object stored in the game.
- *
- * @param game a pointer to the game structure
- * @return a pointer to the object, or NULL if there was an error
- */
-Object *game_get_object(Game *game);
 
 /**
  * @brief It gets the object location

@@ -184,32 +184,47 @@ Bool space_has_object(Space* space, Id object);
 Set *space_get_objects(Space* space);
 
 /**
- * @brief It sets the id of the character contained in the space
- * @author Jian Feng Yin Chen
+ * @brief Adds a character to a space
  *
- * @param space a pointer to the space
- * @param id id of the character in this space
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * Inserts a character identifier into the space character set.
+ *
+ * @param space Pointer to the space
+ * @param character Character id
+ * @return OK if successful, ERROR otherwise
  */
-Status space_set_character(Space* space, Id id);
+Status space_add_character(Space* space, Id character);
+
+/**
+ * @brief Removes a character from a space
+ *
+ * Deletes a character identifier from the space character set.
+ *
+ * @param space Pointer to the space
+ * @param character Character id
+ * @return OK if successful, ERROR otherwise
+ */
+Status space_del_character(Space* space, Id character);
 
 /**
  * @brief It gets the id of the character contained in the space
- * @author Jian Feng Yin Chen
+ * @author Profesores PPROG
  *
  * @param space a pointer to the space
  * @return id of the character in this space, or NO_ID if there is none
  */
-Id space_get_character(Space* space);
+Set* space_get_character(Space* space);
 
 /**
- * @brief Returns the id of the character if there is one in this space
- * @author Jian Feng Yin Chen
+ * @brief Checks whether a character is in a space
  *
- * @param space a pointer to the space
- * @return id of the character in the space, or NO_ID
+ * Searches the character set to determine if the character
+ * is located in the space.
+ *
+ * @param space Pointer to the space
+ * @param character Character id
+ * @return TRUE if the character is in the space, FALSE otherwise
  */
-Id space_character_here(Space* space);
+Bool space_has_character(Space* space, Id character);
 
 /**
  * @brief It prints the space information
