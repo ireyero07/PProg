@@ -201,7 +201,7 @@ int game_get_n_characters(Game *game) {
 /**
  * @brief It gets a character by its id
  */
-Object *game_get_character(Game *game, Id id) {
+Character *game_get_character(Game *game, Id id) {
   int i = 0;
 
   if (!game || id == NO_ID) {
@@ -209,7 +209,7 @@ Object *game_get_character(Game *game, Id id) {
   }
 
   for (i = 0; i < game->n_characters; i++) {
-    if (id == object_get_id(game->character[i])) {
+    if (id == character_get_id(game->character[i])) {
       return game->character[i];
     }
   }
@@ -259,12 +259,12 @@ Id game_get_object_location(Game *game, Id id) {
     return NO_ID;
 
     /* Si el jugador tiene el objeto */
-  if (player_get_object(game->player) != NO_ID)
-    return player_get_location(game->player);
+  if (player_get_object(game->player) == id)
+    return game_get_player_location(game);
 
     /* Buscar en los espacios */
   for (i = 0; i < game->n_spaces; i++) {
-    if (space_get_object(game->spaces[i]) != NO_ID)
+    if (space_has_object(game->spaces[i], id))
       return space_get_id(game->spaces[i]);
   }
 
@@ -280,10 +280,11 @@ Id game_get_character_location(Game *game, Id id) {
   if (!game)
     return NO_ID;
 
+  for (i = 0; i < game->n_spaces; i++) {
+    if (space_get_character(game->spaces[i]) == id)
+      return space_get_id(game->spaces[i]);
+  }  
   
-  
-
-
   return NO_ID;
 }
 

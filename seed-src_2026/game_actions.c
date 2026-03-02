@@ -201,20 +201,20 @@ void game_actions_back(Game *game) {
 }
 
 void game_actions_take(Game *game){
-  Id object_location = NO_ID;
   Id player_location = NO_ID;
   Id obj_id = NO_ID;
+  Space *space = NULL;
 
   if (!game) {
     return;
   }
-  object_location = game_get_object_location(game);
+  
   player_location = game_get_player_location(game);
+  space = game_get_space(game, player_location);
+  obj_id = set_get_id_at(space_get_objects(space), 0);
 
-  if (object_location == player_location && player_get_object(game_get_player(game)) == NO_ID) {
-    obj_id = object_get_id(game_get_object(game));
-    space_set_object(game_get_space(game, player_location), NO_ID);
-
+  if (obj_id != NO_ID && player_get_object(game_get_player(game)) == NO_ID) {
+    space_del_object(space, obj_id);
     player_set_object(game_get_player(game), obj_id);
   }
 }
@@ -233,7 +233,7 @@ void game_actions_drop(Game *game){
     obj_id = player_get_object(game_get_player(game));
     player_set_object(game_get_player(game), NO_ID);
 
-    space_set_object(game_get_space(game, player_location), obj_id);
+    space_add_object(game_get_space(game, player_location), obj_id);
   }
 }
 
@@ -274,10 +274,27 @@ void game_actions_right(Game *game){
 }
 
 void game_actions_attack(Game *game){
+  Id player_loc = game_get_player_location(game);
+  Id ch_id = space_get_character(game_get_space(game, player_loc));
+  Character *enemy;
 
+  if (!game) {
+    return;
+  }
+
+  int roll = rand() % 10;
+  return;
 }
 
 void game_actions_chat(Game *game){
-  
+  Id player_loc = game_get_player_location(game);
+  Id ch_id = space_get_character(game_get_space(game, player_loc));
+  Character *friend;
+
+  if (!game) {
+    return;
+  }
+
+  return;
 }
 

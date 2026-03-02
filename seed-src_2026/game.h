@@ -112,7 +112,7 @@ int game_get_n_characters(Game *game);
  * @param id the id of the character
  * @return a pointer to the character or NULL if it does not exist
  */
-Object *game_get_character(Game *game, Id id);
+Character *game_get_character(Game *game, Id id);
 
 /**
  * @brief It gets the player of the game
@@ -151,7 +151,7 @@ Status game_set_player_location(Game *game, Id id);
  * @param game a pointer to the game structure
  * @return the id of the space where the object is located
  */
-Id game_get_object_location(Game *game);
+Id game_get_object_location(Game *game, Id id);
 
 /**
  * @brief It sets the object location
