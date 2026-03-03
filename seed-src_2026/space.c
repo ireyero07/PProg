@@ -188,7 +188,10 @@ Bool space_has_object(Space* space, Id object){
   if(!space || object == NO_ID)
     return FALSE;
 
-  return set_find(space->objects, object);
+  if (set_find(space->objects, object) == -1)
+    return FALSE;
+
+  return TRUE;
 }
 
 Status space_add_character(Space* space, Id character){
@@ -216,7 +219,10 @@ Bool space_has_character(Space* space, Id character){
   if(!space || character == NO_ID)
     return FALSE;
 
-  return set_find(space->characters, character);
+  if (set_find(space->characters, character) == -1)
+    return FALSE;
+
+  return TRUE;
 }
 
 Status space_print(Space* space) {

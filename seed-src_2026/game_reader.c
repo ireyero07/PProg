@@ -32,7 +32,7 @@
  * @param filename the name of the file with the spaces information
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status game_reader_load_spaces(Game *game, const char *filename);
+Status game_reader_load(Game *game, const char *filename);
 
 
 /**
@@ -52,13 +52,12 @@ Status game_reader_create_from_file(Game **game, char *filename) {
     return ERROR;
   }
 
-  if (game_reader_load_spaces(*game, filename) == ERROR) {
+  if (game_reader_load(*game, filename) == ERROR) {
     game_destroy(*game);
     *game = NULL;
     return ERROR;
   }
 
-  /* The player and the object are located in the first space */
   space = game_get_space_at(*game, 0);
   if (!space) {
     game_destroy(*game);
@@ -67,7 +66,6 @@ Status game_reader_create_from_file(Game **game, char *filename) {
   }
 
   game_set_player_location(*game, space_get_id(space));
-  game_set_object_location(*game, space_get_id(space));
 
   return OK;
 }
@@ -75,13 +73,14 @@ Status game_reader_create_from_file(Game **game, char *filename) {
 /**
  * @brief It loads the spaces from a file
  */
-Status game_reader_load_spaces(Game *game, const char *filename) {
+Status game_reader_load(Game *game, const char *filename) {
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
   char *toks = NULL;
-  Id id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
+  Id idSpace = NO_ID, idObject = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
   Space *space = NULL;
+  Object *object = NULL;
   Status status = OK;
 
   /* Error control */
@@ -102,7 +101,7 @@ Status game_reader_load_spaces(Game *game, const char *filename) {
 
       /* Parse the space data */
       toks = strtok(line + 3, "|");
-      id = atol(toks);
+      idSpace = atol(toks);
 
       toks = strtok(NULL, "|");
       strcpy(name, toks);
@@ -121,11 +120,11 @@ Status game_reader_load_spaces(Game *game, const char *filename) {
 
 #ifdef DEBUG
       printf("Read: s:%ld|%s|%ld|%ld|%ld|%ld\n",
-             id, name, north, east, south, west);
+             idSpace, name, north, east, south, west);
 #endif
 
       /* Create the space and add it to the game */
-      space = space_create(id);
+      space = space_create(idSpace);
       if (space != NULL) {
         space_set_name(space, name);
         space_set_north(space, north);
@@ -133,6 +132,33 @@ Status game_reader_load_spaces(Game *game, const char *filename) {
         space_set_south(space, south);
         space_set_west(space, west);
         game_add_space(game, space);
+      }
+    } 
+    /* Check if the line defines an object */
+    else if (strncmp("#o:", line, 3) == 0) {
+
+      /* Parse the space data */
+      toks = strtok(line + 3, "|");
+      idObject = atol(toks);
+
+      toks = strtok(NULL, "|");
+      strcpy(name, toks);
+
+      toks = strtok(NULL, "|");
+      idSpace = atol(toks);
+
+#ifdef DEBUG
+      printf("Read: o:%ld|%s|%ld\n",
+             idObject, name, idSpace);
+#endif
+
+      /* Create the object and add it to the space */
+      object = object_create(idObject);
+      if (object != NULL) {
+        object_set_name(object, name);
+        if (space_add_object(space, idObject)==ERROR){
+          return ERROR;
+        }
       }
     }
   }

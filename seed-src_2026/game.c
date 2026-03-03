@@ -112,6 +112,7 @@ Status game_destroy(Game *game) {
   return OK;
 }
 
+/*-------------------SPACE-----------------------*/
 /**
  * @brief Adds a space to the game.
  */
@@ -161,6 +162,7 @@ Space *game_get_space(Game *game, Id id) {
   return NULL;
 }
 
+/*-------------------OBJECT-----------------------*/
 /**
  * @brief Gets the number of objects in the game.
  */
@@ -190,66 +192,6 @@ Object *game_get_object(Game *game, Id id) {
 }
 
 /**
- * @brief Gets the number of characters in the game.
- */
-int game_get_n_characters(Game *game) {
-  if (!game) return -1;
-
-  return game->n_characters;
-}
-
-/**
- * @brief It gets a character by its id
- */
-Character *game_get_character(Game *game, Id id) {
-  int i = 0;
-
-  if (!game || id == NO_ID) {
-    return NULL;
-  }
-
-  for (i = 0; i < game->n_characters; i++) {
-    if (id == character_get_id(game->character[i])) {
-      return game->character[i];
-    }
-  }
-
-  return NULL;
-}
-
-/**
- * @brief It gets the player of the game
- */
-Player *game_get_player(Game *game) {
-  if (!game) {
-    return NULL;
-  }
-
-  return game->player;
-}
-
-/**
- * @brief It gets the player location
- */
-Id game_get_player_location(Game *game) {
-  if (!game || !game->player)
-    return NO_ID;
-
-  return player_get_location(game->player);
-}
-
-
-/**
- * @brief It sets the player location
- */
-Status game_set_player_location(Game *game, Id id) {
-  if (!game || !game->player || id == NO_ID)
-    return ERROR;
-
-  return player_set_location(game->player, id);
-}
-
-/**
  * @brief It gets the object location
  */
 Id game_get_object_location(Game *game, Id id) {
@@ -269,34 +211,6 @@ Id game_get_object_location(Game *game, Id id) {
   }
 
   return NO_ID;
-}
-
-/**
- * @brief It gets the character location
- */
-Id game_get_character_location(Game *game, Id id) {
-  int i;
-
-  if (!game)
-    return NO_ID;
-
-  for (i = 0; i < game->n_spaces; i++) {
-    if (space_get_character(game->spaces[i]) == id)
-      return space_get_id(game->spaces[i]);
-  }  
-  
-  return NO_ID;
-}
-
-/**
- * @brief It gets the object of the game
- */
-Object *game_get_object(Game *game) {
-  if (!game) {
-    return NULL;
-  }
-
-  return game->object;
 }
 
 /**
@@ -330,6 +244,85 @@ Status game_set_object_location(Game *game, Id id) {
     return OK;
 }
 
+/*-------------------CHARACTER-----------------------*/
+/**
+ * @brief Gets the number of characters in the game.
+ */
+int game_get_n_characters(Game *game) {
+  if (!game) return -1;
+
+  return game->n_characters;
+}
+
+/**
+ * @brief It gets a character by its id
+ */
+Character *game_get_character(Game *game, Id id) {
+  int i = 0;
+
+  if (!game || id == NO_ID) {
+    return NULL;
+  }
+
+  for (i = 0; i < game->n_characters; i++) {
+    if (id == character_get_id(game->character[i])) {
+      return game->character[i];
+    }
+  }
+
+  return NULL;
+}
+
+/**
+ * @brief It gets the character location
+ */
+Id game_get_character_location(Game *game, Id id) {
+  int i;
+
+  if (!game)
+    return NO_ID;
+
+  for (i = 0; i < game->n_spaces; i++) {
+    if (space_get_character(game->spaces[i]) == id)
+      return space_get_id(game->spaces[i]);
+  }  
+  
+  return NO_ID;
+}
+
+/*-------------------PLAYER-----------------------*/
+/**
+ * @brief It gets the player of the game
+ */
+Player *game_get_player(Game *game) {
+  if (!game) {
+    return NULL;
+  }
+
+  return game->player;
+}
+
+/**
+ * @brief It gets the player location
+ */
+Id game_get_player_location(Game *game) {
+  if (!game || !game->player)
+    return NO_ID;
+
+  return player_get_location(game->player);
+}
+
+/**
+ * @brief It sets the player location
+ */
+Status game_set_player_location(Game *game, Id id) {
+  if (!game || !game->player || id == NO_ID)
+    return ERROR;
+
+  return player_set_location(game->player, id);
+}
+
+/*-------------------LAST COMMAND-----------------------*/
 /**
  * @brief It gets the last command
  */
@@ -347,6 +340,7 @@ Status game_set_last_command(Game *game, Command *command) {
   return OK;
 }
 
+/*-------------------FINISH-----------------------*/
 /**
  * @brief It gets the finished flag
  */
@@ -362,6 +356,7 @@ Status game_set_finished(Game *game, Bool finished) {
   return OK;
 }
 
+/*-------------------PRINT-----------------------*/
 /**
  * @brief It prints the game information
  */

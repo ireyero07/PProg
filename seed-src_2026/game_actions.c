@@ -276,24 +276,35 @@ void game_actions_right(Game *game){
 void game_actions_attack(Game *game){
   Id player_loc = game_get_player_location(game);
   Id ch_id = space_get_character(game_get_space(game, player_loc));
+  Space *space = game_get_space(game, player_loc);
   Character *enemy;
 
-  if (!game) {
+  if (!game || !space) {
+    return;
+  }
+  if(character_get_friendly(enemy) == TRUE && space_has_character(space,ch_id) == TRUE ){
     return;
   }
 
   int roll = rand() % 10;
+  
+
   return;
 }
 
 void game_actions_chat(Game *game){
   Id player_loc = game_get_player_location(game);
   Id ch_id = space_get_character(game_get_space(game, player_loc));
+  Space *space = game_get_space(game, player_loc);
   Character *friend;
 
-  if (!game) {
+  if (!game || !space) {
     return;
   }
+  if(character_get_friendly(friend) == FALSE && space_has_character(space,ch_id) == TRUE ){
+    return;
+  }
+
 
   return;
 }
