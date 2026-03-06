@@ -36,6 +36,7 @@ struct _Space {
  */
 Space* space_create(Id id) {
   Space* newSpace = NULL;
+  int i;
 
   /* Error control */
   if (id == NO_ID) return NULL;
@@ -66,7 +67,7 @@ Space* space_create(Id id) {
         return NULL;
     }
 
-    for (int i = 0; i < GDESC_LINES; i++) {
+    for (i = 0; i < GDESC_LINES; i++) {
       newSpace->gdesc[i][0] = '\0';
     }
 
@@ -249,6 +250,7 @@ const char* space_get_gdesc(Space* space, int line){
 
 Status space_print(Space* space) {
   Id idaux = NO_ID;
+  int i;
 
   /* Error Control */
   if (!space) {
@@ -294,7 +296,7 @@ Status space_print(Space* space) {
 
   /* 5. Print graphic description */
   fprintf(stdout, "---> Graphic description:\n");
-  for (int i = 0; i < GDESC_LINES; i++) {
+  for (i = 0; i < GDESC_LINES; i++) {
     fprintf(stdout, "%s\n", space->gdesc[i]);
   }
 

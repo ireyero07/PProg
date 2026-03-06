@@ -63,7 +63,7 @@ test_character: character_test
 set_test.o: set_test.c set_test.h set.h types.h
 	$(CC) $(CFLAGS) -c set_test.c
 
-character_test: set_test.o set.o
+set_test: set_test.o set.o
 	$(CC) $(CFLAGS) -o set_test set_test.o set.o
 
 test_set: set_test
