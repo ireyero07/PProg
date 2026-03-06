@@ -156,8 +156,11 @@ Status game_reader_load(Game *game, const char *filename) {
       object = object_create(idObject);
       if (object != NULL) {
         object_set_name(object, name);
-        if (space_add_object(space, idObject)==ERROR){
-          return ERROR;
+        game_add_object(game, object);
+        space = game_get_space(game, idSpace);
+
+        if (space) {
+          space_add_object(space, idObject);
         }
       }
     }

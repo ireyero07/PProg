@@ -96,6 +96,19 @@ int game_get_n_objects(Game *game);
 Object *game_get_object(Game *game, Id id);
 
 /**
+ * @brief Adds an object to the game.
+ * @author Ivan
+ *
+ * This function inserts a new object into the array of objects
+ * stored in the game structure.
+ * 
+ * @param game Pointer to the game
+ * @param object Pointer to the object to be added
+ * @return OK if the object was added successfully, ERROR otherwise
+ */
+Status game_add_object(Game *game, Object *object);
+
+/**
  * @brief Gets the number of characters in the game.
  * @author Jian Feng
  *

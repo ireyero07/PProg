@@ -14,6 +14,8 @@
 #include "types.h"
 #include "set.h"
 
+#define GDESC_LINES 5
+#define GDESC_LENGTH 9
 
 typedef struct _Space Space;
 
@@ -225,6 +227,27 @@ Set* space_get_character(Space* space);
  * @return TRUE if the character is in the space, FALSE otherwise
  */
 Bool space_has_character(Space* space, Id character);
+
+/**
+ * @brief Sets one line of the graphic description of the space.
+ *
+ * The graphic description is composed of 5 lines of 9 characters each.
+ *
+ * @param space Pointer to the space.
+ * @param gdesc String containing the ASCII representation.
+ * @param line Line number (0-4).
+ * @return OK if successful, ERROR otherwise.
+ */
+Status space_set_gdesc(Space* space, char *gdesc, int line);
+
+/**
+ * @brief Returns one line of the graphic description.
+ *
+ * @param space Pointer to the space.
+ * @param line Line number (0-4).
+ * @return Pointer to the line string or NULL if error.
+ */
+const char* space_get_gdesc(Space* space, int line);
 
 /**
  * @brief It prints the space information

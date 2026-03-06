@@ -20,14 +20,15 @@
  * This struct stores all the information of a space.
  */
 struct _Space {
-  Id id;                    /*!< Id number of the space, it must be unique */
-  char name[WORD_SIZE + 1]; /*!< Name of the space */
-  Id north;                 /*!< Id of the space at the north */
-  Id south;                 /*!< Id of the space at the south */
-  Id east;                  /*!< Id of the space at the east */
-  Id west;                  /*!< Id of the space at the west */
-  Set *objects;             /*!< Set of objects in the space*/
-  Set *characters;           /*!< Ser of characters in the space*/
+  Id id;                                            /*!< Id number of the space, it must be unique */
+  char name[WORD_SIZE + 1];                         /*!< Name of the space */
+  Id north;                                         /*!< Id of the space at the north */
+  Id south;                                         /*!< Id of the space at the south */
+  Id east;                                          /*!< Id of the space at the east */
+  Id west;                                          /*!< Id of the space at the west */
+  Set *objects;                                     /*!< Set of objects in the space*/
+  Set *characters;                                  /*!< Ser of characters in the space*/
+  char gdesc[GDESC_LINES][GDESC_LENGTH + 1];        /*!< Graphic description of the space (5x9) */
 };
 
 /** space_create allocates memory for a new space
@@ -60,8 +61,13 @@ Space* space_create(Id id) {
 
   newSpace->characters = set_create();
     if (!newSpace->characters) {
+        set_destroy(newSpace->objects);
         free(newSpace);
         return NULL;
+    }
+
+    for (int i = 0; i < GDESC_LINES; i++) {
+      newSpace->gdesc[i][0] = '\0';
     }
 
   return newSpace;
@@ -73,6 +79,7 @@ Status space_destroy(Space* space) {
   }
 
   set_destroy(space->objects);
+  set_destroy(space->characters);
 
   free(space);
   return OK;
@@ -225,6 +232,21 @@ Bool space_has_character(Space* space, Id character){
   return TRUE;
 }
 
+Status space_set_gdesc(Space* space, char *gdesc, int line){
+  if (!space || !gdesc || line < 0 || line >= GDESC_LINES) return ERROR;
+
+  strncpy(space->gdesc[line], gdesc, GDESC_LENGTH);
+  space->gdesc[line][GDESC_LENGTH] = '\0';
+
+  return OK;
+}
+
+const char* space_get_gdesc(Space* space, int line){
+  if (!space || line < 0 || line >= GDESC_LINES) return NULL;
+
+  return space->gdesc[line];
+}
+
 Status space_print(Space* space) {
   Id idaux = NO_ID;
 
@@ -262,20 +284,18 @@ Status space_print(Space* space) {
     fprintf(stdout, "---> No west link.\n");
   }
 
-  /* 3. Print if there is an object in the space or not */
-  idaux = space_get_objects(space);
-  if (idaux != NO_ID) {
-    fprintf(stdout, "---> Object in the space: %ld.\n", idaux);
-  } else {
-    fprintf(stdout, "---> No object in the space.\n");
-  }
+  /* 3. Print objects in the space */
+  fprintf(stdout, "---> Objects in the space: ");
+  set_print(space->objects);
 
-  /* 4. Print if there is a character in the space or not */
-  idaux = space_get_character(space);
-  if (idaux != NO_ID) {
-    fprintf(stdout, "---> Character in the space: %ld.\n", idaux);
-  } else {
-    fprintf(stdout, "---> No character in the space.\n");
+  /* 4. Print characters in the space */
+  fprintf(stdout, "---> Characters in the space: ");
+  set_print(space->characters);
+
+  /* 5. Print graphic description */
+  fprintf(stdout, "---> Graphic description:\n");
+  for (int i = 0; i < GDESC_LINES; i++) {
+    fprintf(stdout, "%s\n", space->gdesc[i]);
   }
 
   return OK;

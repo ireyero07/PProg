@@ -192,6 +192,25 @@ Object *game_get_object(Game *game, Id id) {
 }
 
 /**
+ * @brief Adds an object to the game
+ */
+Status game_add_object(Game *game, Object *object) {
+
+  if (!game || !object) {
+    return ERROR;
+  }
+
+  if (game->n_objects >= MAX_OBJECTS) {
+    return ERROR;
+  }
+
+  game->object[game->n_objects] = object;
+  game->n_objects++;
+
+  return OK;
+}
+
+/**
  * @brief It gets the object location
  */
 Id game_get_object_location(Game *game, Id id) {
@@ -224,22 +243,20 @@ Status game_set_object_location(Game *game, Id id) {
 
     /* 1. Remove the item from the player if they had it. */
     if (player_get_object(game->player) != NO_ID) {
-        player_set_object(game->player, NO_ID);
+      player_set_object(game->player, NO_ID);
     }
 
     /* 2. Remove the object from all the spaces */
     for (i = 0; i < game->n_spaces; i++) {
-        if (space_get_object(game->spaces[i]) != NO_ID) {
-            space_set_object(game->spaces[i], NO_ID);
-        }
-    }
+      space_del_object(game->spaces[i], id);
+}
 
     /* 3. Place the object in the new space */
     space = game_get_space(game, id);
     if (!space)
       return ERROR;
 
-    space_set_object(space, object_get_id(game->object));
+    space_add_object(space, id);
 
     return OK;
 }
@@ -370,7 +387,12 @@ void game_print(Game *game) {
     space_print(game->spaces[i]);
   }
 
+  printf("=> Player:\n");
   player_print(game->player);
-  object_print(game->object);
+  
+  printf("=> Objects:\n");
+  for (i = 0; i < game->n_objects; i++) {
+    object_print(game->object[i]);
+}
 }
 

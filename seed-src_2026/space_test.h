@@ -331,4 +331,32 @@ void test1_space_get_west();
  */
 void test2_space_get_west();
 
+/**
+ * @test Test space_set_gdesc
+ * @pre Valid space, valid string and valid line index
+ * @post Returns OK
+ */
+void test1_space_set_gdesc();
+
+/**
+ * @test Test space_set_gdesc
+ * @pre NULL space
+ * @post Returns ERROR
+ */
+void test2_space_set_gdesc();
+
+/**
+ * @test Test space_get_gdesc
+ * @pre Space with graphic description
+ * @post Returns correct string
+ */
+void test1_space_get_gdesc();
+
+/**
+ * @test Test space_get_gdesc
+ * @pre NULL space
+ * @post Returns NULL
+ */
+void test2_space_get_gdesc();
+
 #endif
