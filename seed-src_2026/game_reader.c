@@ -77,6 +77,7 @@ Status game_reader_load(Game *game, const char *filename) {
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
+  char gdesc[GDESC_LINES][GDESC_LENGTH + 1] = {""};
   char *toks = NULL;
   Id idSpace = NO_ID, idObject = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
   Space *space = NULL;
@@ -118,9 +119,20 @@ Status game_reader_load(Game *game, const char *filename) {
       toks = strtok(NULL, "|");
       west = atol(toks);
 
+      for(int i = 0; i < GDESC_LINES; i++){
+        toks = strtok(NULL, "|");
+        if (toks) {
+          strncpy(gdesc[i],toks,GDESC_LENGTH);
+          gdesc[i][GDESC_LENGTH] = '\0';
+        }
+        else {
+          gdesc[i][0] = '\0';
+        }
+      }
+
 #ifdef DEBUG
-      printf("Read: s:%ld|%s|%ld|%ld|%ld|%ld\n",
-             idSpace, name, north, east, south, west);
+      printf("Read: s:%ld|%s|%ld|%ld|%ld|%ld|%s|%s|%s|%s|%s|\n",
+             idSpace, name, north, east, south, west, gdesc[0],  gdesc[1], gdesc[2], gdesc[3], gdesc[4]);
 #endif
 
       /* Create the space and add it to the game */
@@ -131,6 +143,13 @@ Status game_reader_load(Game *game, const char *filename) {
         space_set_east(space, east);
         space_set_south(space, south);
         space_set_west(space, west);
+        
+        for(int i = 0; i < GDESC_LINES; i++){
+          if(gdesc[i][0] != '\0'){
+            space_set_gdesc(space,gdesc[i],i);
+          }
+        }
+
         game_add_space(game, space);
       }
     } 

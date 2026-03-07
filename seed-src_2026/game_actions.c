@@ -276,18 +276,26 @@ void game_actions_right(Game *game){
 void game_actions_attack(Game *game){
   Id player_loc = game_get_player_location(game);
   Id ch_id = space_get_character(game_get_space(game, player_loc));
-  Space *space = game_get_space(game, player_loc);
   Character *enemy;
 
-  if (!game || !space) {
+
+  if (!game || ch_id == NO_ID) {
     return;
   }
-  if(character_get_friendly(enemy) == TRUE && space_has_character(space,ch_id) == TRUE ){
+  
+  enemy = game_get_character(game,ch_id);
+
+  if(!enemy || character_get_friendly(enemy) || character_get_health(enemy)<= 0){
     return;
   }
 
   int roll = rand() % 10;
-  
+  if(roll <= 4){
+    player_set_health(game_get_player(game), player_get_health(game_get_player(game))-1);
+  }
+  else{
+    character_set_health(enemy,character_get_health(enemy)-1);
+  }
 
   return;
 }
@@ -295,16 +303,19 @@ void game_actions_attack(Game *game){
 void game_actions_chat(Game *game){
   Id player_loc = game_get_player_location(game);
   Id ch_id = space_get_character(game_get_space(game, player_loc));
-  Space *space = game_get_space(game, player_loc);
   Character *friend;
 
-  if (!game || !space) {
+  if (!game || ch_id == NO_ID) {
     return;
   }
-  if(character_get_friendly(friend) == FALSE && space_has_character(space,ch_id) == TRUE ){
-    return;
-  }
+  
+  friend = game_get_character(game,ch_id);
 
+  if(!friend || character_get_friendly(friend)){
+    return;
+  }
+  
+  printf("Friend says: %s\n", character_get_message(friend));
 
   return;
 }

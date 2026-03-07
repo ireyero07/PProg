@@ -199,7 +199,7 @@ Status game_add_object(Game *game, Object *object) {
   if (!game || !object) {
     return ERROR;
   }
-
+  
   if (game->n_objects >= MAX_OBJECTS) {
     return ERROR;
   }
@@ -393,6 +393,6 @@ void game_print(Game *game) {
   printf("=> Objects:\n");
   for (i = 0; i < game->n_objects; i++) {
     object_print(game->object[i]);
-}
+  }
 }
 
