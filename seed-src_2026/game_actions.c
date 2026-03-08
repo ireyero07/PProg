@@ -275,9 +275,10 @@ void game_actions_right(Game *game){
 
 void game_actions_attack(Game *game){
   Id player_loc = game_get_player_location(game);
-  Id ch_id = space_get_character(game_get_space(game, player_loc));
+  Space *space = game_get_space(game,player_loc);
+  Id ch_id = set_get_id_at(space_get_character(space),0);
   Character *enemy;
-
+  int roll;
 
   if (!game || ch_id == NO_ID) {
     return;
@@ -289,7 +290,7 @@ void game_actions_attack(Game *game){
     return;
   }
 
-  int roll = rand() % 10;
+  roll = rand() % 10;
   if(roll <= 4){
     player_set_health(game_get_player(game), player_get_health(game_get_player(game))-1);
   }
@@ -302,7 +303,8 @@ void game_actions_attack(Game *game){
 
 void game_actions_chat(Game *game){
   Id player_loc = game_get_player_location(game);
-  Id ch_id = space_get_character(game_get_space(game, player_loc));
+  Space *space = game_get_space(game,player_loc);
+  Id ch_id = set_get_id_at(space_get_character(space),0);
   Character *friend;
 
   if (!game || ch_id == NO_ID) {

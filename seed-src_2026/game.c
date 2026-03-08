@@ -300,7 +300,7 @@ Id game_get_character_location(Game *game, Id id) {
     return NO_ID;
 
   for (i = 0; i < game->n_spaces; i++) {
-    if (space_get_character(game->spaces[i]) == id)
+    if (set_find(space_get_character(game->spaces[i]), id) >= 0)
       return space_get_id(game->spaces[i]);
   }  
   
