@@ -83,6 +83,7 @@ Status game_reader_load(Game *game, const char *filename) {
   Space *space = NULL;
   Object *object = NULL;
   Status status = OK;
+  int i;
 
   /* Error control */
   if (!game || !filename) {
@@ -119,7 +120,7 @@ Status game_reader_load(Game *game, const char *filename) {
       toks = strtok(NULL, "|");
       west = atol(toks);
 
-      for(int i = 0; i < GDESC_LINES; i++){
+      for(i = 0; i < GDESC_LINES; i++){
         toks = strtok(NULL, "|");
         if (toks) {
           strncpy(gdesc[i],toks,GDESC_LENGTH);
@@ -144,7 +145,7 @@ Status game_reader_load(Game *game, const char *filename) {
         space_set_south(space, south);
         space_set_west(space, west);
         
-        for(int i = 0; i < GDESC_LINES; i++){
+        for(i = 0; i < GDESC_LINES; i++){
           if(gdesc[i][0] != '\0'){
             space_set_gdesc(space,gdesc[i],i);
           }
@@ -192,4 +193,5 @@ Status game_reader_load(Game *game, const char *filename) {
 
   fclose(file);
   return status;
+
 }
