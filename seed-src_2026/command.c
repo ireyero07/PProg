@@ -37,6 +37,7 @@ char *cmd_to_str[N_CMD][N_CMDT] = {
  */
 struct _Command {
   CommandCode code; /*!< Name of the command */
+  char arg[WORD_SIZE + 1]; /*!< Name of the object in case of take */
 };
 
 /** space_create allocates memory for a new space
@@ -102,6 +103,13 @@ Status command_get_user_input(Command* command) {
     while (cmd == UNKNOWN && i < N_CMD) {
       if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL])) {
         cmd = i + NO_CMD;
+        if (cmd == TAKE){
+          token = strtok(NULL, "");
+          if(token != NULL){
+            strncpy(command->arg, token, WORD_SIZE);
+            command->arg[WORD_SIZE] = '\0';
+          }
+        }
       } else {
         i++;
       }
@@ -111,6 +119,11 @@ Status command_get_user_input(Command* command) {
   else
     return command_set_code(command, EXIT);
   
+}
+
+const char* command_get_arg(Command *command){
+  if (!command) return NULL;
+  return command->arg;
 }
 
 

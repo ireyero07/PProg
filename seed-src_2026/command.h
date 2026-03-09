@@ -67,6 +67,15 @@ CommandCode command_get_code(Command* command);
  */
 Status command_get_user_input(Command* command);
 
+/**
+ * @brief It gets the argument of the command
+ * @author Jian Feng Yin Chen
+ * 
+ * @param command  Pointer to the command that will store the interpreted code.
+ * @return the command argumet, if everything goes well, or NULL if the pointer is NULL.
+ */
+const char* command_get_arg(Command *command);
+
 #endif
 
 

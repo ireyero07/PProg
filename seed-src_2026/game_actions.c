@@ -56,7 +56,7 @@ void game_actions_back(Game *game);
  *
  * @param game Pointer to the game to be updated
  */
-void game_actions_take(Game *game);
+void game_actions_take(Game *game, Command *cmd);
 
 /**
  * @brief The player drops the object on the space if the player has it.
@@ -127,7 +127,7 @@ Status game_actions_update(Game *game, Command *command) {
       break;
 
     case TAKE:
-      game_actions_take(game);
+      game_actions_take(game,command);
       break;
 
     case DROP:
@@ -200,18 +200,21 @@ void game_actions_back(Game *game) {
   return;
 }
 
-void game_actions_take(Game *game){
+void game_actions_take(Game *game, Command *cmd){
   Id player_location = NO_ID;
   Id obj_id = NO_ID;
   Space *space = NULL;
+  const char *object_name;
 
-  if (!game) {
+  if (!game || !cmd) {
     return;
   }
   
+  object_name = command_get_arg(cmd);
+  if(!object_name) return;
   player_location = game_get_player_location(game);
   space = game_get_space(game, player_location);
-  obj_id = set_get_id_at(space_get_objects(space), 0);
+  obj_id = game_get_object_id_by_name(game,object_name);
 
   if (obj_id != NO_ID && player_get_object(game_get_player(game)) == NO_ID) {
     space_del_object(space, obj_id);

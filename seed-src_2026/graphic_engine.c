@@ -18,10 +18,10 @@
 #include "space.h"
 #include "types.h"
 
-#define WIDTH_MAP 48
-#define WIDTH_DES 29
+#define WIDTH_MAP 57
+#define WIDTH_DES 59
 #define WIDTH_BAN 25
-#define HEIGHT_MAP 13
+#define HEIGHT_MAP 30
 #define HEIGHT_BAN 1
 #define HEIGHT_HLP 2
 #define HEIGHT_FDB 3
@@ -66,7 +66,7 @@ void graphic_engine_destroy(Graphic_engine *ge) {
 }
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
-  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, obj_loc = NO_ID;
+  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, obj_loc = NO_ID, id_left = NO_ID, id_right = NO_ID;
   Space *space_act = NULL;
   char obj = '\0';
   char str[255];
@@ -79,13 +79,16 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     space_act = game_get_space(game, id_act);
     id_back = space_get_north(space_act);
     id_next = space_get_south(space_act);
+    id_left = space_get_west(space_act);
+    id_right = space_get_east(space_act);
 
-    if (game_get_object_location(game) == id_back)
+    if (game_get_object_location(game) == id_back) 
       obj = '+';
     else
       obj = ' ';
 
     if (id_back != NO_ID) {
+      
       sprintf(str, "  |         %2d|", (int)id_back);
       screen_area_puts(ge->map, str);
       sprintf(str, "  |     %c     |", obj);
@@ -95,20 +98,38 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       sprintf(str, "        ^");
       screen_area_puts(ge->map, str);
     }
+    Character *character_act = character_create;
+    character_act = space_get_character(space_act);
+    Object *object_act[2]=NULL;
+    object_act[0]=object_create;
+    object_act[1]=object_create;
+    object_act[2] = space_get_objects(space_act);
 
-    if (game_get_object_location(game) == id_act)
-      obj = '+';
+    char obj1 [WORD_SIZE+1],obj2 [WORD_SIZE+1];
+    if (game_get_object_location(game,object_get_id(object_act[0])) == id_act)
+      *obj1 = object_get_name(object_act[0]);
     else
-      obj = ' ';
+      *obj1 = ' ';
+
+    if (game_get_object_location(game,object_get_id(object_act[1])) == id_act)
+      *obj2 = object_get_name(object_act[1]);
+    else
+      *obj2 = ' ';
+
+    char chr [6];
+    if(game_get_character_location(game,character_get_id(character_act)) == id_act)
+      *chr = character_get_gdesc(character_act);
+    else
+      *chr = ' ';
 
     if (id_act != NO_ID) {
-      sprintf(str, "  +-----------+");
+      sprintf(str, "  +---------------+");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  | ^C>     %2d|", (int)id_act);
+      sprintf(str, "  | ^C>  %s    %2d|",chr,(int)id_act);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |     %c     |", obj);
+      sprintf(str, "  |     %c        |", obj);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  +-----------+");
+      sprintf(str, "  +---------------+");
       screen_area_puts(ge->map, str);
     }
 

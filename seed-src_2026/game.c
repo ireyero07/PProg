@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #define MAX_SPACES 100
 #define MAX_OBJECTS 10
@@ -259,6 +260,18 @@ Status game_set_object_location(Game *game, Id id) {
     space_add_object(space, id);
 
     return OK;
+}
+
+Id game_get_object_id_by_name(Game *game, const char *name){
+  int i;
+  if (!game || !name) return NO_ID;
+
+  for (i = 0; i < game->n_objects && i < MAX_OBJECTS; i++){
+    if (game->object[i] && strcasecmp(object_get_name(game->object[i]),name) == 0){
+      return object_get_id(game->object[i]);
+    }
+  }
+  return NO_ID;
 }
 
 /*-------------------CHARACTER-----------------------*/

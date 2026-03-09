@@ -109,6 +109,35 @@ Object *game_get_object(Game *game, Id id);
 Status game_add_object(Game *game, Object *object);
 
 /**
+ * @brief It gets the object location
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return the id of the space where the object is located
+ */
+Id game_get_object_location(Game *game, Id id);
+
+/**
+ * @brief It sets the object location
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param id the id of the new object location
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status game_set_object_location(Game *game, Id id);
+
+/**
+ * @brief It gets the object id by thee object name
+ * @author Jian Feng
+ *
+ * @param game a pointer to the game structure
+ * @param name the name of the object 
+ * @return The id of the object, if everything goes well or NO_ID if there was some mistake
+ */
+Id game_get_object_id_by_name(Game *game, const char *name);
+
+/**
  * @brief Gets the number of characters in the game.
  * @author Jian Feng
  *
@@ -126,6 +155,8 @@ int game_get_n_characters(Game *game);
  * @return a pointer to the character or NULL if it does not exist
  */
 Character *game_get_character(Game *game, Id id);
+
+Id game_get_character_location(Game *game, Id id);
 
 /**
  * @brief It gets the player of the game
@@ -156,25 +187,6 @@ Id game_get_player_location(Game *game);
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status game_set_player_location(Game *game, Id id);
-
-/**
- * @brief It gets the object location
- * @author Ivan
- *
- * @param game a pointer to the game structure
- * @return the id of the space where the object is located
- */
-Id game_get_object_location(Game *game, Id id);
-
-/**
- * @brief It sets the object location
- * @author Ivan
- *
- * @param game a pointer to the game structure
- * @param id the id of the new object location
- * @return OK, if everything goes well or ERROR if there was some mistake
- */
-Status game_set_object_location(Game *game, Id id);
 
 /**
  * @brief It gets the last command
