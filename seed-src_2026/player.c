@@ -138,7 +138,7 @@ Id player_get_object(Player* player) {
 }
 
 int player_get_health(Player* player){
-  if (!player) return -1;
+  if (!player) return 0;
 
   return player->health;
 }

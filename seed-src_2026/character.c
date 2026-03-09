@@ -81,7 +81,7 @@ const char* character_get_gdesc(Character* character){
 }
 
 int character_get_health(Character* character){
-  if (!character) return -1;
+  if (!character) return 0;
 
   return character->health;
 }

@@ -216,7 +216,7 @@ void game_actions_take(Game *game, Command *cmd){
   space = game_get_space(game, player_location);
   obj_id = game_get_object_id_by_name(game,object_name);
 
-  if (obj_id != NO_ID && player_get_object(game_get_player(game)) == NO_ID) {
+  if (obj_id != NO_ID && player_get_object(game_get_player(game)) == NO_ID && space_has_object(space, obj_id) == TRUE) {
     space_del_object(space, obj_id);
     player_set_object(game_get_player(game), obj_id);
   }
@@ -294,10 +294,10 @@ void game_actions_attack(Game *game){
   }
 
   roll = rand() % 10;
-  if(roll <= 4){
+  if (roll <= 4) {
     player_set_health(game_get_player(game), player_get_health(game_get_player(game))-1);
   }
-  else{
+  else {
     character_set_health(enemy,character_get_health(enemy)-1);
   }
 
@@ -316,7 +316,7 @@ void game_actions_chat(Game *game){
   
   friend = game_get_character(game,ch_id);
 
-  if(!friend || character_get_friendly(friend)){
+  if (!friend || !character_get_friendly(friend)){
     return;
   }
   

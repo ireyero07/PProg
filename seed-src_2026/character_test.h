@@ -8,8 +8,8 @@
  * @copyright GNU Public License
  */
 
-#ifndef SPACE_TEST_H
-#define SPACE_TEST_H
+#ifndef CHARACTER_TEST_H
+#define CHARACTER_TEST_H
 
 /**
  * @test Test character creation

@@ -7,8 +7,8 @@
  * @copyright GNU Public License
  */
 
-#ifndef SPACE_TEST_H
-#define SPACE_TEST_H
+#ifndef SET_TEST_H
+#define SET_TEST_H
 
 /**
  * @test Test set creation

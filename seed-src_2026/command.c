@@ -88,6 +88,7 @@ Status command_get_user_input(Command* command) {
   char input[CMD_LENGHT] = "", *token = NULL;
   int i = UNKNOWN - NO_CMD + 1;
   CommandCode cmd;
+  command->arg[0] = '\0';
 
   if (!command) {
     return ERROR;

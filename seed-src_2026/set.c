@@ -71,7 +71,7 @@ Status set_add(Set* set, Id id) {
 Status set_del(Set* set, Id id) {
   int i, pos;
 
-  if (!set || id == NO_ID || set->n_ids >= MAX_IDS) return ERROR;
+  if (!set || id == NO_ID || set->n_ids <= 0) return ERROR;
 
   pos = set_find(set, id);
   if (pos==-1) {
