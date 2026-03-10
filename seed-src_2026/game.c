@@ -26,9 +26,10 @@
  */
 struct _Game {
   Player *player;                /*!< Pointer to the player of the game */
-  Object *object[MAX_OBJECTS];                /*!< Array of pointers to the object of the game */
-  int n_objects;                  /*!< Number of objects currently in the game */
-  Character *character;          /*!< Array of pointers to the character of the game */
+  Object *object[MAX_OBJECTS];   /*!< Array of pointers to the object of the game */
+  int n_objects;                 /*!< Number of objects currently in the game */
+  Character *character[MAX_CHARACTERS];  /*!< Array of pointers to the character of the game */
+  int n_characters;              /*!< Number of characters currently in the game */
   Space *spaces[MAX_SPACES];     /*!< Array of pointers to the spaces of the game */
   int n_spaces;                  /*!< Number of spaces currently in the game */
   Command *last_cmd;             /*!< Last command introduced by the player */
@@ -42,23 +43,26 @@ struct _Game {
 Game *game_create() {
   int i;
   Game *game = NULL;
+  Character *character;
 
   game = (Game *)malloc(sizeof(Game));
   if (!game) return NULL;
-  
-  /* Initialize the spaces array */
-  for (i = 0; i < MAX_SPACES; i++) {
+
+  game->player = NULL;
+  game->last_cmd = NULL;
+
+  for (i = 0; i < MAX_SPACES; i++)
     game->spaces[i] = NULL;
-  }
+
+  for (i = 0; i < MAX_OBJECTS; i++)
+    game->object[i] = NULL;
+
+  for (i = 0; i < MAX_CHARACTERS; i++)
+    game->character[i] = NULL;
 
   game->n_spaces = 0;
-  
-  for (i = 0; i < MAX_OBJECTS; i++) {
-    game->object[i] = NULL;
-  }
-
   game->n_objects = 0;
- 
+  game->n_characters = 0;
 
   game->player = player_create(1);
   if (!game->player) {
@@ -66,19 +70,33 @@ Game *game_create() {
     return NULL;
   }
 
-  game->character = character_create(2);
-  if (!game->character) {
+  character = character_create(2);
+  if (!character) {
+    player_destroy(game->player);
     free(game);
     return NULL;
   }
 
-  game->character = player_create(3);
-  if (!game->character) {
+  game->character[game->n_characters] = character;
+  game->n_characters++;
+
+  character = character_create(3);
+  if (!character) {
+    player_destroy(game->player);
     free(game);
     return NULL;
   }
+
+  game->character[game->n_characters] = character;
+  game->n_characters++;
 
   game->last_cmd = command_create();
+  if (!game->last_cmd) {
+    player_destroy(game->player);
+    free(game);
+    return NULL;
+  }
+
   game->finished = FALSE;
 
   return game;
@@ -100,13 +118,15 @@ Status game_destroy(Game *game) {
  /* Destroy the player */
   player_destroy(game->player); 
 
-  /* Destroy the object */
+  /* Destroy the objects */
   for (i = 0; i < game->n_objects; i++) {
     object_destroy(game->object[i]);
   }
 
-  /* Destroy the character */
-  character_destroy(game->character); 
+  /* Destroy the characters */
+    for (i = 0; i < game->n_characters; i++) {
+      character_destroy(game->character[i]);
+    }
 
   /* Destroy the last command */
   command_destroy(game->last_cmd);
@@ -225,7 +245,7 @@ Id game_get_object_location(Game *game, Id id) {
 
     /* Si el jugador tiene el objeto */
   if (player_get_object(game->player) == id)
-    return game_get_player_location(game);
+    return game_get_player_location(game->player);
 
     /* Buscar en los espacios */
   for (i = 0; i < game->n_spaces; i++) {
@@ -239,30 +259,25 @@ Id game_get_object_location(Game *game, Id id) {
 /**
  * @brief It sets the object location
  */
-Status game_set_object_location(Game *game, Id id) {
+Status game_set_object_location(Game *game, Id object_id, Id space_id) {
   int i;
   Space *space;
 
-    if (!game || id == NO_ID) return ERROR;
+  if (!game || object_id == NO_ID || space_id == NO_ID)
+    return ERROR;
 
-    /* 1. Remove the item from the player if they had it. */
-    if (player_get_object(game->player) != NO_ID) {
-      player_set_object(game->player, NO_ID);
-    }
+  if (player_get_object(game->player) == object_id)
+    player_set_object(game->player, NO_ID);
 
-    /* 2. Remove the object from all the spaces */
-    for (i = 0; i < game->n_spaces; i++) {
-      space_del_object(game->spaces[i], id);
-}
+  for (i = 0; i < game->n_spaces; i++)
+    space_del_object(game->spaces[i], object_id);
 
-    /* 3. Place the object in the new space */
-    space = game_get_space(game, id);
-    if (!space)
-      return ERROR;
+  space = game_get_space(game, space_id);
+  if (!space) return ERROR;
 
-    space_add_object(space, id);
+  space_add_object(space, object_id);
 
-    return OK;
+  return OK;
 }
 
 Id game_get_object_id_by_name(Game *game, const char *name){
@@ -282,31 +297,42 @@ Id game_get_object_id_by_name(Game *game, const char *name){
  * @brief It gets the character of the game
  */
 Character *game_get_character(Game *game, Id id) {
+  int i;
+
   if (!game || id == NO_ID) {
     return NULL;
   }
 
-  return game->character;
+  for (i = 0; i < game->n_characters; i++) {
+    if (character_get_id(game->character[i]) == id)
+      return game->character[i];
+  }
+
+  return NULL;
 }
 
 /**
  * @brief It gets the character location
  */
-Id game_get_character_location(Game *game) {
-  if (!game || !game->character) 
+Id game_get_character_location(Game *game, Id id) {
+  Character *character = game_get_character(game, id);
+
+  if (!character)
     return NO_ID;
 
-  return character_get_location(game->character);
+  return character_get_location(character);
 }
 
 /**
  * @brief It sets the character location
  */
-Status game_set_character_location(Game *game, Id id) {
-  if (!game || !game->character || id == NO_ID)
+Status game_set_character_location(Game *game, Id char_id, Id space_id) {
+  Character *character = game_get_character(game, char_id);
+
+  if (!game || !character || space_id == NO_ID)
     return ERROR;
 
-  return character_set_location(game->character, id);
+  return character_set_location(character, space_id);
 }
 
 /*-------------------PLAYER-----------------------*/

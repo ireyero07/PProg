@@ -122,10 +122,11 @@ Id game_get_object_location(Game *game, Id id);
  * @author Ivan
  *
  * @param game a pointer to the game structure
- * @param id the id of the new object location
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @param object_id the id of the object
+ * @param space_id the id of the space
+ * @return It sets the object location, if everything goes well or ERROR if there was some mistake
  */
-Status game_set_object_location(Game *game, Id id);
+Status game_set_object_location(Game *game, Id object_id, Id space_id);
 
 /**
  * @brief It gets the object id by thee object name
@@ -162,10 +163,11 @@ Id game_get_character_location(Game *game, Id id);
  * @author Ivan
  *
  * @param game a pointer to the game structure
- * @param id the id of the new character location
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @param char_id the id of the character
+ * @param space_id the id of the space
+ * @return It sets the character location, if everything goes well or ERROR if there was some mistake
  */
-Status game_set_character_location(Game *game, Id id);
+Status game_set_character_location(Game *game, Id char_id, Id space_id);
 
 /**
  * @brief It gets the player of the game
