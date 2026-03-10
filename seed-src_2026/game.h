@@ -170,6 +170,15 @@ Id game_get_character_location(Game *game, Id id);
 Status game_set_character_location(Game *game, Id char_id, Id space_id);
 
 /**
+ * @brief Gets the number of characters in the game.
+ * @author Jian Feng
+ *
+ * @param game Pointer to the game.
+ * @return Number of characters.
+ */
+int game_get_n_characters(Game *game);
+
+/**
  * @brief It gets the player of the game
  * @author Ivan
  *

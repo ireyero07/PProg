@@ -26,6 +26,7 @@ struct _Character {
   int health;                     /*!< Health of the character */
   Bool friendly;                  /*!< if the character is friendly */ 
   char message[WORD_SIZE + 1];   /*!< The message of the character */
+  Id location;                   /*!< Location of the character*/
 };
 
 /**
@@ -50,6 +51,7 @@ Character* character_create(Id id) {
 
     newCharacter->friendly = FALSE;
     newCharacter->message[0] = '\0';
+    newCharacter->location = NO_ID;
 
   return newCharacter;
 }
@@ -136,6 +138,22 @@ Status character_set_message(Character* character, char* message){
   if (!character || !message) return ERROR;
 
   strcpy(character->message, message);
+  return OK;
+}
+
+Id character_get_location(Character *character){
+  if (!character)
+    return NO_ID;
+
+  return character->location;
+}
+
+Status character_set_location(Character *character, Id location){
+  if (!character || location == NO_ID)
+    return ERROR;
+
+  character->location = location;
+
   return OK;
 }
 

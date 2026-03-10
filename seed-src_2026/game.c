@@ -245,7 +245,7 @@ Id game_get_object_location(Game *game, Id id) {
 
     /* Si el jugador tiene el objeto */
   if (player_get_object(game->player) == id)
-    return game_get_player_location(game->player);
+    return game_get_player_location(game);
 
     /* Buscar en los espacios */
   for (i = 0; i < game->n_spaces; i++) {
@@ -335,6 +335,11 @@ Status game_set_character_location(Game *game, Id char_id, Id space_id) {
   return character_set_location(character, space_id);
 }
 
+int game_get_n_characters(Game *game){
+    if(!game) return -1;
+    return game->n_characters;
+}
+
 /*-------------------PLAYER-----------------------*/
 /**
  * @brief It gets the player of the game
@@ -417,8 +422,8 @@ void game_print(Game *game) {
   printf("=> Player:\n");
   player_print(game->player);
 
-  printf("=> Character:\n");
-  character_print(game->character);
+  for (i = 0; i < game->n_characters; i++)
+    character_print(game->character[i]);
   
   printf("=> Objects:\n");
   for (i = 0; i < game->n_objects; i++) {
