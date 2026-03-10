@@ -13,6 +13,8 @@
 
 #include "types.h"
 
+#define MAX_CHR_GDESC 6
+
 typedef struct _Character Character;
 
 /**

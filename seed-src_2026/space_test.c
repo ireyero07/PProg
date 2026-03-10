@@ -66,25 +66,24 @@ int main(int argc, char** argv) {
   if (all || test == 20) test1_space_has_object();
   if (all || test == 21) test2_space_has_object();
   if (all || test == 22) test3_space_has_object();
-  if (all || test == 23) test1_space_object_here();
-  if (all || test == 24) test2_space_object_here();
-  if (all || test == 25) test3_space_object_here();
-  if (all || test == 26) test1_space_get_id();
-  if (all || test == 27) test2_space_get_id();
-  if (all || test == 28) test1_space_get_name();
-  if (all || test == 29) test2_space_get_name();
-  if (all || test == 30) test1_space_get_north();
-  if (all || test == 31) test2_space_get_north();
-  if (all || test == 32) test1_space_get_south();
-  if (all || test == 33) test2_space_get_south();
-  if (all || test == 34) test1_space_get_east();
-  if (all || test == 35) test2_space_get_east();
-  if (all || test == 36) test1_space_get_west();
-  if (all || test == 37) test2_space_get_west();
-  if (all || test == 38) test1_space_set_gdesc();
-  if (all || test == 39) test2_space_set_gdesc();
-  if (all || test == 40) test1_space_get_gdesc();
-  if (all || test == 41) test2_space_get_gdesc();
+  if (all || test == 23) test1_space_get_objects();
+  if (all || test == 24) test2_space_get_objects();
+  if (all || test == 25) test1_space_get_id();
+  if (all || test == 26) test2_space_get_id();
+  if (all || test == 27) test1_space_get_name();
+  if (all || test == 28) test2_space_get_name();
+  if (all || test == 29) test1_space_get_north();
+  if (all || test == 30) test2_space_get_north();
+  if (all || test == 31) test1_space_get_south();
+  if (all || test == 32) test2_space_get_south();
+  if (all || test == 33) test1_space_get_east();
+  if (all || test == 34) test2_space_get_east();
+  if (all || test == 35) test1_space_get_west();
+  if (all || test == 36) test2_space_get_west();
+  if (all || test == 37) test1_space_set_gdesc();
+  if (all || test == 38) test2_space_set_gdesc();
+  if (all || test == 39) test1_space_get_gdesc();
+  if (all || test == 40) test2_space_get_gdesc();
 
 
   PRINT_PASSED_PERCENTAGE;
@@ -223,6 +222,18 @@ void test3_space_del_object() {
   space_destroy(s);
 }
 
+void test1_space_get_objects(){
+  Space *s;
+  s = space_create(1);
+  PRINT_TEST_RESULT(space_get_objects(s) != NULL);
+  space_destroy(s);
+}
+
+void test2_space_get_objects(){
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_get_objects(s) == NULL);
+}
+
 void test1_space_has_object() {
   Space *s = space_create(1);
 
@@ -245,30 +256,6 @@ void test3_space_has_object() {
   Space *s = NULL;
 
   PRINT_TEST_RESULT(space_has_object(s, 10) == FALSE);
-}
-
-void test1_space_object_here() {
-  Space *s;
-  s = space_create(1);
-
-  space_add_object(s, 10);
-
-  PRINT_TEST_RESULT(space_object_here(s) == 10);
-
-  space_destroy(s);
-}
-
-void test2_space_object_here() {
-  Space *s;
-  s = space_create(1);
-
-  PRINT_TEST_RESULT(space_object_here(s) == NO_ID);
-
-  space_destroy(s);
-}
-
-void test3_space_object_here() {
-  PRINT_TEST_RESULT(space_object_here(NULL) == NO_ID);
 }
 
 void test1_space_get_id() {

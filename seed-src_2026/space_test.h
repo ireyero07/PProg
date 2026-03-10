@@ -206,6 +206,20 @@ void test2_space_del_object();
 void test3_space_del_object();
 
 /**
+ * @test Test space_get_objects
+ * @pre Valid space with object
+ * @post Output == OK
+ */
+void test1_space_get_objects();
+
+/**
+ * @test Test space_get_objects
+ * @pre NULL space
+ * @post Output == ERROR
+ */
+void test2_space_get_objects();
+
+/**
  * @test Test space_has_object
  * @pre Space containing object
  * @post Returns TRUE
@@ -225,27 +239,6 @@ void test2_space_has_object();
  * @post Returns FALSE
  */
 void test3_space_has_object();
-
-/**
- * @test Test space_object_here
- * @pre Space with object
- * @post Returns object Id
- */
-void test1_space_object_here();
-
-/**
- * @test Test space_object_here
- * @pre Space without object
- * @post Returns NO_ID
- */
-void test2_space_object_here();
-
-/**
- * @test Test space_object_here
- * @pre NULL space
- * @post Returns NO_ID
- */
-void test3_space_object_here();
 
 /**
  * @test Test space_get_id

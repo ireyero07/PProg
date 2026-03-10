@@ -16,6 +16,7 @@
 
 #define GDESC_LINES 5
 #define GDESC_LENGTH 9
+#define MAX_OBJECTS_SPACE 2
 
 typedef struct _Space Space;
 
@@ -181,7 +182,7 @@ Bool space_has_object(Space* space, Id object);
  * @author Profesores PPROG
  *
  * @param space a pointer to the space
- * @return id of the object in this space, or NO_ID if there is none
+ * @return id of the object in this space, or NULL if there is none
  */
 Set *space_get_objects(Space* space);
 

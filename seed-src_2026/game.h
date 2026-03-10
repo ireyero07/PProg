@@ -138,25 +138,34 @@ Status game_set_object_location(Game *game, Id id);
 Id game_get_object_id_by_name(Game *game, const char *name);
 
 /**
- * @brief Gets the number of characters in the game.
- * @author Jian Feng
+ * @brief It gets the character of the game
+ * @author Ivan
  *
- * @param game Pointer to the game.
- * @return Number of characters.
- */
-int game_get_n_characters(Game *game);
-
-/**
- * @brief It gets a character by its id
- * @author Jian Feng
+ * This function returns a pointer to the character stored in the game.
  *
  * @param game a pointer to the game structure
- * @param id the id of the character
- * @return a pointer to the character or NULL if it does not exist
+ * @return a pointer to the character, or NULL if there was an error
  */
 Character *game_get_character(Game *game, Id id);
 
+/**
+ * @brief It gets the character location
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return the id of the space where the character is located
+ */
 Id game_get_character_location(Game *game, Id id);
+
+/**
+ * @brief It sets the character location
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param id the id of the new character location
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status game_set_character_location(Game *game, Id id);
 
 /**
  * @brief It gets the player of the game

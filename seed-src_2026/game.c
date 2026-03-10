@@ -28,8 +28,7 @@ struct _Game {
   Player *player;                /*!< Pointer to the player of the game */
   Object *object[MAX_OBJECTS];                /*!< Array of pointers to the object of the game */
   int n_objects;                  /*!< Number of objects currently in the game */
-  Character *character[MAX_CHARACTERS];          /*!< Array of pointers to the character of the game */
-  int n_characters;                  /*!< Number of characters currently in the game */
+  Character *character;          /*!< Array of pointers to the character of the game */
   Space *spaces[MAX_SPACES];     /*!< Array of pointers to the spaces of the game */
   int n_spaces;                  /*!< Number of spaces currently in the game */
   Command *last_cmd;             /*!< Last command introduced by the player */
@@ -53,12 +52,6 @@ Game *game_create() {
   }
 
   game->n_spaces = 0;
-
-  for (i = 0; i < MAX_CHARACTERS; i++) {
-    game->character[i] = NULL;
-  }
-
-  game->n_characters = 0;
   
   for (i = 0; i < MAX_OBJECTS; i++) {
     game->object[i] = NULL;
@@ -69,6 +62,18 @@ Game *game_create() {
 
   game->player = player_create(1);
   if (!game->player) {
+    free(game);
+    return NULL;
+  }
+
+  game->character = character_create(2);
+  if (!game->character) {
+    free(game);
+    return NULL;
+  }
+
+  game->character = player_create(3);
+  if (!game->character) {
     free(game);
     return NULL;
   }
@@ -92,8 +97,8 @@ Status game_destroy(Game *game) {
     space_destroy(game->spaces[i]);
   }
 
-  /* Destroy the player */
-  player_destroy(game->player);
+ /* Destroy the player */
+  player_destroy(game->player); 
 
   /* Destroy the object */
   for (i = 0; i < game->n_objects; i++) {
@@ -101,9 +106,7 @@ Status game_destroy(Game *game) {
   }
 
   /* Destroy the character */
-  for (i = 0; i < game->n_characters; i++) {
-    character_destroy(game->character[i]);
-  }
+  character_destroy(game->character); 
 
   /* Destroy the last command */
   command_destroy(game->last_cmd);
@@ -276,48 +279,34 @@ Id game_get_object_id_by_name(Game *game, const char *name){
 
 /*-------------------CHARACTER-----------------------*/
 /**
- * @brief Gets the number of characters in the game.
- */
-int game_get_n_characters(Game *game) {
-  if (!game) return -1;
-
-  return game->n_characters;
-}
-
-/**
- * @brief It gets a character by its id
+ * @brief It gets the character of the game
  */
 Character *game_get_character(Game *game, Id id) {
-  int i = 0;
-
   if (!game || id == NO_ID) {
     return NULL;
   }
 
-  for (i = 0; i < game->n_characters; i++) {
-    if (id == character_get_id(game->character[i])) {
-      return game->character[i];
-    }
-  }
-
-  return NULL;
+  return game->character;
 }
 
 /**
  * @brief It gets the character location
  */
-Id game_get_character_location(Game *game, Id id) {
-  int i;
-
-  if (!game)
+Id game_get_character_location(Game *game) {
+  if (!game || !game->character) 
     return NO_ID;
 
-  for (i = 0; i < game->n_spaces; i++) {
-    if (set_find(space_get_character(game->spaces[i]), id) >= 0)
-      return space_get_id(game->spaces[i]);
-  }  
-  
-  return NO_ID;
+  return character_get_location(game->character);
+}
+
+/**
+ * @brief It sets the character location
+ */
+Status game_set_character_location(Game *game, Id id) {
+  if (!game || !game->character || id == NO_ID)
+    return ERROR;
+
+  return character_set_location(game->character, id);
 }
 
 /*-------------------PLAYER-----------------------*/
@@ -399,9 +388,11 @@ void game_print(Game *game) {
   for (i = 0; i < game->n_spaces; i++) {
     space_print(game->spaces[i]);
   }
-
   printf("=> Player:\n");
   player_print(game->player);
+
+  printf("=> Character:\n");
+  character_print(game->character);
   
   printf("=> Objects:\n");
   for (i = 0; i < game->n_objects; i++) {
