@@ -280,6 +280,9 @@ Status game_set_object_location(Game *game, Id object_id, Id space_id) {
   return OK;
 }
 
+/**
+ * @brief It gets the object id by the object name
+ */
 Id game_get_object_id_by_name(Game *game, const char *name){
   int i;
   if (!game || !name) return NO_ID;
@@ -290,6 +293,16 @@ Id game_get_object_id_by_name(Game *game, const char *name){
     }
   }
   return NO_ID;
+}
+
+/**
+ * @brief Gets an object by its position in the array
+ */
+Object *game_get_object_by_position(Game *game, int pos) {
+  if (!game || pos < 0 || pos >= game->n_objects)
+    return NULL;
+
+  return game->object[pos];
 }
 
 /*-------------------CHARACTER-----------------------*/
@@ -335,9 +348,23 @@ Status game_set_character_location(Game *game, Id char_id, Id space_id) {
   return character_set_location(character, space_id);
 }
 
+/**
+ * @brief Gets the number of character in the game.
+ */
 int game_get_n_characters(Game *game){
     if(!game) return -1;
     return game->n_characters;
+}
+
+/**
+ * @brief Gets a character by its position in the array
+ */
+Character *game_get_character_by_position(Game *game, int pos) {
+
+  if (!game || pos < 0 || pos >= game->n_characters)
+    return NULL;
+
+  return game->character[pos];
 }
 
 /*-------------------PLAYER-----------------------*/

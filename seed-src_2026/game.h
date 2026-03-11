@@ -129,7 +129,7 @@ Id game_get_object_location(Game *game, Id id);
 Status game_set_object_location(Game *game, Id object_id, Id space_id);
 
 /**
- * @brief It gets the object id by thee object name
+ * @brief It gets the object id by the object name
  * @author Jian Feng
  *
  * @param game a pointer to the game structure
@@ -137,6 +137,16 @@ Status game_set_object_location(Game *game, Id object_id, Id space_id);
  * @return The id of the object, if everything goes well or NO_ID if there was some mistake
  */
 Id game_get_object_id_by_name(Game *game, const char *name);
+
+/**
+ * @brief Gets an object by its position in the array
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param pos the position of the object in the game array
+ * @return Pointer to the object if found, otherwise NULL
+ */
+Object *game_get_object_by_position(Game *game, int pos);
 
 /**
  * @brief It gets the character of the game
@@ -177,6 +187,16 @@ Status game_set_character_location(Game *game, Id char_id, Id space_id);
  * @return Number of characters.
  */
 int game_get_n_characters(Game *game);
+
+/**
+ * @brief Gets a character by its position in the array
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param pos the position of the character in the game array
+ * @return Pointer to the character if found, otherwise NULL
+ */
+Character *game_get_character_by_position(Game *game, int pos);
 
 /**
  * @brief It gets the player of the game

@@ -70,6 +70,11 @@ void graphic_engine_destroy(Graphic_engine *ge) {
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, obj_loc = NO_ID, id_left = NO_ID, id_right = NO_ID;
   Space *space_act = NULL;
+  Object *obj = NULL;
+  Character *ch = NULL;
+  Player *player = NULL;
+
+  
   char str[255];
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
@@ -175,21 +180,59 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     }
   }
 
+
+
+
+
+
+
   /* Paint in the description area */
-  Object *object_info[game_get_n_objects(game)] = NULL;
-  Id id_object_info = NO_ID;
-  char name_obj[WORD_SIZE + 1];
-  game_get_object()
   screen_area_clear(ge->descript);
-  sprintf(str, "  Objects location:");
-  for(i = 0; i<game_get_n_objects(game); i++){
-    id_object_info = object_get_id(object_info[i])
-    if ((obj_loc = game_get_object_location(game)) != NO_ID) {
-    
-    sprintf(str, "  %s : %d",name_obj (int)obj_loc);
+
+  /* ---------- OBJECTS ---------- */
+  screen_area_puts(ge->descript, "Objects:\n");
+
+  for (i = 0; i<game_get_n_objects(game); i++) {
+    obj = game_get_object_by_position(game, i);
+
+    if (obj) {
+      sprintf(str, "  %s (loc:%ld)\n", object_get_name(obj), game_get_object_location(game, object_get_id(obj)));
+      screen_area_puts(ge->descript, str);
+    }
+  }
+
+  /* ---------- CHARACTERS ---------- */
+  screen_area_puts(ge->descript, "Characters:\n");
+
+  for (i = 0; i<game_get_n_characters(game); i++) {
+    ch = game_get_character_by_position(game, i);
+
+    if (ch) {
+      sprintf(str, "  %s (loc: %ld, hp:%d)\n", character_get_name(ch), character_get_location(ch), character_get_health(ch));
+      screen_area_puts(ge->descript, str);
+      }
+    }
+
+  /* ---------- PLAYER ---------- */
+  screen_area_puts(ge->descript, "Player:");
+  player = game_get_player(game);
+
+  if (player) {
+    sprintf(str, "  (loc: %ld, hp:%d)\n", player_get_location(player), player_get_health(player));
     screen_area_puts(ge->descript, str);
+
+    if (player_get_object(player) != NO_ID) {
+      obj = game_get_object(game, player_get_object(player));
+      sprintf(str, "Player has a %s", object_get_name(obj));
+      screen_area_puts(ge->descript, str);
+    } else {
+    screen_area_puts(ge->descript, "Player has no objects");
+    }
   }
-  }
+
+  /* ---------- CHAT ---------- */
+  screen_area_puts(ge->descript, "Chat:\n");
+
 
 
   /* Paint in the banner area */

@@ -1,2 +1,5 @@
 *.o
 castle
+space_test
+character_test
+set_test

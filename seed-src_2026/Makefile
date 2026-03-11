@@ -72,10 +72,10 @@ test_set: set_test
 
 
 clear:
-	rm -rf *.o
+	rm -rf *.o 
 
 clean:
-	rm -rf *.o $(EXE)
+	rm -rf *.o $(EXE) space_test character_test set_test
 
 run:
 	./castle castle.dat
