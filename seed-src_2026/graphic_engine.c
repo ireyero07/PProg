@@ -283,7 +283,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
         strncpy(gdesc[i], space_get_gdesc(space_next,i), GDESC_LENGTH);
         gdesc[i][GDESC_LENGTH] = '\0';
       }
-
+      sprintf(str, "          ^        ");
+      screen_area_puts(ge->map, str);
       sprintf(str, "  +---------------+");
       screen_area_puts(ge->map, str);
       sprintf(str, "  | ^C>  %s    %2d|", chr, (int) id_next);
@@ -391,10 +392,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
         screen_area_puts(ge->map, str);
         sprintf(str, "  +---------------+");
         screen_area_puts(ge->map, str);
+        sprintf(str, "          V        ");
+        screen_area_puts(ge->map, str);
     }
 
     /*-------------------------------------------------------*/
-    /*                    LEFT SPACE (WEST)                 */
+    /*                    LEFT SPACE                         */
     /*-------------------------------------------------------*/
     if (id_left != NO_ID) {
       Set *chars_left = space_get_character(space_left);
@@ -461,28 +464,28 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
           gdesc[i][GDESC_LENGTH] = '\0';
       }
 
-      sprintf(str, "  +---------------+");
+      sprintf(str, "  +---------------+ ");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  | ^C>  %s    %2d|", chr, (int) id_left);
+      sprintf(str, "  | ^C>  %s    %2d| ", chr, (int) id_left);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |%s             |", gdesc[0]);
+      sprintf(str, "  |%s             | ", gdesc[0]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |%s             |", gdesc[1]);
+      sprintf(str, "  |%s             | ", gdesc[1]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |%s             |", gdesc[2]);
+      sprintf(str, "  |%s             |>", gdesc[2]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |%s             |", gdesc[3]);
+      sprintf(str, "  |%s             | ", gdesc[3]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |%s             |", gdesc[4]);
+      sprintf(str, "  |%s             | ", gdesc[4]);
       screen_area_puts(ge->map, str);
       sprintf(str, "%s|%-15.15s|%s", space_left_objects_line);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  +---------------+");
+      sprintf(str, "  +---------------+ ");
       screen_area_puts(ge->map, str);
     }
 
     /*-------------------------------------------------------*/
-    /*                    RIGHT SPACE (EAST)                */
+    /*                    RIGHT SPACE                        */
     /*-------------------------------------------------------*/
     if (id_right != NO_ID) {
       Set *chars_right = space_get_character(space_right);
@@ -557,7 +560,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       screen_area_puts(ge->map, str);
       sprintf(str, "  |%s             |", gdesc[1]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |%s             |", gdesc[2]);
+      sprintf(str, "< |%s             |", gdesc[2]);
       screen_area_puts(ge->map, str);
       sprintf(str, "  |%s             |", gdesc[3]);
       screen_area_puts(ge->map, str);
