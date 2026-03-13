@@ -168,15 +168,24 @@ void game_actions_exit(Game *game) {}
 void game_actions_next(Game *game) {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
+game_set_last_action(game, ERROR);game_set_last_action(game, ERROR);
+  if (!game) {
+    return;
+  }
 
   space_id = game_get_player_location(game);
   if (space_id == NO_ID) {
+    game_set_last_action(game, ERROR);
     return;
   }
 
   current_id = space_get_south(game_get_space(game, space_id));
+
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
+    game_set_last_action(game, OK);
+  } else {
+    game_set_last_action(game, ERROR);
   }
 
   return;
@@ -186,15 +195,24 @@ void game_actions_back(Game *game) {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
 
+  if (!game) {
+    return;
+  }
+
   space_id = game_get_player_location(game);
 
-  if (NO_ID == space_id) {
+  if (space_id == NO_ID) {
+    game_set_last_action(game, ERROR);
     return;
   }
 
   current_id = space_get_north(game_get_space(game, space_id));
+
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
+    game_set_last_action(game, OK);
+  } else {
+    game_set_last_action(game, ERROR);
   }
 
   return;
@@ -211,7 +229,11 @@ void game_actions_take(Game *game, Command *cmd){
   }
   
   object_name = command_get_arg(cmd);
-  if(!object_name) return;
+  if(!object_name) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
   player_location = game_get_player_location(game);
   space = game_get_space(game, player_location);
   obj_id = game_get_object_id_by_name(game,object_name);
@@ -219,6 +241,9 @@ void game_actions_take(Game *game, Command *cmd){
   if (obj_id != NO_ID && player_get_object(game_get_player(game)) == NO_ID && space_has_object(space, obj_id) == TRUE) {
     space_del_object(space, obj_id);
     player_set_object(game_get_player(game), obj_id);
+    game_set_last_action(game, OK);
+  } else {
+    game_set_last_action(game, ERROR);
   }
 }
 
@@ -237,6 +262,9 @@ void game_actions_drop(Game *game){
     player_set_object(game_get_player(game), NO_ID);
 
     space_add_object(game_get_space(game, player_location), obj_id);
+    game_set_last_action(game, OK);
+  } else {
+    game_set_last_action(game, ERROR);
   }
 }
 
@@ -244,15 +272,23 @@ void game_actions_left(Game *game){
   Id current_id = NO_ID;
   Id space_id = NO_ID;
 
+  if (!game) {
+    return;
+  }
+
   space_id = game_get_player_location(game);
 
-  if (NO_ID == space_id) {
+  if (space_id == NO_ID) {
+    game_set_last_action(game, ERROR);
     return;
   }
 
   current_id = space_get_west(game_get_space(game, space_id));
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
+    game_set_last_action(game, OK);
+  } else {
+    game_set_last_action(game, ERROR);
   }
 
   return;
@@ -262,18 +298,24 @@ void game_actions_right(Game *game){
   Id current_id = NO_ID;
   Id space_id = NO_ID;
 
+  if (!game) {
+    return;
+  }
+
   space_id = game_get_player_location(game);
 
-  if (NO_ID == space_id) {
+  if (space_id == NO_ID) {
+    game_set_last_action(game, ERROR);
     return;
   }
 
   current_id = space_get_east(game_get_space(game, space_id));
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
+    game_set_last_action(game, OK);
+  } else {
+    game_set_last_action(game, ERROR);
   }
-
-  return;
 }
 
 void game_actions_attack(Game *game){
@@ -283,13 +325,19 @@ void game_actions_attack(Game *game){
   Character *enemy;
   int roll;
 
-  if (!game || ch_id == NO_ID) {
+  if (!game) {
+    return;
+  }
+
+  if (!space || ch_id == NO_ID){
+    game_set_last_action(game, ERROR);
     return;
   }
   
   enemy = game_get_character(game,ch_id);
 
   if(!enemy || character_get_friendly(enemy) || character_get_health(enemy)<= 0){
+    game_set_last_action(game, ERROR);
     return;
   }
 
@@ -301,27 +349,44 @@ void game_actions_attack(Game *game){
     character_set_health(enemy,character_get_health(enemy)-1);
   }
 
+  game_set_last_action(game, OK);
   return;
 }
 
 void game_actions_chat(Game *game){
-  Id player_loc = game_get_player_location(game);
-  Space *space = game_get_space(game,player_loc);
-  Id ch_id = set_get_id_at(space_get_character(space),0);
+  Id player_loc;
+  Space *space;
+  Id ch_id;
   Character *friend;
 
-  if (!game || ch_id == NO_ID) {
+  if (!game){
     return;
   }
-  
-  friend = game_get_character(game,ch_id);
+
+  player_loc = game_get_player_location(game);
+  space = game_get_space(game, player_loc);
+
+  if (!space){
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+  ch_id = set_get_id_at(space_get_character(space),0);
+
+  if (ch_id == NO_ID){
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+  friend = game_get_character(game, ch_id);
 
   if (!friend || !character_get_friendly(friend)){
+    game_set_last_action(game, ERROR);
     return;
   }
-  
-  printf("Friend says: %s\n", character_get_message(friend));
 
-  return;
+  game_set_last_chat(game, character_get_message(friend));
+
+  game_set_last_action(game, OK);
 }
 

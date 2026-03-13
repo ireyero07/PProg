@@ -34,7 +34,8 @@ struct _Game {
   int n_spaces;                  /*!< Number of spaces currently in the game */
   Command *last_cmd;             /*!< Last command introduced by the player */
   Bool finished;                 /*!< Flag that indicates if the game has finished */
-  Status last_action_status      /*!< Status of the last action */
+  Status last_action_status;     /*!< Status of the last action */
+  char last_chat[WORD_SIZE];     /*!< Stores the last chat message generated in the game */
 };
 
 
@@ -65,11 +66,17 @@ Game *game_create() {
   game->n_objects = 0;
   game->n_characters = 0;
 
+  /* ---------------- PLAYER ---------------- */
+
   game->player = player_create(1);
   if (!game->player) {
     free(game);
     return NULL;
   }
+
+  player_set_health(game->player, 5);
+
+  /* ---------------- CHARACTER 1 (FRIEND) ---------------- */
 
   character = character_create(2);
   if (!character) {
@@ -78,8 +85,15 @@ Game *game_create() {
     return NULL;
   }
 
+  character_set_health(character, 3);
+  character_set_friendly(character, TRUE);
+  character_set_message(character, "Bienvenido a esta apasionante aventura");
+  character_set_location(character, 13);
+
   game->character[game->n_characters] = character;
   game->n_characters++;
+
+  /* ---------------- CHARACTER 2 (ENEMY) ---------------- */
 
   character = character_create(3);
   if (!character) {
@@ -88,8 +102,14 @@ Game *game_create() {
     return NULL;
   }
 
+  character_set_health(character, 2);
+  character_set_friendly(character, FALSE);
+  character_set_location(character, 14);
+
   game->character[game->n_characters] = character;
   game->n_characters++;
+
+  /* ---------------- COMMAND ---------------- */
 
   game->last_cmd = command_create();
   if (!game->last_cmd) {
@@ -98,10 +118,12 @@ Game *game_create() {
     return NULL;
   }
 
+  /* ---------------- GAME STATE ---------------- */
+
   game->finished = FALSE;
   game->last_action_status = ERROR;
 
-  
+  strcpy(game->last_chat, "");
 
   return game;
 }
@@ -456,6 +478,31 @@ Status game_set_last_action_status(Game *game, Status status){
     return ERROR;
 
   game->last_action_status = status;
+  return OK;
+}
+
+/*-----------------LAST MESSAGE---------------------*/
+/**
+ * @brief Gets the last chat message stored in the game.
+ */
+char *game_get_last_chat(Game *game){
+
+  if(!game)
+    return NULL;
+
+  return game->last_chat;
+}
+
+/**
+ * @brief Sets the last chat message generated in the game.
+ */
+Status game_set_last_chat(Game *game, const char *msg){
+
+  if(!game || !msg)
+    return ERROR;
+
+  strcpy(game->last_chat, msg);
+
   return OK;
 }
 

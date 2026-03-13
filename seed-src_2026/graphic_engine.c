@@ -70,7 +70,7 @@ void graphic_engine_destroy(Graphic_engine *ge) {
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Status result;
   const char *result_str;
-  char str[255];
+  char str[255], *chat;
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
   int i,k;
@@ -619,8 +619,21 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   }
 
   /* ---------- CHAT ---------- */
-  screen_area_puts(ge->descript, "Chat:\n");
+  screen_area_puts(ge->descript, "Chat:");
+  chat = game_get_last_chat(game);
 
+  if(chat && strcmp(chat,"") != 0){
+    ch_act_id = set_get_id_at(space_get_character(space_act),0);
+
+    if(ch_act_id != NO_ID){
+      ch = game_get_character(game, ch_act_id);
+
+      if(ch){
+        sprintf(str,"\nCharacter %s said: %s", character_get_name(ch), chat);
+        screen_area_puts(ge->descript,str);
+      }
+    }
+  }
 
 
   /* Paint in the banner area */
