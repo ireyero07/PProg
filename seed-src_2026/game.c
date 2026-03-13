@@ -89,6 +89,7 @@ Game *game_create() {
   character_set_friendly(character, TRUE);
   character_set_message(character, "Bienvenido a esta apasionante aventura");
   character_set_location(character, 13);
+  character_set_gdesc(character, "(o)");
 
   game->character[game->n_characters] = character;
   game->n_characters++;
@@ -105,6 +106,7 @@ Game *game_create() {
   character_set_health(character, 2);
   character_set_friendly(character, FALSE);
   character_set_location(character, 14);
+  character_set_gdesc(character, "^M*");
 
   game->character[game->n_characters] = character;
   game->n_characters++;
