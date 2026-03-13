@@ -10,6 +10,7 @@
 
 #include "graphic_engine.h"
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -68,6 +69,7 @@ void graphic_engine_destroy(Graphic_engine *ge) {
 }
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
+  Player *player = NULL;
   Status result;
   const char *result_str;
   char str[255], *chat;
@@ -75,26 +77,24 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   extern char *cmd_to_str[N_CMD][N_CMDT];
   int i,k;
 
-  //                Declaration for objects
+  /*                Declaration for objects       */
   Object *obj = NULL;
   char space_act_objects_line[WORD_SIZE] = "", space_next_objects_line[WORD_SIZE] = "", space_back_objects_line[WORD_SIZE] = "", space_left_objects_line[WORD_SIZE] = "", space_right_objects_line[WORD_SIZE] = "";
-  Id *space_act_objects = NULL, *space_next_objects = NULL, *space_back_objects = NULL, *space_left_objects = NULL, *space_right_objects = NULL, obj_loc = NO_ID, obj_id= NO_ID;
-  int i, k;
-  long n_objects, obj_location;
+  Id *space_act_objects = NULL, *space_next_objects = NULL, *space_back_objects = NULL, *space_left_objects = NULL, *space_right_objects = NULL, obj_id= NO_ID;
+  long n_objects;
 
-  //               Declaration for characters
+  /*               Declaration for characters       */
   Character *ch = NULL, *character_act = NULL, *character_next = NULL, *character_back = NULL, *character_left = NULL, *character_right = NULL;
   char chr[MAX_CHR_GDESC + 1] = "";
   Id ch_act_id = NO_ID, ch_next_id = NO_ID, ch_back_id = NO_ID, ch_left_id = NO_ID, ch_right_id = NO_ID;
 
 
-  //               Declaration for space
+  /*               Declaration for space            */
   Space *space_act = NULL, *space_next = NULL, *space_back = NULL, *space_right = NULL, *space_left = NULL;
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID;
-  char gdesc[GDESC_LINES][GDESC_LENGTH + 1] = ""; 
+  char gdesc[GDESC_LINES][GDESC_LENGTH + 1];
 
-  //               Declaration for player
-  Player *player = NULL;
+  for(i = 0; i < GDESC_LINES; i++) gdesc[i][0] = '\0'; 
 
   /* Paint the in the map area */
   screen_area_clear(ge->map);
@@ -114,7 +114,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     /*                    ACTUAL SPACE                         */
     /*---------------------------------------------------------*/
     if (id_act != NO_ID) {
-      // Character actual space
+      /* Character actual space */
       Set *chars_act = space_get_character(space_act);
 
       if (set_get_n_ids(chars_act) > 0){
@@ -132,7 +132,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
         chr[MAX_CHR_GDESC] = '\0';
       }
       
-      // object actual space
+      /* object actual space   */
 
       space_act_objects = space_get_objects_ids(space_act);
 
@@ -184,7 +184,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
         }
       }
 
-      // Gdesc actual space 
+      /*Gdesc actual space */
       for(i=0; i<GDESC_LINES; i++){
         strncpy(gdesc[i], space_get_gdesc(space_act,i), GDESC_LENGTH);
         gdesc[i][GDESC_LENGTH] = '\0';
@@ -204,7 +204,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       screen_area_puts(ge->map, str);
       sprintf(str, "  |%s             |", gdesc[4]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "%s|%-15.15s|%s", space_act_objects_line);
+      sprintf(str, "  |%-15.15s|", space_act_objects_line);
       screen_area_puts(ge->map, str);
       sprintf(str, "  +---------------+");
       screen_area_puts(ge->map, str);
@@ -214,7 +214,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     /*                    NEXT SPACE                         */
     /*-------------------------------------------------------*/
     if (id_next != NO_ID) {
-      // Character next space
+      /* Character next space */
       Set *chars_next = space_get_character(space_next);
 
       if (set_get_n_ids(chars_next) > 0){
@@ -232,7 +232,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
         chr[MAX_CHR_GDESC] = '\0';
       }
       
-      // object next space
+      /* object next space */
 
       space_next_objects = space_get_objects_ids(space_next);
 
@@ -277,8 +277,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
           }
         }
       }
-
-      // Gdesc next space 
+ 
+      /* Gdesc next space */
       for(i=0; i<GDESC_LINES; i++){
         strncpy(gdesc[i], space_get_gdesc(space_next,i), GDESC_LENGTH);
         gdesc[i][GDESC_LENGTH] = '\0';
@@ -299,7 +299,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       screen_area_puts(ge->map, str);
       sprintf(str, "  |%s             |", gdesc[4]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "%s|%-15.15s|%s", space_next_objects_line);
+      sprintf(str, " |%-15.15s|", space_next_objects_line);
       screen_area_puts(ge->map, str);
       sprintf(str, "  +---------------+");
       screen_area_puts(ge->map, str);
@@ -309,6 +309,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     /*                    BACK SPACE                         */
     /*-------------------------------------------------------*/
     if (id_back != NO_ID) {
+
       Set *chars_back = space_get_character(space_back);
 
       if (set_get_n_ids(chars_back) > 0){
@@ -326,7 +327,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
           chr[MAX_CHR_GDESC] = '\0';
       }
 
-      // object back space
+      /* object back space */
       space_back_objects = space_get_objects_ids(space_back);
       n_objects = space_get_number_objects(space_back);
 
@@ -367,7 +368,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
           }
       }
 
-      // Gdesc back space 
+      /* Gdesc back space  */
       for(i=0; i<GDESC_LINES; i++){
           strncpy(gdesc[i], space_get_gdesc(space_back,i), GDESC_LENGTH);
           gdesc[i][GDESC_LENGTH] = '\0';
@@ -388,7 +389,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
         screen_area_puts(ge->map, str);
         sprintf(str, "  |%s             |", gdesc[4]);
         screen_area_puts(ge->map, str);
-        sprintf(str, "%s|%-15.15s|%s", space_back_objects_line);
+        sprintf(str, "  |%-15.15s|", space_back_objects_line);
         screen_area_puts(ge->map, str);
         sprintf(str, "  +---------------+");
         screen_area_puts(ge->map, str);
@@ -417,7 +418,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
           chr[MAX_CHR_GDESC] = '\0';
       }
 
-      // object left space
+      /* object left space */
       space_left_objects = space_get_objects_ids(space_left);
       n_objects = space_get_number_objects(space_left);
 
@@ -458,7 +459,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
           }
       }
 
-      // Gdesc left space 
+      /*Gdesc left space*/ 
       for(i=0; i<GDESC_LINES; i++){
           strncpy(gdesc[i], space_get_gdesc(space_left,i), GDESC_LENGTH);
           gdesc[i][GDESC_LENGTH] = '\0';
@@ -478,7 +479,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       screen_area_puts(ge->map, str);
       sprintf(str, "  |%s             | ", gdesc[4]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "%s|%-15.15s|%s", space_left_objects_line);
+      sprintf(str, "  |%-15.15s|", space_left_objects_line);
       screen_area_puts(ge->map, str);
       sprintf(str, "  +---------------+ ");
       screen_area_puts(ge->map, str);
@@ -505,7 +506,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
           chr[MAX_CHR_GDESC] = '\0';
       }
 
-      // object right space
+      /* object right space*/
       space_right_objects = space_get_objects_ids(space_right);
       n_objects = space_get_number_objects(space_right);
 
@@ -546,7 +547,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
           }
       }
 
-      // Gdesc right space 
+      /* Gdesc right space */
       for(i=0; i<GDESC_LINES; i++){
           strncpy(gdesc[i], space_get_gdesc(space_right,i), GDESC_LENGTH);
           gdesc[i][GDESC_LENGTH] = '\0';
@@ -566,7 +567,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       screen_area_puts(ge->map, str);
       sprintf(str, "  |%s             |", gdesc[4]);
       screen_area_puts(ge->map, str);
-      sprintf(str, "%s|%-15.15s|%s", space_right_objects_line);
+      sprintf(str, "  |%-15.15s|", space_right_objects_line);
       screen_area_puts(ge->map, str);
       sprintf(str, "  +---------------+");
       screen_area_puts(ge->map, str);
@@ -663,5 +664,5 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   /* Dump to the terminal */
   screen_paint();
   printf("prompt:> ");
-}
+  }
 }
