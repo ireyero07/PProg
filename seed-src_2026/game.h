@@ -267,6 +267,24 @@ Bool game_get_finished(Game *game);
 Status game_set_finished(Game *game, Bool finished);
 
 /**
+ * @brief Gets the result of the last action executed
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return Status of the last action if everything goes well or ERROR if there was some mistake
+ */
+Status game_get_last_action_status(Game *game);
+
+/**
+ * @brief Sets the result of the last action executed
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status game_set_last_action_status(Game *game, Status status);
+
+/**
  * @brief It prints the game information
  * @author Ivan
  *

@@ -34,6 +34,7 @@ struct _Game {
   int n_spaces;                  /*!< Number of spaces currently in the game */
   Command *last_cmd;             /*!< Last command introduced by the player */
   Bool finished;                 /*!< Flag that indicates if the game has finished */
+  Status last_action_status      /*!< Status of the last action */
 };
 
 
@@ -98,6 +99,9 @@ Game *game_create() {
   }
 
   game->finished = FALSE;
+  game->last_action_status = ERROR;
+
+  
 
   return game;
 }
@@ -430,6 +434,28 @@ Bool game_get_finished(Game *game) {
  */
 Status game_set_finished(Game *game, Bool finished) {
   game->finished = finished;
+  return OK;
+}
+
+/*-----------------LAST ACTION---------------------*/
+/**
+ * @brief Gets the result of the last action executed
+ */
+Status game_get_last_action_status(Game *game){
+  if (!game)
+    return ERROR;
+
+  return game->last_action_status;
+}
+
+/**
+ * @brief Sets the result of the last action executed
+ */
+Status game_set_last_action_status(Game *game, Status status){
+  if (!game)
+    return ERROR;
+
+  game->last_action_status = status;
   return OK;
 }
 

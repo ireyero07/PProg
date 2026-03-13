@@ -73,6 +73,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Object *obj = NULL;
   Character *ch = NULL;
   Player *player = NULL;
+  Status result;
+  const char *result_str;
 
   
   char str[255];
@@ -246,8 +248,17 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
+  screen_area_clear(ge->feedback);
   last_cmd = command_get_code(game_get_last_command(game));
-  sprintf(str, " %s (%s)", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
+  result = game_get_last_action_status(game);
+
+  if (result == OK)
+    result_str = "OK";
+  else
+    result_str = "ERROR";
+
+  sprintf(str, " %s (%s): %s", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS], result_str);
+
   screen_area_puts(ge->feedback, str);
 
   /* Dump to the terminal */
