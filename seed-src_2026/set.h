@@ -83,6 +83,15 @@ int set_get_n_ids(Set* set);
 Id set_get_id_at(Set* set, int position);
 
 /**
+ * @brief Gets ids
+ * @author Ivan
+ *
+ * @param set a pointer to set
+ * @return ids if everything goes well or NULL if there was some mistake
+ */
+Id* set_get_list_ids(Set *set);
+
+/**
  * @brief Prints set information
  * @author Ivan
  *

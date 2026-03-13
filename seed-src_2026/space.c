@@ -202,6 +202,12 @@ Bool space_has_object(Space* space, Id object){
   return TRUE;
 }
 
+Id* space_get_objects_ids (Space *space){
+  if(!space) return NULL;
+
+  return set_get_list_ids(space->objects);
+}
+
 Status space_add_character(Space* space, Id character){
   if(!space || character == NO_ID)
     return ERROR;

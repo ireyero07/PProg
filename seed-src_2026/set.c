@@ -126,6 +126,12 @@ Id set_get_id_at(Set* set, int position) {
   return set->ids[position];
 }
 
+Id* set_get_list_ids(Set *set){
+  if (!set) return NULL;
+
+  return set->ids;
+}
+
 /**
  * @brief Prints set information
  */

@@ -187,6 +187,15 @@ Bool space_has_object(Space* space, Id object);
 Set *space_get_objects(Space* space);
 
 /**
+ * @brief It gets the list of ids of the objects
+ * @author Profesores PPROG
+ *
+ * @param space a pointer to the space
+ * @return list of ids of the objects, or NULL if there is none
+ */
+Id* space_get_objects_ids (Space *space);
+
+/**
  * @brief Adds a character to a space
  *
  * Inserts a character identifier into the space character set.
