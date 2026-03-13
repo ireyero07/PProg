@@ -168,7 +168,7 @@ void game_actions_exit(Game *game) {}
 void game_actions_next(Game *game) {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
-game_set_last_action(game, ERROR);game_set_last_action(game, ERROR);
+  
   if (!game) {
     return;
   }

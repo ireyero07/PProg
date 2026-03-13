@@ -273,7 +273,7 @@ Status game_set_finished(Game *game, Bool finished);
  * @param game a pointer to the game structure
  * @return Status of the last action if everything goes well or ERROR if there was some mistake
  */
-Status game_get_last_action_status(Game *game);
+Status game_get_last_action(Game *game);
 
 /**
  * @brief Sets the result of the last action executed
@@ -282,7 +282,7 @@ Status game_get_last_action_status(Game *game);
  * @param game a pointer to the game structure
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status game_set_last_action_status(Game *game, Status status);
+Status game_set_last_action(Game *game, Status status);
 
 /**
  * @brief Gets the last chat message stored in the game.
