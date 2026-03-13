@@ -463,7 +463,7 @@ Status game_set_finished(Game *game, Bool finished) {
 /**
  * @brief Gets the result of the last action executed
  */
-Status game_get_last_action_status(Game *game){
+Status game_get_last_action(Game *game){
   if (!game)
     return ERROR;
 
@@ -473,7 +473,7 @@ Status game_get_last_action_status(Game *game){
 /**
  * @brief Sets the result of the last action executed
  */
-Status game_set_last_action_status(Game *game, Status status){
+Status game_set_last_action(Game *game, Status status){
   if (!game)
     return ERROR;
 
