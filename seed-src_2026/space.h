@@ -196,6 +196,15 @@ Set *space_get_objects(Space* space);
 Id* space_get_objects_ids (Space *space);
 
 /**
+ * @brief It gets the number of object in the space
+ * @author Profesores PPROG
+ *
+ * @param space a pointer to the space
+ * @return number of object in the space, or -1 if there is none
+ */
+long space_get_number_objects(Space *space);
+
+/**
  * @brief Adds a character to a space
  *
  * Inserts a character identifier into the space character set.

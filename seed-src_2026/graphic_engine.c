@@ -96,6 +96,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   for(i = 0; i < GDESC_LINES; i++) gdesc[i][0] = '\0'; 
 
+
   /* Paint the in the map area */
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID) {
@@ -650,7 +651,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   /* Paint in the feedback area */
   screen_area_clear(ge->feedback);
   last_cmd = command_get_code(game_get_last_command(game));
-  result = game_get_last_action_status(game);
+  result = game_get_last_action(game);
 
   if (result == OK)
     result_str = "OK";

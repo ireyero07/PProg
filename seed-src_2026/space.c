@@ -208,6 +208,12 @@ Id* space_get_objects_ids (Space *space){
   return set_get_list_ids(space->objects);
 }
 
+long space_get_number_objects(Space *space){
+  if(!space) return -1;
+
+  return set_get_n_ids(space->objects);
+}
+
 Status space_add_character(Space* space, Id character){
   if(!space || character == NO_ID)
     return ERROR;
