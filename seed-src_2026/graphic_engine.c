@@ -238,17 +238,33 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
       /* Objects */
       objects = space_get_objects_ids(spaces[col]);
       n_objects = space_get_number_objects(spaces[col]);
-      for (i = 0, j = 0; i < n_objects; i++) {
-        while ((obj_id = objects[j]) == NO_ID) {
+      if (n_objects >= 3) {
+        for (i = 0, j = 0; i < n_objects; i++) {
+          while ((obj_id = objects[j]) == NO_ID) {
+            j++;
+          }
+          obj = game_get_object(game, obj_id);
           j++;
-        } 
-        obj = game_get_object(game, obj_id);
-        j++;
-        if (obj != NULL) {
-          if (strlen(obj_line[col]) > 0) {
-            strcat(obj_line[col], ", ");
-          } 
-          strcat(obj_line[col], object_get_name(obj));
+          if (obj != NULL) {
+            if (strlen(obj_line[col]) > 0) {
+              strcat(obj_line[col], ", ");
+            }
+            strncat(obj_line[col], object_get_name(obj), 2);
+          }
+        }
+      } else {
+        for (i = 0, j = 0; i < n_objects; i++) {
+          while ((obj_id = objects[j]) == NO_ID) {
+            j++;
+          }
+          obj = game_get_object(game, obj_id);
+          j++;
+          if (obj != NULL) {
+            if (strlen(obj_line[col]) > 0) {
+              strcat(obj_line[col], ", ");
+            }
+            strcat(obj_line[col], object_get_name(obj));
+          }
         }
       }
 
