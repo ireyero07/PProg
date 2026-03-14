@@ -12,6 +12,7 @@
 #define GRAPHIC_ENGINE_H
 
 #include "game.h"
+#include "libscreen.h"
 
 typedef struct _Graphic_engine Graphic_engine;
 
