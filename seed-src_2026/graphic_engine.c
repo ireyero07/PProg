@@ -81,7 +81,7 @@ void print_empty_space(Area *map){
 
 void print_backOrNext_space (Graphic_engine *ge, Game *game, Id id_backOrNext) {
   Space *space_backOrNext = NULL;
-  Id ch_backOrNext_id = NO_ID, *space_nexOrBack_objects = NULL, obj_id = NO_ID;
+  Id *space_nexOrBack_objects = NULL, obj_id = NO_ID;
   Character *character_backOrNext = NULL;
   Object *obj = NULL;
   char chr[MAX_CHR_GDESC + 1] = "",  space_backOrNext_objects_line[WORD_SIZE] = "", str[255], gdesc[GDESC_LINES][GDESC_LENGTH + 1];
@@ -94,23 +94,13 @@ void print_backOrNext_space (Graphic_engine *ge, Game *game, Id id_backOrNext) {
   } else {
 
     /* character back or next space */
-    Set *chars_back = space_get_character(space_backOrNext);
+    character_backOrNext = game_get_character_by_space(game, id_backOrNext);
 
-    if (set_get_n_ids(chars_back) > 0){
-      ch_backOrNext_id = set_get_id_at(chars_back,0);
-    }
-
-    if(ch_backOrNext_id != NO_ID){
-      character_backOrNext = game_get_character(game,ch_backOrNext_id);
-    }
-      
     chr[0] = '\0';
-
-    if(character_backOrNext != NULL){
+    if (character_backOrNext != NULL) {
       strncpy(chr, character_get_gdesc(character_backOrNext), MAX_CHR_GDESC);
       chr[MAX_CHR_GDESC] = '\0';
     }
-
     /* object back or next space */
     space_nexOrBack_objects = space_get_objects_ids(space_backOrNext);
     n_objects = space_get_number_objects(space_backOrNext);
@@ -177,12 +167,11 @@ void print_backOrNext_space (Graphic_engine *ge, Game *game, Id id_backOrNext) {
 void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, Id id_act, Id id_right) {
   int i, j, col;
   Space *spaces[3];
-  Id ids[3], ch_id = NO_ID, obj_id = NO_ID, *objects = NULL;
+  Id ids[3], obj_id = NO_ID, *objects = NULL;
   Character *chars[3];
   char gdesc[3][GDESC_LINES][GDESC_LENGTH + 1], chr[3][MAX_CHR_GDESC + 1], obj_line[3][WORD_SIZE], str[255];
   Object *obj = NULL;
   long n_objects;
-  Set *chars_set;
 
   /* Inicializar arrays de spaces, ids y player */
   if (id_left != NO_ID) {
@@ -221,20 +210,15 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
 
     if (spaces[col] != NULL) {
       /* Character */
-      chars_set = space_get_character(spaces[col]);
-      if (set_get_n_ids(chars_set) > 0) {
-        ch_id = set_get_id_at(chars_set, 0);
-        if (ch_id != NO_ID) {
-          chars[col] = game_get_character(game, ch_id);
+      if (spaces[col] != NULL) {
+        chars[col] = game_get_character_by_space(game, ids[col]);
+        if (chars[col] != NULL) {
+          strncpy(chr[col], character_get_gdesc(chars[col]), MAX_CHR_GDESC);
+          chr[col][MAX_CHR_GDESC] = '\0';
+        } else {
+          chr[col][0] = '\0'; 
         }
       }
-      if (chars[col] != NULL) {
-        const char *ch_gdesc = character_get_gdesc(chars[col]);
-        for (j = 0; j < MAX_CHR_GDESC && ch_gdesc[j] != '\0'; j++) {
-          chr[col][j] = ch_gdesc[j];
-        } 
-      }
-
       /* Objects */
       objects = space_get_objects_ids(spaces[col]);
       n_objects = space_get_number_objects(spaces[col]);
@@ -342,7 +326,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   /*               Declaration for characters       */
   Character *ch = NULL;
-  Id ch_act_id = NO_ID;
 
   /*               Declaration for space            */
   Space *space_act = NULL;
@@ -433,16 +416,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_puts(ge->descript, "Chat:");
   chat = game_get_last_chat(game);
 
-  if(chat && strcmp(chat,"") != 0){
-    ch_act_id = set_get_id_at(space_get_character(space_act),0);
-
-    if(ch_act_id != NO_ID){
-      ch = game_get_character(game, ch_act_id);
-
-      if(ch){
-        sprintf(str,"\nCharacter %s said: %s", character_get_name(ch), chat);
-        screen_area_puts(ge->descript,str);
-      }
+  if (chat && strlen(chat) > 0) {
+    ch = game_get_character_by_space(game, space_get_id(space_act));
+    if (ch && character_get_friendly(ch)) {
+      sprintf(str, " Character %s said: %s", character_get_name(ch), chat);
+      screen_area_puts(ge->descript, str);
     }
   }
 

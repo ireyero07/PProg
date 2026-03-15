@@ -319,4 +319,6 @@ Status game_set_last_chat(Game *game, const char *msg);
  */
 void game_print(Game *game);
 
+Character *game_get_character_by_space(Game *game, Id space_id);
+
 #endif

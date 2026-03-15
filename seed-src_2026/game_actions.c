@@ -318,75 +318,53 @@ void game_actions_right(Game *game){
   }
 }
 
-void game_actions_attack(Game *game){
+void game_actions_attack(Game *game) {
   Id player_loc = game_get_player_location(game);
-  Space *space = game_get_space(game,player_loc);
-  Id ch_id = set_get_id_at(space_get_character(space),0);
-  Character *enemy;
+  Space *space = game_get_space(game, player_loc);
+  Id space_id = space_get_id(space);
+  Character *enemy = NULL;
   int roll;
 
-  if (!game) {
-    return;
-  }
-
-  if (!space || ch_id == NO_ID){
+  if (!game || !space || space_id == NO_ID) {
     game_set_last_action(game, ERROR);
     return;
   }
-  
-  enemy = game_get_character(game,ch_id);
+  enemy = game_get_character_by_space(game,space_id);
 
-  if(!enemy || character_get_friendly(enemy) || character_get_health(enemy)<= 0){
+  if (!enemy || character_get_friendly(enemy) || character_get_health(enemy) <= 0) {
     game_set_last_action(game, ERROR);
     return;
   }
 
   roll = rand() % 10;
   if (roll <= 4) {
-    player_set_health(game_get_player(game), player_get_health(game_get_player(game))-1);
+    Player *p = game_get_player(game);
+    player_set_health(p, player_get_health(p) - 1);
+    if (player_get_health(p) <= 0) game_set_finished(game, TRUE);  /* F10 bonus */
+  } else {
+    character_set_health(enemy, character_get_health(enemy) - 1);
   }
-  else {
-    character_set_health(enemy,character_get_health(enemy)-1);
-  }
-
   game_set_last_action(game, OK);
-  return;
 }
 
-void game_actions_chat(Game *game){
-  Id player_loc;
-  Space *space;
-  Id ch_id;
-  Character *friend;
+void game_actions_chat(Game *game) {
+  Id player_loc = game_get_player_location(game);
+  Space *space = game_get_space(game, player_loc);
+  Character *friend = NULL;
 
-  if (!game){
-    return;
-  }
-
-  player_loc = game_get_player_location(game);
-  space = game_get_space(game, player_loc);
-
-  if (!space){
+  if (!game || !space) {
     game_set_last_action(game, ERROR);
     return;
   }
 
-  ch_id = set_get_id_at(space_get_character(space),0);
-
-  if (ch_id == NO_ID){
-    game_set_last_action(game, ERROR);
-    return;
-  }
-
-  friend = game_get_character(game, ch_id);
-
-  if (!friend || !character_get_friendly(friend)){
+  friend = game_get_character_by_space(game, space_get_id(space));
+  if (!friend || !character_get_friendly(friend)) {
     game_set_last_action(game, ERROR);
     return;
   }
 
   game_set_last_chat(game, character_get_message(friend));
-
+  printf("%s",character_get_message(friend));
   game_set_last_action(game, OK);
 }
 

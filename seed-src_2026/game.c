@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <time.h>
 
 #define MAX_SPACES 100
 #define MAX_OBJECTS 10
@@ -46,6 +47,7 @@ Game *game_create() {
   int i;
   Game *game = NULL;
   Character *character;
+  srand(time(NULL)); 
 
   game = (Game *)malloc(sizeof(Game));
   if (!game) return NULL;
@@ -90,6 +92,7 @@ Game *game_create() {
   character_set_message(character, "Bienvenido a esta apasionante aventura");
   character_set_location(character, 13);
   character_set_gdesc(character, "(o)");
+  character_set_name(character, "Friend");
 
   game->character[game->n_characters] = character;
   game->n_characters++;
@@ -107,6 +110,7 @@ Game *game_create() {
   character_set_friendly(character, FALSE);
   character_set_location(character, 14);
   character_set_gdesc(character, "^M*");
+  character_set_name(character, "Enemy");
 
   game->character[game->n_characters] = character;
   game->n_characters++;
@@ -395,6 +399,18 @@ Character *game_get_character_by_position(Game *game, int pos) {
   return game->character[pos];
 }
 
+Character *game_get_character_by_space(Game *game, Id space_id) {
+  int i;
+  if (!game || space_id == NO_ID) return NULL;
+  
+  for (i = 0; i < game->n_characters; i++) {
+    if (character_get_location(game->character[i]) == space_id) {
+      return game->character[i];
+    }
+  }
+  return NULL;
+}
+
 /*-------------------PLAYER-----------------------*/
 /**
  * @brief It gets the player of the game
@@ -499,7 +515,6 @@ char *game_get_last_chat(Game *game){
  * @brief Sets the last chat message generated in the game.
  */
 Status game_set_last_chat(Game *game, const char *msg){
-
   if(!game || !msg)
     return ERROR;
 
@@ -532,4 +547,6 @@ void game_print(Game *game) {
     object_print(game->object[i]);
   }
 }
+
+
 

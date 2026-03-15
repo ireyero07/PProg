@@ -86,7 +86,7 @@ CommandCode command_get_code(Command* command) {
 
 Status command_get_user_input(Command* command) {
   char input[CMD_LENGHT] = "", *token = NULL;
-  int i = UNKNOWN - NO_CMD + 1;
+  int i = UNKNOWN - NO_CMD + 1,len;
   CommandCode cmd;
   command->arg[0] = '\0';
 
@@ -104,11 +104,16 @@ Status command_get_user_input(Command* command) {
     while (cmd == UNKNOWN && i < N_CMD) {
       if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL])) {
         cmd = i + NO_CMD;
-        if (cmd == TAKE){
-          token = strtok(NULL, "");
-          if(token != NULL){
+        if (cmd == TAKE) {
+          token = strtok(NULL, " \n"); 
+          if (token != NULL) {
+            while (*token == ' ') token++;
             strncpy(command->arg, token, WORD_SIZE);
             command->arg[WORD_SIZE] = '\0';
+            len = strlen(command->arg);
+            while (len > 0 && (command->arg[len-1] == ' ' || command->arg[len-1] == '\n')) {
+              command->arg[--len] = '\0';
+            }
           }
         }
       } else {
