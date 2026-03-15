@@ -390,8 +390,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     ch = game_get_character_by_position(game, i);
 
     if (ch) {
-      sprintf(str, "  %s (loc: %ld, hp:%d)", character_get_gdesc(ch), character_get_location(ch), character_get_health(ch));
-      screen_area_puts(ge->descript, str);
+      if (character_get_health(ch) <= 0) {
+        sprintf(str, " ");
+        screen_area_puts(ge->descript, str);
+      }
+      else {
+        sprintf(str, "  %s (loc: %ld, hp:%d)", character_get_gdesc(ch), character_get_location(ch), character_get_health(ch));
+        screen_area_puts(ge->descript, str);
+      }
+      
       }
     }
 
@@ -419,7 +426,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   if (chat && strlen(chat) > 0) {
     ch = game_get_character_by_space(game, space_get_id(space_act));
     if (ch && character_get_friendly(ch)) {
-      sprintf(str, " Character %s said: %s", character_get_name(ch), chat);
+      sprintf(str, " Character %s said: %s", character_get_gdesc(ch), chat);
       screen_area_puts(ge->descript, str);
     }
   }

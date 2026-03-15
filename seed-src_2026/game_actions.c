@@ -340,7 +340,10 @@ void game_actions_attack(Game *game) {
   if (roll <= 4) {
     Player *p = game_get_player(game);
     player_set_health(p, player_get_health(p) - 1);
-    if (player_get_health(p) <= 0) game_set_finished(game, TRUE);
+    if (player_get_health(p) <= 0) {
+      printf("Game Over (╥﹏╥)\n");
+      game_set_finished(game, TRUE);
+    } 
   } else {
     character_set_health(enemy, character_get_health(enemy) - 1);
   }
