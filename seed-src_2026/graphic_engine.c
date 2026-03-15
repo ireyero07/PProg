@@ -443,7 +443,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
-  screen_area_clear(ge->feedback);
   last_cmd = command_get_code(game_get_last_command(game));
   result = game_get_last_action(game);
 
