@@ -424,12 +424,19 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   chat = game_get_last_chat(game);
 
   if (chat && strlen(chat) > 0) {
-    ch = game_get_character_by_space(game, space_get_id(space_act));
+    if (command_get_code(game_get_last_command(game)) == CHAT) {
+      ch = game_get_character_by_space(game, space_get_id(space_act));
+
     if (ch && character_get_friendly(ch)) {
       sprintf(str, " Character %s said: %s", character_get_gdesc(ch), chat);
       screen_area_puts(ge->descript, str);
     }
   }
+
+  else {
+    game_set_last_chat(game, "");
+  }
+}
 
 
   /* Paint in the banner area */
