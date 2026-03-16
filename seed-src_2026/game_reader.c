@@ -83,7 +83,7 @@ Status game_reader_load(Game *game, const char *filename) {
   Space *space = NULL;
   Object *object = NULL;
   Status status = OK;
-  int i;
+  int i, numobjects = 0;
 
   /* Error control */
   if (!game || !filename) {
@@ -166,6 +166,7 @@ Status game_reader_load(Game *game, const char *filename) {
 
       toks = strtok(NULL, "|");
       idSpace = atol(toks);
+      numobjects++;
 
 #ifdef DEBUG
       printf("Read: o:%ld|%s|%ld\n",
@@ -173,14 +174,24 @@ Status game_reader_load(Game *game, const char *filename) {
 #endif
 
       /* Create the object and add it to the space */
-      object = object_create(idObject);
-      if (object != NULL) {
-        object_set_name(object, name);
-        game_add_object(game, object);
-        space = game_get_space(game, idSpace);
+      if(numobjects > MAX_OBJECTS){
+        printf("\nFichero no válido\n");
+        printf("\n");
+        printf("Forzando salida del juego...\n");
+        printf("\n");
+        game_set_finished(game,TRUE);
+        break;
+      }
+      else{
+        object = object_create(idObject);
+        if (object != NULL) {
+          object_set_name(object, name);
+          game_add_object(game, object);
+          space = game_get_space(game, idSpace);
 
-        if (space) {
-          space_add_object(space, idObject);
+          if (space) {
+            space_add_object(space, idObject);
+          }
         }
       }
     }
