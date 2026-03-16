@@ -464,6 +464,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   /* Dump to the terminal */
   screen_paint();
-  printf("prompt:> ");
+  if (player_get_health(player) <= 0) {
+    printf("Game Over (╥﹏╥)\n");
+    game_set_finished(game, TRUE);
+  }
+  else{
+    printf("prompt:> ");
+  } 
+  
   }
 }

@@ -77,6 +77,9 @@ int main(int argc, char *argv[]) {
 
   while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE)) {
     graphic_engine_paint_game(gengine, game);
+    if (game_get_finished (game) == TRUE) {
+      break;
+    }
     command_get_user_input(last_cmd);
     game_actions_update(game, last_cmd);
   }
