@@ -106,7 +106,9 @@ Status game_reader_load(Game *game, const char *filename) {
       idSpace = atol(toks);
 
       toks = strtok(NULL, "|");
-      strcpy(name, toks);
+      if (!toks) { status = ERROR; break; }
+      strncpy(name, toks, WORD_SIZE - 1);
+      name[WORD_SIZE - 1] = '\0';
 
       toks = strtok(NULL, "|");
       north = atol(toks);
@@ -162,7 +164,9 @@ Status game_reader_load(Game *game, const char *filename) {
       idObject = atol(toks);
 
       toks = strtok(NULL, "|");
-      strcpy(name, toks);
+      if (!toks) { status = ERROR; break; }
+      strncpy(name, toks, WORD_SIZE - 1);
+      name[WORD_SIZE - 1] = '\0';
 
       toks = strtok(NULL, "|");
       idSpace = atol(toks);

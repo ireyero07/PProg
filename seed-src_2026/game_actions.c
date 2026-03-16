@@ -319,13 +319,26 @@ void game_actions_right(Game *game){
 }
 
 void game_actions_attack(Game *game) {
-  Id player_loc = game_get_player_location(game);
-  Space *space = game_get_space(game, player_loc);
-  Id space_id = space_get_id(space);
+  Id player_loc = NO_ID;
+  Space *space = NULL;
+  Id space_id = NO_ID;
   Character *enemy = NULL;
   int roll;
 
-  if (!game || !space || space_id == NO_ID) {
+  if (!game) {
+    return;
+  }
+
+  player_loc = game_get_player_location(game);
+  space = game_get_space(game, player_loc);
+
+  if (!space) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+  space_id = space_get_id(space);
+  if (space_id == NO_ID) {
     game_set_last_action(game, ERROR);
     return;
   }
@@ -349,11 +362,19 @@ void game_actions_attack(Game *game) {
 }
 
 void game_actions_chat(Game *game) {
-  Id player_loc = game_get_player_location(game);
-  Space *space = game_get_space(game, player_loc);
+  Id player_loc = NO_ID;
+  Space *space = NULL;
   Character *friend = NULL;
 
-  if (!game || !space) {
+  if (!game) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+  player_loc = game_get_player_location(game);
+  space = game_get_space(game, player_loc);
+
+  if (!space) {
     game_set_last_action(game, ERROR);
     return;
   }

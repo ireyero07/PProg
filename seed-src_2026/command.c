@@ -88,11 +88,12 @@ Status command_get_user_input(Command* command) {
   char input[CMD_LENGHT] = "", *token = NULL;
   int i = UNKNOWN - NO_CMD + 1,len;
   CommandCode cmd;
-  command->arg[0] = '\0';
 
   if (!command) {
     return ERROR;
   }
+
+  command->arg[0] = '\0';
 
   if (fgets(input, CMD_LENGHT, stdin)) {
     token = strtok(input, " \n");

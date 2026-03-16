@@ -198,7 +198,9 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
 
   player = game_get_player(game);
   strncpy(ply[1], player_get_gdesc(player), MAX_CHR_GDESC);
-  
+  ply[1][MAX_CHR_GDESC] = '\0';
+  ply[0][0] = '\0';
+  ply[2][0] = '\0';
 
   /* Inicializar arrays de gdesc, objects y characters */
   for (col = 0; col < 3; col++) {
@@ -267,7 +269,7 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
   }
 
   /* Ahora pintamos fila por fila combinando las 3 habitaciones horizontalmente */
-  for (i = 0; i < GDESC_LENGTH; i++) { 
+  for (i = 0; i < GDESC_LINES + 4; i++) { 
     str[0] = '\0';
     for (col = 0; col < 3; col++) {
       char line[64];
@@ -369,8 +371,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       screen_area_puts(ge->map, str);
     }
     print_backOrNext_space (ge, game, id_next);
-    
-  
+  }
+
   /* Paint in the description area */
   screen_area_clear(ge->descript);
 
@@ -429,17 +431,14 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   if (chat && strlen(chat) > 0) {
     if (command_get_code(game_get_last_command(game)) == CHAT) {
       ch = game_get_character_by_space(game, space_get_id(space_act));
-
-    if (ch && character_get_friendly(ch)) {
-      sprintf(str, " Character %s said: %s", character_get_gdesc(ch), chat);
-      screen_area_puts(ge->descript, str);
+      if (ch && character_get_friendly(ch)) {
+        sprintf(str, " Character %s said: %s", character_get_gdesc(ch), chat);
+        screen_area_puts(ge->descript, str);
+      }
+    } else {
+      game_set_last_chat(game, "");
     }
   }
-
-  else {
-    game_set_last_chat(game, "");
-  }
-}
 
 
   /* Paint in the banner area */
@@ -473,7 +472,5 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   }
   else{
     fprintf(stdout, "prompt:> ");
-  } 
-  
   }
 }
