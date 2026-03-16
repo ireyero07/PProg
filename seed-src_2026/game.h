@@ -11,6 +11,10 @@
 #ifndef GAME_H
 #define GAME_H
 
+#define MAX_SPACES 100
+#define MAX_OBJECTS 10
+#define MAX_CHARACTERS 10
+
 #include "command.h"
 #include "space.h"
 #include "types.h"

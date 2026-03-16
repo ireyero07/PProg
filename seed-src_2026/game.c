@@ -16,10 +16,6 @@
 #include <strings.h>
 #include <time.h>
 
-#define MAX_SPACES 100
-#define MAX_OBJECTS 10
-#define MAX_CHARACTERS 10
-
 /**
  * @brief Game
  *
@@ -77,6 +73,7 @@ Game *game_create() {
   }
 
   player_set_health(game->player, 5);
+  player_set_gdesc(game->player, "^C>");
 
   /* ---------------- CHARACTER 1 (FRIEND) ---------------- */
 

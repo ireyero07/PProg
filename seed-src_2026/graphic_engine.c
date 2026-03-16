@@ -169,8 +169,9 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
   Space *spaces[3];
   Id ids[3], obj_id = NO_ID, *objects = NULL;
   Character *chars[3];
-  char gdesc[3][GDESC_LINES][GDESC_LENGTH + 1], chr[3][MAX_CHR_GDESC + 1], obj_line[3][WORD_SIZE], str[255];
+  char gdesc[3][GDESC_LINES][GDESC_LENGTH + 1], chr[3][MAX_CHR_GDESC + 1], ply[3][MAX_CHR_GDESC + 1], obj_line[3][WORD_SIZE], str[255];
   Object *obj = NULL;
+  Player *player;
   long n_objects;
 
   /* Inicializar arrays de spaces, ids y player */
@@ -195,6 +196,10 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
   ids[0] = id_left; ids[1] = id_act; ids[2] = id_right;
   chars[0] = chars[1] = chars[2] = NULL;
 
+  player = game_get_player(game);
+  strncpy(ply[1], player_get_gdesc(player), MAX_CHR_GDESC);
+  
+
   /* Inicializar arrays de gdesc, objects y characters */
   for (col = 0; col < 3; col++) {
     for (i = 0; i < GDESC_LINES; i++) {
@@ -210,14 +215,12 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
 
     if (spaces[col] != NULL) {
       /* Character */
-      if (spaces[col] != NULL) {
-        chars[col] = game_get_character_by_space(game, ids[col]);
-        if (chars[col] != NULL) {
-          strncpy(chr[col], character_get_gdesc(chars[col]), MAX_CHR_GDESC);
-          chr[col][MAX_CHR_GDESC] = '\0';
-        } else {
-          chr[col][0] = '\0'; 
-        }
+      chars[col] = game_get_character_by_space(game, ids[col]);
+      if (chars[col] != NULL) {
+        strncpy(chr[col], character_get_gdesc(chars[col]), MAX_CHR_GDESC);
+        chr[col][MAX_CHR_GDESC] = '\0';
+      } else {
+        chr[col][0] = '\0'; 
       }
       /* Objects */
       objects = space_get_objects_ids(spaces[col]);
@@ -279,7 +282,7 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
         }
         else if (i == 1) { /* linea de player, character e id */
           if (col == 1) {
-            sprintf(line, "| ^C>  %3.3s   %3d| ", chr[col], (int) ids[col]);
+            sprintf(line, "| %3.3s  %3.3s   %3d| ", ply[1], chr[col], (int) ids[col]);
           } 
           else if (col == 0) {
             sprintf(line, "|      %3.3s   %3d| ", chr[col], (int) ids[col]);
@@ -465,11 +468,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   /* Dump to the terminal */
   screen_paint();
   if (player_get_health(player) <= 0) {
-    printf("Game Over (╥﹏╥)\n");
+    fprintf(stdout, "Game Over (╥﹏╥)\n");
     game_set_finished(game, TRUE);
   }
   else{
-    printf("prompt:> ");
+    fprintf(stdout, "prompt:> ");
   } 
   
   }
