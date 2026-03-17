@@ -14,7 +14,7 @@
 #include "set_test.h"
 #include "test.h"
 
-#define MAX_TESTS 30
+#define MAX_TESTS 16
 
 int main(int argc, char** argv){
   int test = 0;

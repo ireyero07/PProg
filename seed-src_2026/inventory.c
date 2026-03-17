@@ -4,7 +4,7 @@
  * @file inventory.c
  * @author Jian Feng Yin Chen
  * @version 0
- * @date 20-02-2026
+ * @date 17-03-2026
  * @copyright GNU Public License
  */
 
@@ -114,4 +114,17 @@ long inventory_get_number_objects(Inventory* inventory){
   if(!inventory) return -1;
 
   return set_get_n_ids(inventory->objects);
+}
+
+Status inventory_print(Inventory* inventory) {
+  if (!inventory) {
+    return ERROR;
+  }
+
+  fprintf(stdout, "--> Number of objects in the inventory: %d\n", inventory->n_objects);
+
+  fprintf(stdout, "---> Objects in the inventory: ");
+  set_print(inventory->objects);
+
+  return OK;
 }
