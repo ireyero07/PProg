@@ -14,6 +14,7 @@
 #include "command.h"
 #include "game.h"
 #include "types.h"
+
 /**
  * @brief Updates the game state according to the last user command.
  * @author Jian Feng Yin Chen

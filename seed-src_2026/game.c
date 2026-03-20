@@ -66,7 +66,7 @@ Game *game_create() {
 
   /* ---------------- PLAYER ---------------- */
 
-  game->player = player_create(1);
+  game->player = player_create(1, 10);
   if (!game->player) {
     free(game);
     return NULL;
@@ -273,7 +273,7 @@ Id game_get_object_location(Game *game, Id id) {
     return NO_ID;
 
     /* Si el jugador tiene el objeto */
-  if (player_get_object(game->player) == id)
+  if (player_has_object(game->player,id) == TRUE)
     return game_get_player_location(game);
 
     /* Buscar en los espacios */
@@ -295,8 +295,8 @@ Status game_set_object_location(Game *game, Id object_id, Id space_id) {
   if (!game || object_id == NO_ID || space_id == NO_ID)
     return ERROR;
 
-  if (player_get_object(game->player) == object_id)
-    player_set_object(game->player, NO_ID);
+  if (player_has_object(game->player,object_id))
+    player_del_object(game->player,object_id);
 
   for (i = 0; i < game->n_spaces; i++)
     space_del_object(game->spaces[i], object_id);

@@ -238,9 +238,9 @@ void game_actions_take(Game *game, Command *cmd){
   space = game_get_space(game, player_location);
   obj_id = game_get_object_id_by_name(game,object_name);
 
-  if (obj_id != NO_ID && player_get_object(game_get_player(game)) == NO_ID && space_has_object(space, obj_id) == TRUE) {
+  if (obj_id != NO_ID  && space_has_object(space, obj_id) == TRUE) {
     space_del_object(space, obj_id);
-    player_set_object(game_get_player(game), obj_id);
+    player_add_object(game_get_player(game), obj_id);
     game_set_last_action(game, OK);
   } else {
     game_set_last_action(game, ERROR);
@@ -250,6 +250,7 @@ void game_actions_take(Game *game, Command *cmd){
 void game_actions_drop(Game *game){
   Id player_location = NO_ID;
   Id obj_id = NO_ID;
+  Id *objs = NULL;
 
   if (!game) {
     return;
@@ -257,9 +258,10 @@ void game_actions_drop(Game *game){
 
   player_location = game_get_player_location(game);
   
-  if (player_get_object(game_get_player(game)) != NO_ID) {
-    obj_id = player_get_object(game_get_player(game));
-    player_set_object(game_get_player(game), NO_ID);
+  if (player_get_objects(game_get_player(game)) != NULL && inventory_get_number_objects(player_get_backpack(game_get_player(game))) > 0) {
+    objs = player_get_objects(game_get_player(game));
+    obj_id = objs[0];
+    player_del_object(game_get_player(game), obj_id);
 
     space_add_object(game_get_space(game, player_location), obj_id);
     game_set_last_action(game, OK);
