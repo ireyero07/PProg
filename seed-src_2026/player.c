@@ -25,14 +25,14 @@ struct _Player {
   int health;                   /*!< Health of the player */
   char name[WORD_SIZE + 1];      /*!< Name of the player */
   Id location;                   /*!< Space where the player is located */
-  Id object;                     /*!< Object carried by the player */
+  Inventory *backpack;            /*!< Inventory of the player */
 };
 
 
 /**
  * @brief It creates a new player
  */
-Player* player_create(Id id) {
+Player* player_create(Id id, int max_objs) {
   Player* newPlayer = NULL;
   int i;
 
@@ -48,7 +48,11 @@ Player* player_create(Id id) {
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;
-  newPlayer->object = NO_ID;
+  newPlayer->backpack=inventory_create(max_objs);
+  if (!newPlayer->backpack){
+    free(newPlayer);
+    return NULL;
+  }
 
   return newPlayer;
 }
@@ -59,7 +63,7 @@ Player* player_create(Id id) {
  */
 Status player_destroy(Player* player) {
   if (!player) return ERROR;
-
+  inventory_destroy(player->backpack);
   free(player);
   return OK;
 }
@@ -116,25 +120,33 @@ Id player_get_location(Player* player) {
   return player->location;
 }
 
+Status player_del_object(Player* player, Id id) {
+  if (!player || id == NO_ID) return ERROR;
 
-/**
- * @brief It sets the object carried by the player
- */
-Status player_set_object(Player* player, Id id) {
-  if (!player) return ERROR;
-
-  player->object = id;
-  return OK;
+  return inventory_del_object(player->backpack, id);
 }
 
+Status player_add_object(Player* player, Id id) {
+  if (!player || id == NO_ID) return ERROR;
 
-/**
- * @brief It gets the object carried by the player
- */
-Id player_get_object(Player* player) {
-  if (!player) return NO_ID;
+  return inventory_add_object(player->backpack, id);
+}
 
-  return player->object;
+Bool player_has_object(Player* player, Id id){
+  if (!player || id == NO_ID) return FALSE;
+  return inventory_has_object(player->backpack, id);
+}
+
+Id* player_get_objects(Player* player){
+  if(!player) return NULL;
+
+  return inventory_get_objects_ids(player->backpack);
+}
+
+Inventory* player_get_backpack(Player* player){
+  if(!player) return NULL;
+
+  return player->backpack;
 }
 
 int player_get_health(Player* player){
@@ -178,10 +190,8 @@ Status player_print(Player* player) {
   else
     fprintf(stdout, "---> No location\n");
 
-  if (player->object != NO_ID)
-    fprintf(stdout, "---> Carrying object: %ld\n", player->object);
-  else
-    fprintf(stdout, "---> No object\n");
+  fprintf(stdout, "---> Backpack:\n");
+  inventory_print(player->backpack);
 
   fprintf(stdout, "---> Health: %d\n", player->health);
   

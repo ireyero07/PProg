@@ -12,6 +12,7 @@
 #define PLAYER_H
 
 #include "types.h"
+#include "inventory.h"
 
 typedef struct _Player Player;
 
@@ -22,7 +23,7 @@ typedef struct _Player Player;
  * @param id the identification number for the new player
  * @return a new player, initialized
  */
-Player* player_create(Id id);
+Player* player_create(Id id, int max_objs);
 
 /**
  * @brief It destroys a player, freeing the allocated memory
@@ -81,23 +82,52 @@ Status player_set_location(Player* player, Id id);
 Id player_get_location(Player* player);
 
 /**
- * @brief It sets the object carried by the player
+ * @brief It deletes an object from the backpack
  * @author Jian Feng Yin Chen
  *
  * @param player a pointer to the player
- * @param id the id number of the object carried by the player
+ * @param id the id number of the object to delete
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status player_set_object(Player* player, Id id);
+Status player_del_object(Player* player, Id id);
 
 /**
- * @brief It gets the object carried by the player
+ * @brief It add an object to the backpack
  * @author Jian Feng Yin Chen
  *
  * @param player a pointer to the player
- * @return the id number of the object carried by the player
+ * @param id the id number of the object to add
+ * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Id player_get_object(Player* player);
+Status player_add_object(Player* player, Id id);
+
+/**
+ * @brief It checks whether the player is carrying a given object
+ * @author Jian Feng Yin Chen
+ *
+ * @param player a pointer to the player
+ * @param id the id number of the object to find
+ * @return TRUE if the player has the object, FALSE otherwise
+ */
+Bool player_has_object(Player* player, Id id);
+
+/**
+ * @brief It gets le list of object ids in the player backpack
+ * @author Jian Feng Yin Chen
+ *
+ * @param player a pointer to the player
+ * @return array of objects ids, or NULL if there was a mistake
+ */
+Id* player_get_objects(Player* player);
+
+/**
+ * @brief It gets the backpack of the player
+ * @author Jian Feng Yin Chen
+ *
+ * @param player a pointer to the player
+ * @return a point to the player backpack, or NULL id there was a mistake
+ */
+Inventory* player_get_backpack(Player* player);
 
 /**
  * @brief It gets the health of the player

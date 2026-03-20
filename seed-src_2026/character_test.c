@@ -33,8 +33,6 @@ int main(int argc, char** argv){
     }
   }
 
-
-
   if (all || test == 1) test1_character_create();
   if (all || test == 2) test2_character_create();
   if (all || test == 3) test1_character_get_id();
@@ -60,7 +58,6 @@ int main(int argc, char** argv){
   if (all || test == 23) test2_character_set_friendly();
   if (all || test == 24) test1_character_set_message();
   if (all || test == 25) test2_character_set_message();
-
 
   PRINT_PASSED_PERCENTAGE;
 

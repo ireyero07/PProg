@@ -20,23 +20,22 @@
  * This struct stores all the information of a inventory.
  */
 struct _Inventory {
-    Set *objects;                                     /*!< Set of objects in the inventory*/
-    int n_objects                                     /*!< Number of objects in the inventory*/
+    Set *objs;                                     /*!< Set of objects in the inventory*/
+    int max_objs;                                     /*!< Maximum number of objects in the inventory*/       
 };
 
-Inventory* space_create() {
+Inventory* inventory_create(int max_objs) {
   Inventory* newInventory = NULL;
-  int i;
 
   newInventory = (Inventory*)calloc(1, sizeof(Inventory));
   if (newInventory == NULL) {
     return NULL;
   }
 
-  newInventory->n_objects = 0;
+  newInventory->max_objs = max_objs;
 
-  newInventory->objects = set_create();
-    if (!newInventory->objects) {
+  newInventory->objs = set_create();
+    if (!newInventory->objs) {
         free(newInventory);
         return NULL;
     }
@@ -49,56 +48,56 @@ Status inventory_destroy(Inventory* inventory) {
     return ERROR;
   }
 
-  set_destroy(inventory->objects);
+  set_destroy(inventory->objs);
 
   free(inventory);
   return OK;
 }
 
-int inventory_get_id(Inventory* inventory) {
+int inventory_get_max_objs(Inventory* inventory) {
   if (!inventory) {
-    return NO_ID;
+    return -1;
   }
-  return inventory->n_objects;
+  return inventory->max_objs;
 }
 
 
-Status inventory_set_name(Inventory* inventory, int n_objects) {
-  if (!inventory || n_objects <= 0) {
+Status inventory_set_max_objs(Inventory* inventory, int max_objs) {
+  if (!inventory || max_objs <= 0) {
     return ERROR;
   }
 
-  inventory->n_objects = n_objects;
+  inventory->max_objs = max_objs;
 
   return OK;
 }
 
 Status inventory_add_object(Inventory* inventory, Id object){
-  if(!inventory || object == NO_ID)
+  if(!inventory || object == NO_ID || set_get_n_ids(inventory->objs) >= inventory->max_objs)
     return ERROR;
 
-  return set_add(inventory->objects, object);
+  return set_add(inventory->objs, object);
 }
 
 Status inventory_del_object(Inventory* inventory, Id object){
   if(!inventory || object == NO_ID)
     return ERROR;
 
-  return set_del(inventory->objects, object);
+  return set_del(inventory->objs, object);
 }
 
 Set* inventory_get_objects(Inventory* inventory){
   if(!inventory)
     return NULL;
 
-  return inventory->objects;
+  return inventory->objs;
 }
 
 Bool inventory_has_object(Inventory* inventory, Id object){
   if(!inventory || object == NO_ID)
     return FALSE;
 
-  if (set_find(inventory->objects, object) == -1)
+  if (set_find(inventory->objs, object) == -1)
     return FALSE;
 
   return TRUE;
@@ -107,13 +106,13 @@ Bool inventory_has_object(Inventory* inventory, Id object){
 Id* inventory_get_objects_ids (Inventory* inventory){
   if(!inventory) return NULL;
 
-  return set_get_list_ids(inventory->objects);
+  return set_get_list_ids(inventory->objs);
 }
 
 long inventory_get_number_objects(Inventory* inventory){
   if(!inventory) return -1;
 
-  return set_get_n_ids(inventory->objects);
+  return set_get_n_ids(inventory->objs);
 }
 
 Status inventory_print(Inventory* inventory) {
@@ -121,10 +120,10 @@ Status inventory_print(Inventory* inventory) {
     return ERROR;
   }
 
-  fprintf(stdout, "--> Number of objects in the inventory: %d\n", inventory->n_objects);
-
+  fprintf(stdout, "--> Max objects: %d\n",inventory->max_objs);
+  fprintf(stdout, "--> Current objects: %ld\n",set_get_n_ids(inventory->objs));
   fprintf(stdout, "---> Objects in the inventory: ");
-  set_print(inventory->objects);
+  set_print(inventory->objs);
 
   return OK;
 }

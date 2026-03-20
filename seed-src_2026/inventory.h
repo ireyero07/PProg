@@ -13,9 +13,6 @@
 #include "types.h"
 #include "set.h"
 
-#define MAX_OBJS 10
-
-
 typedef struct _Inventory Inventory;
 
 /**
@@ -24,7 +21,7 @@ typedef struct _Inventory Inventory;
  *
  * @return a new inventory, initialized
  */
-Inventory* space_create();
+Inventory* inventory_create(int max_objs);
 
 /**
  * @brief It destroys a inventory, freeing the allocated memory
@@ -42,7 +39,7 @@ Status inventory_destroy(Inventory* inventory);
  * @param inventory a pointer to the inventory
  * @return  the number of objects in the inventory
  */
-int inventory_get_n_objects(Inventory* inventory);
+int inventory_get_max_objs(Inventory* inventory);
 
 /**
  * @brief It sets the number of objects of the inventory
@@ -51,7 +48,7 @@ int inventory_get_n_objects(Inventory* inventory);
  * @param inventory a pointer to the inventory
  * @return  OK, if everything goes well or ERROR if there was some mistake
  */
-Status inventory_set_n_objects(Inventory* inventory, int n_objects);
+Status inventory_set_max_objs(Inventory* inventory, int n_objects);
 
 /**
  * @brief Adds an object to a inventory
