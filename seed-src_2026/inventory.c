@@ -121,7 +121,7 @@ Status inventory_print(Inventory* inventory) {
   }
 
   fprintf(stdout, "--> Max objects: %d\n",inventory->max_objs);
-  fprintf(stdout, "--> Current objects: %ld\n",set_get_n_ids(inventory->objs));
+  fprintf(stdout, "--> Current objects: %d\n",set_get_n_ids(inventory->objs));
   fprintf(stdout, "---> Objects in the inventory: ");
   set_print(inventory->objs);
 

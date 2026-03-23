@@ -29,6 +29,8 @@ struct _Game {
   int n_characters;              /*!< Number of characters currently in the game */
   Space *spaces[MAX_SPACES];     /*!< Array of pointers to the spaces of the game */
   int n_spaces;                  /*!< Number of spaces currently in the game */
+  Link *links[MAX_LINKS];        /*!< Array of pointers to the links of the game */
+  int n_links;                   /*!< Number of links currently in the game */
   Command *last_cmd;             /*!< Last command introduced by the player */
   Bool finished;                 /*!< Flag that indicates if the game has finished */
   Status last_action_status;     /*!< Status of the last action */
@@ -59,10 +61,14 @@ Game *game_create() {
 
   for (i = 0; i < MAX_CHARACTERS; i++)
     game->character[i] = NULL;
+  
+  for (i = 0; i < MAX_LINKS; i++) 
+    game->links[i] = NULL;
 
   game->n_spaces = 0;
   game->n_objects = 0;
   game->n_characters = 0;
+  game->n_links = 0;
 
   /* ---------------- PLAYER ---------------- */
 
@@ -156,6 +162,11 @@ Status game_destroy(Game *game) {
     for (i = 0; i < game->n_characters; i++) {
       character_destroy(game->character[i]);
     }
+
+  /* Destroy the links */
+  for (i = 0; i < game->n_links; i++) {
+    link_destroy(game->links[i]);
+  }
 
   /* Destroy the last command */
   command_destroy(game->last_cmd);
@@ -440,6 +451,46 @@ Status game_set_player_location(Game *game, Id id) {
   return player_set_location(game->player, id);
 }
 
+/*----------------------LINK--------------------------*/
+Status game_add_link(Game *game, Link *link) {
+  if (!game || !link) return ERROR;
+
+  if (game->n_links >= MAX_LINKS) return ERROR;
+
+  game->links[game->n_links] = link;
+  game->n_links++;
+
+  return OK;
+}
+
+Id game_get_connection(Game *game, Id space_id, Direction dir) {
+  int i;
+
+  if (!game || space_id == NO_ID) return NO_ID;
+
+  for (i = 0; i < game->n_links; i++) {
+    if (link_get_origin(game->links[i]) == space_id && link_get_direction(game->links[i]) == dir) {
+      return link_get_destination(game->links[i]);
+    }
+  }
+
+  return NO_ID;
+}
+
+Bool game_connection_is_open(Game *game, Id space_id, Direction dir) {
+  int i;
+
+  if (!game || space_id == NO_ID) return FALSE;
+
+  for (i = 0; i < game->n_links; i++) {
+    if (link_get_origin(game->links[i]) == space_id && link_get_direction(game->links[i]) == dir) {
+      return link_get_open(game->links[i]);
+    }
+  }
+
+  return FALSE;
+}
+
 /*-------------------LAST COMMAND-----------------------*/
 /**
  * @brief It gets the last command
@@ -518,16 +569,6 @@ Status game_set_last_chat(Game *game, const char *msg){
   strcpy(game->last_chat, msg);
 
   return OK;
-}
-/**
- * @brief Gets the id of the destination space from a link
- */
-Id game_get_connection(Game *game, Id space_act_id, Direction link_direction){
-  if(game==NULL||space_act_id==NO_ID||((link_direction!=N)&&(link_direction!=S)&&(link_direction!=E)&&(link_direction!=W))){
-    return NO_ID;
-  }
-  /*F5*/
-
 }
 
 /*-------------------PRINT-----------------------*/

@@ -33,7 +33,6 @@ struct _Link {
  */
 Link* link_create(Id id) {
   Link* newLink = NULL;
-  int i;
 
   /* Error control */
   if (id == NO_ID) return NULL;
@@ -118,12 +117,17 @@ Id link_get_destination(Link* link) {
   return link->destination;
 }
 
-Status link_set_direction () {
+Status link_set_direction(Link *link, Direction direction) {
+  if (!link) return ERROR;
 
+  link->direction = direction;
+  return OK;
 }
 
-Direction link_get_direction () {
+Direction link_get_direction(Link *link) {
+  if (!link) return NO_DIRECTION;
 
+  return link->direction;
 }
 
 Status link_set_open(Link* link, Bool open){
@@ -140,15 +144,25 @@ Bool link_get_open(Link* link){
 }
 
 Status link_print(Link* link) {
-  int i;
+  const char *dir_str;
 
-  /* Error Control */
   if (!link) {
     return ERROR;
   }
 
+  switch (link->direction) {
+    case N: dir_str = "NORTH"; break;
+    case S: dir_str = "SOUTH"; break;
+    case E: dir_str = "EAST"; break;
+    case W: dir_str = "WEST"; break;
+    default: dir_str = "UNKNOWN"; break;
+  }
+
   fprintf(stdout, "--> Link (Id: %ld; Name: %s)\n", link->id, link->name);
-  
+  fprintf(stdout, " Origin: %ld\n", link->origin);
+  fprintf(stdout, " Destination: %ld\n", link->destination);
+  fprintf(stdout, " Direction: %s\n", dir_str);
+  fprintf(stdout, " State: %s\n", link->open ? "OPEN" : "CLOSED");
 
   return OK;
 }

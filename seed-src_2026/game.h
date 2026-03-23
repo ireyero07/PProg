@@ -14,6 +14,7 @@
 #define MAX_SPACES 100
 #define MAX_OBJECTS 10
 #define MAX_CHARACTERS 10
+#define MAX_LINKS 100
 
 #include "command.h"
 #include "space.h"
@@ -21,6 +22,7 @@
 #include "player.h"
 #include "object.h"
 #include "character.h"
+#include "link.h"
 
 typedef struct _Game Game;
 
@@ -203,6 +205,16 @@ int game_get_n_characters(Game *game);
 Character *game_get_character_by_position(Game *game, int pos);
 
 /**
+ * @brief Gets a character by its space id
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param space_id the id of the space
+ * @return Pointer to the character if found, otherwise NULL
+ */
+Character *game_get_character_by_space(Game *game, Id space_id);
+
+/**
  * @brief It gets the player of the game
  * @author Ivan
  *
@@ -231,6 +243,38 @@ Id game_get_player_location(Game *game);
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status game_set_player_location(Game *game, Id id);
+
+/**
+ * @brief Adds a link to the game
+ * @author Ivan Reyero
+ *
+ * @param game Pointer to the game
+ * @param link Pointer to the link to be added
+ * @return OK if everything goes well, ERROR otherwise
+ */
+Status game_add_link(Game *game, Link *link);
+
+/**
+ * @brief Gets the destination space from a given space and direction
+ * @author Ivan Reyero
+ *
+ * @param game Pointer to the game
+ * @param space_id Id of the origin space
+ * @param direction Direction of the desired connection
+ * @return Id of the destination space if found, NO_ID otherwise
+ */
+Id game_get_connection(Game *game, Id space_id, Direction direction);
+
+/**
+ * @brief Checks if a connection is open or closed
+ * @author Ivan Reyero
+ *
+ * @param game Pointer to the game
+ * @param space_id Id of the origin space
+ * @param direction Direction of the link
+ * @return TRUE if the link is open, FALSE otherwise
+ */
+Bool game_connection_is_open(Game *game, Id space_id, Direction direction);
 
 /**
  * @brief It gets the last command
@@ -322,7 +366,5 @@ Status game_set_last_chat(Game *game, const char *msg);
  * @param game a pointer to the game structure
  */
 void game_print(Game *game);
-
-Character *game_get_character_by_space(Game *game, Id space_id);
 
 #endif

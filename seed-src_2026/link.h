@@ -100,11 +100,22 @@ Status link_set_destination(Link* link, Id id);
  */
 Id link_get_destination(Link* link);
 
+/**
+ * @brief Sets the direction of the link
+ *
+ * @param link Pointer to the link
+ * @param direction Direction (N, S, E, W, UNKNOWN_DIR)
+ * @return OK if success, ERROR otherwise
+ */
+Status link_set_direction(Link *link, Direction direction);
 
-
-Status link_set_direction ();
-
-Direction link_get_direction ();
+/**
+ * @brief Gets the direction of the link
+ *
+ * @param link Pointer to the link
+ * @return Direction of the link
+ */
+Direction link_get_direction(Link *link);
 
 /**
  * @brief It sets if a link is open

@@ -4,7 +4,7 @@ CFLAGS= -Wall -ansi -pedantic
 
 all: $(EXE)
 
-$(EXE): command.o game_actions.o game_loop.o game_reader.o game.o graphic_engine.o inventory.o object.o player.o space.o set.o character.o 
+$(EXE): command.o game_actions.o game_loop.o game_reader.o game.o graphic_engine.o inventory.o object.o player.o space.o set.o character.o link.o
 	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L.
 
 command.o: command.c command.h types.h
@@ -27,6 +27,9 @@ graphic_engine.o: graphic_engine.c graphic_engine.h types.h space.h command.h ga
 
 inventory.o: inventory.c inventory.h types.h set.h
 	$(CC) $(CFLAGS) -c inventory.c
+
+link.o: link.c link.h types.h
+	$(CC) $(CFLAGS) -c link.c
 
 object.o: object.c object.h types.h
 	$(CC) $(CFLAGS) -c object.c
