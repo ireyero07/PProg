@@ -43,8 +43,6 @@ set.o: set.c set.h types.h
 character.o: character.c character.h types.h
 	$(CC) $(CFLAGS) -c character.c
 
-
-
 space_test.o: space_test.c space_test.h space.h types.h
 	$(CC) $(CFLAGS) -c space_test.c
 
@@ -72,7 +70,14 @@ set_test: set_test.o set.o
 test_set: set_test
 	./set_test
 
+player_test.o: player_test.c player_test.h player.h types.h
+	$(CC) $(CFLAGS) -c player_test.c
 
+player_test: player_test.o player.o
+	$(CC) $(CFLAGS) -o player_test player_test.o player.o
+
+test_player: player_test
+	./player_test
 
 clear:
 	rm -rf *.o 

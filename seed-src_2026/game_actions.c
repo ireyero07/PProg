@@ -35,22 +35,6 @@ void game_actions_unknown(Game *game);
 void game_actions_exit(Game *game);
 
 /**
- * @brief Moves the player to the next space.
- * @author Jian Feng Yin Chen
- *
- * @param game Pointer to the game to be updated.
- */
-void game_actions_next(Game *game);
-
-/**
- * @brief Moves the player to the previous space.
- * @author Jian Feng Yin Chen
- *
- * @param game Pointer to the game to be updated.
- */
-void game_actions_back(Game *game);
-
-/**
  * @brief The player takes the object from the space if there is an object.
  * @author Jian Feng Yin Chen
  *
@@ -67,22 +51,6 @@ void game_actions_take(Game *game, Command *cmd);
 void game_actions_drop(Game *game);
 
 /**
- * @brief Moves the player to the space on the left
- * @author Jian Feng Yin Chen
- *
- * @param game Pointer to the game to be updated.
- */
-void game_actions_left(Game *game);
-
-/**
- * @brief Moves the player to the space on the right
- * @author Jian Feng Yin Chen
- *
- * @param game Pointer to the game to be updated.
- */
-void game_actions_right(Game *game);
-
-/**
  * @brief The player attacks to the character
  * @author Jian Feng Yin Chen
  *
@@ -97,6 +65,14 @@ void game_actions_attack(Game *game);
  * @param game Pointer to the game to be updated.
  */
 void game_actions_chat(Game *game);
+
+/**
+ * @brief The player moves north, east, south or west, depending on the input
+ * @author Ivan Mijangos Alvarez
+ *
+ * @param game Pointer to the game to be updated.
+ */
+void game_actions_move(Game *game, Command *cmd);
 
 /**
    Game actions implementation
@@ -118,14 +94,6 @@ Status game_actions_update(Game *game, Command *command) {
       game_actions_exit(game);
       break;
 
-    case NEXT:
-      game_actions_next(game);
-      break;
-
-    case BACK:
-      game_actions_back(game);
-      break;
-
     case TAKE:
       game_actions_take(game,command);
       break;
@@ -134,20 +102,16 @@ Status game_actions_update(Game *game, Command *command) {
       game_actions_drop(game);
       break;
 
-    case LEFT:
-    game_actions_left(game);
-    break;
-
-    case RIGHT:
-    game_actions_right(game);
-    break;
-
     case ATTACK:
     game_actions_attack(game);
     break;
 
     case CHAT:
     game_actions_chat(game);
+    break;
+
+    case MOVE:
+    game_actions_move(game, command);
     break;
 
     default:
@@ -164,59 +128,6 @@ Status game_actions_update(Game *game, Command *command) {
 void game_actions_unknown(Game *game) {}
 
 void game_actions_exit(Game *game) {}
-
-void game_actions_next(Game *game) {
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-  
-  if (!game) {
-    return;
-  }
-
-  space_id = game_get_player_location(game);
-  if (space_id == NO_ID) {
-    game_set_last_action(game, ERROR);
-    return;
-  }
-
-  current_id = space_get_south(game_get_space(game, space_id));
-
-  if (current_id != NO_ID) {
-    game_set_player_location(game, current_id);
-    game_set_last_action(game, OK);
-  } else {
-    game_set_last_action(game, ERROR);
-  }
-
-  return;
-}
-
-void game_actions_back(Game *game) {
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
-  if (!game) {
-    return;
-  }
-
-  space_id = game_get_player_location(game);
-
-  if (space_id == NO_ID) {
-    game_set_last_action(game, ERROR);
-    return;
-  }
-
-  current_id = space_get_north(game_get_space(game, space_id));
-
-  if (current_id != NO_ID) {
-    game_set_player_location(game, current_id);
-    game_set_last_action(game, OK);
-  } else {
-    game_set_last_action(game, ERROR);
-  }
-
-  return;
-}
 
 void game_actions_take(Game *game, Command *cmd){
   Id player_location = NO_ID;
@@ -264,56 +175,6 @@ void game_actions_drop(Game *game){
     player_del_object(game_get_player(game), obj_id);
 
     space_add_object(game_get_space(game, player_location), obj_id);
-    game_set_last_action(game, OK);
-  } else {
-    game_set_last_action(game, ERROR);
-  }
-}
-
-void game_actions_left(Game *game){
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
-  if (!game) {
-    return;
-  }
-
-  space_id = game_get_player_location(game);
-
-  if (space_id == NO_ID) {
-    game_set_last_action(game, ERROR);
-    return;
-  }
-
-  current_id = space_get_west(game_get_space(game, space_id));
-  if (current_id != NO_ID) {
-    game_set_player_location(game, current_id);
-    game_set_last_action(game, OK);
-  } else {
-    game_set_last_action(game, ERROR);
-  }
-
-  return;
-}
-
-void game_actions_right(Game *game){
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
-  if (!game) {
-    return;
-  }
-
-  space_id = game_get_player_location(game);
-
-  if (space_id == NO_ID) {
-    game_set_last_action(game, ERROR);
-    return;
-  }
-
-  current_id = space_get_east(game_get_space(game, space_id));
-  if (current_id != NO_ID) {
-    game_set_player_location(game, current_id);
     game_set_last_action(game, OK);
   } else {
     game_set_last_action(game, ERROR);
@@ -392,3 +253,52 @@ void game_actions_chat(Game *game) {
   game_set_last_action(game, OK);
 }
 
+void game_actions_move(Game *game, Command *cmd){
+  Id current_id = NO_ID;
+  Id space_id = NO_ID;
+  const char *arg;
+
+  if (!game || !cmd) {
+    return;
+  }
+
+  space_id = game_get_player_location(game);
+
+  if (space_id == NO_ID) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+  arg = command_get_arg(cmd);
+
+  if(strcmp(arg, "north") == 0 || strcmp(arg, "n") == 0){
+
+    current_id = space_get_north(game_get_space(game, space_id));
+
+  } else if (strcmp(arg, "east") == 0 || strcmp(arg, "e") == 0){
+
+    current_id = space_get_east(game_get_space(game, space_id));
+
+  } else if (strcmp(arg, "south") == 0 || strcmp(arg, "s") == 0){
+
+    current_id = space_get_south(game_get_space(game, space_id));
+
+  } else if (strcmp(arg, "west") == 0 || strcmp(arg, "w") == 0){
+
+    current_id = space_get_west(game_get_space(game, space_id));
+
+  } else {
+
+    current_id = NO_ID;
+
+  }
+
+  if (current_id != NO_ID) {
+    game_set_player_location(game, current_id);
+    game_set_last_action(game, OK);
+  } else {
+    game_set_last_action(game, ERROR);
+  }
+  
+  return;
+}

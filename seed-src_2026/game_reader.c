@@ -156,6 +156,7 @@ Status game_reader_load(Game *game, const char *filename) {
         game_add_space(game, space);
       }
     } 
+
     /* Check if the line defines an object */
     else if (strncmp("#o:", line, 3) == 0) {
 
@@ -199,6 +200,65 @@ Status game_reader_load(Game *game, const char *filename) {
         }
       }
     }
+
+    /*LOAD PLAYERS*/
+    else if (strncmp("#p:", line, 3) == 0) {
+
+      /* Divide the player data */
+      toks = strtok(line + 3, "|");
+      idSpace = atol(toks);
+
+      toks = strtok(NULL, "|");
+      if (!toks) { status = ERROR; break; }
+      strncpy(name, toks, WORD_SIZE - 1);
+      name[WORD_SIZE - 1] = '\0';
+
+      toks = strtok(NULL, "|");
+      north = atol(toks);
+
+      toks = strtok(NULL, "|");
+      east = atol(toks);
+
+      toks = strtok(NULL, "|");
+      south = atol(toks);
+
+      toks = strtok(NULL, "|");
+      west = atol(toks);
+
+      for(i = 0; i < GDESC_LINES; i++){
+        toks = strtok(NULL, "|");
+        if (toks) {
+          strncpy(gdesc[i],toks,GDESC_LENGTH);
+          gdesc[i][GDESC_LENGTH] = '\0';
+        }
+        else {
+          gdesc[i][0] = '\0';
+        }
+      }
+
+#ifdef DEBUG
+      printf("Read: s:%ld|%s|%ld|%ld|%ld|%ld|%s|%s|%s|%s|%s|\n",
+             idSpace, name, north, east, south, west, gdesc[0],  gdesc[1], gdesc[2], gdesc[3], gdesc[4]);
+#endif
+
+      /* Create the space and add it to the game */
+      space = space_create(idSpace);
+      if (space != NULL) {
+        space_set_name(space, name);
+        space_set_north(space, north);
+        space_set_east(space, east);
+        space_set_south(space, south);
+        space_set_west(space, west);
+        
+        for(i = 0; i < GDESC_LINES; i++){
+          if(gdesc[i][0] != '\0'){
+            space_set_gdesc(space,gdesc[i],i);
+          }
+        }
+
+        game_add_space(game, space);
+      }
+    } 
   }
 
   /* Check read errors */

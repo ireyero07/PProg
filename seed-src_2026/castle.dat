@@ -1,14 +1,39 @@
-#s:11|Entry|-1|-1|12|-1|  _____  | /  !  \ | !  !  ! | ! 0!0 ! |_!__!__!_|
-#s:12|Corridor|11|-1|13|121|  ./T\.  |.__. .__.|!  ! !()!|! 0! !__!|!__!_____|
-#s:121|Dungeon|-1|12|-1|-1|  ______.| / ___ \!| !!+++!!!|\!!+++!!!|_!!+++!!0|
-#s:13|Living Room|12|131|14|-1|  -+-->  | _______ | ! ___ ! | !! S !! |_!!_#_!!_|
-#s:131|Bedroom|-1|132|-1|13|         |         |         |         |         |
-#s:132|Bathroom|-1|-1|-1|131|         |         |         |         |         |
-#s:14|Kitchen|13|-1|15|-1|         |         |         |         |         |
-#s:15|Backyard|14|-1|16|-1|         |         |         |         |         |
-#s:16|Garden|15|-1|-1|-1| /\ /\ /\|//\\/\\/\|//\\/\\/\| II II II|_________|
+#p:1|knigth|^C>|11|5|3|
+
+#c:2|phantom|(o)|123|5|0|I won't talk to you!|
+#c:3|Mage|^M*|14|5|1|Abra cadabra|
+
+#l:31|Entry South|11|12|1|1|
+#l:32|Corridor North|12|11|0|1|
+#l:33|Corridor West|12|121|3|0|
+#l:34|Corridor South|12|13|1|1|
+#l:35|Dungeon South|121|16|1|1|
+#l:36|Dungeon East|121|12|2|0|
+#l:37|Living Room North|13|12|0|1|
+#l:38|Living Room South|13|14|1|1|
+#l:39|Living Room East|13|131|2|1|
+#l:40|Bedroom East|131|132|2|1|
+#l:41|Bedroom West|131|13|3|1|
+#l:42|Bathroom West|132|131|3|1|
+#l:43|Kitchen North|14|13|0|1|
+#l:44|Kitchen South|14|15|1|1|
+#l:45|Backyard North|15|14|0|1|
+#l:46|Backyard South|15|16|1|1|
+#l:47|Garden North|16|15|0|1|
+#l:48|Garden West|121|16|3|0|
+
+#s:11|Entry|  _____  | /  !  \ | !  !  ! | ! 0!0 ! |_!__!__!_|
+#s:12|Corridor|  ./T\.  |.__. .__.|!  ! !()!|! 0! !__!|!__!_____|
+#s:121|Dungeon|  ______.| / ___ \!| !!+++!!!|\!!+++!!!|_!!+++!!0|
+#s:13|Living Room|  -+-->  | _______ | ! ___ ! | !! S !! |_!!_#_!!_|
+#s:131|Bedroom|         |         |         |         |         |
+#s:132|Bathroom         |         |         |         |         |
+#s:14|Kitchen|         |         |         |         |         |
+#s:15|Backyard|         |         |         |         |         |
+#s:16|Garden| /\ /\ /\|//\\/\\/\|//\\/\\/\| II II II|_________|
 
 #o:21|Sword|11
 #o:22|Shield|13
 #o:23|Hamburger|14
 #o:24|Potion|132
+#o:25|Key|16

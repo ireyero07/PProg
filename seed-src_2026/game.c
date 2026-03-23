@@ -519,6 +519,16 @@ Status game_set_last_chat(Game *game, const char *msg){
 
   return OK;
 }
+/**
+ * @brief Gets the id of the destination space from a link
+ */
+Id game_get_connection(Game *game, Id space_act_id, Direction link_direction){
+  if(game==NULL||space_act_id==NO_ID||((link_direction!=N)&&(link_direction!=S)&&(link_direction!=E)&&(link_direction!=W))){
+    return NO_ID;
+  }
+  /*F5*/
+
+}
 
 /*-------------------PRINT-----------------------*/
 /**
