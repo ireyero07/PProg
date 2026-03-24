@@ -338,7 +338,7 @@ Status game_reader_load(Game *game, const char *filename)
         character_set_health(character, health);
         character_set_friendly(character, friendly);
         character_set_message(character, char_msg);
-        space=(game, idSpace);
+        space=game_get_space(game, idSpace);
         if(space!=NULL){
         space_add_character(space, idCharacter);
         }

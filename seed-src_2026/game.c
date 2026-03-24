@@ -73,56 +73,6 @@ Game *game_create()
   game->n_characters = 0;
   game->n_links = 0;
 
-  /* ---------------- PLAYER ---------------- */
-
-  game->player = player_create(1, 10);
-  if (!game->player)
-  {
-    free(game);
-    return NULL;
-  }
-
-  player_set_health(game->player, 5);
-  player_set_gdesc(game->player, "^C>");
-
-  /* ---------------- CHARACTER 1 (FRIEND) ---------------- */
-
-  character = character_create(2);
-  if (!character)
-  {
-    player_destroy(game->player);
-    free(game);
-    return NULL;
-  }
-
-  character_set_health(character, 3);
-  character_set_friendly(character, TRUE);
-  character_set_message(character, "Bienvenido a esta apasionante aventura");
-  character_set_location(character, 13);
-  character_set_gdesc(character, "(o)");
-  character_set_name(character, "Friend");
-
-  game->character[game->n_characters] = character;
-  game->n_characters++;
-
-  /* ---------------- CHARACTER 2 (ENEMY) ---------------- */
-
-  character = character_create(3);
-  if (!character)
-  {
-    player_destroy(game->player);
-    free(game);
-    return NULL;
-  }
-
-  character_set_health(character, 2);
-  character_set_friendly(character, FALSE);
-  character_set_location(character, 14);
-  character_set_gdesc(character, "^M*");
-  character_set_name(character, "Enemy");
-
-  game->character[game->n_characters] = character;
-  game->n_characters++;
 
   /* ---------------- COMMAND ---------------- */
 
@@ -140,6 +90,7 @@ Game *game_create()
   game->last_action_status = ERROR;
 
   strcpy(game->last_chat, "");
+  strcpy(game->last_obj_desc, "");
 
   return game;
 }
