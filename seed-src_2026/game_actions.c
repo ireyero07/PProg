@@ -39,6 +39,7 @@ void game_actions_exit(Game *game);
  * @author Jian Feng Yin Chen
  *
  * @param game Pointer to the game to be updated
+ * @param cmd Pointer to the command that has been entered
  */
 void game_actions_take(Game *game, Command *cmd);
 
@@ -71,8 +72,18 @@ void game_actions_chat(Game *game);
  * @author Ivan Mijangos Alvarez
  *
  * @param game Pointer to the game to be updated.
+ * @param cmd Pointer to the command that has been entered
  */
 void game_actions_move(Game *game, Command *cmd);
+
+/**
+ * @brief Command for inspecting an object
+ * @author Ivan Mijangos Alvarez
+ *
+ * @param game Pointer to the game to be updated.
+ * @param cmd Pointer to the command that has been entered
+ */
+void game_actions_inspect(Game *game, Command *cmd);
 
 /**
    Game actions implementation
@@ -112,6 +123,10 @@ Status game_actions_update(Game *game, Command *command) {
 
     case MOVE:
     game_actions_move(game, command);
+    break;
+
+    case INSPECT:
+    game_actions_inspect(game, command);
     break;
 
     default:
@@ -158,23 +173,31 @@ void game_actions_take(Game *game, Command *cmd){
   }
 }
 
-void game_actions_drop(Game *game){
+void game_actions_drop(Game *game, Command *cmd){
   Id player_location = NO_ID;
   Id obj_id = NO_ID;
-  Id *objs = NULL;
+  Space *space = NULL;
+  Player *player = NULL;
+  const char *object_name;
 
-  if (!game) {
+  if (!game || !cmd) {
+    return;
+  }
+  
+  object_name = command_get_arg(cmd);
+  if(!object_name) {
+    game_set_last_action(game, ERROR);
     return;
   }
 
   player_location = game_get_player_location(game);
-  
-  if (player_get_objects(game_get_player(game)) != NULL && inventory_get_number_objects(player_get_backpack(game_get_player(game))) > 0) {
-    objs = player_get_objects(game_get_player(game));
-    obj_id = objs[0];
-    player_del_object(game_get_player(game), obj_id);
+  space = game_get_space(game, player_location);
+  player = game_get_player(game);
+  obj_id = game_get_object_id_by_name(game,object_name);
 
-    space_add_object(game_get_space(game, player_location), obj_id);
+  if (obj_id != NO_ID  && player_has_object(player, obj_id) == TRUE) {
+    space_add_object(space, obj_id);
+    player_del_object(player, obj_id);
     game_set_last_action(game, OK);
   } else {
     game_set_last_action(game, ERROR);
@@ -301,4 +324,37 @@ void game_actions_move(Game *game, Command *cmd){
   }
   
   return;
+}
+
+void game_actions_inspect(Game *game, Command *cmd){
+  Id player_location = NO_ID;
+  Id obj_id = NO_ID;
+  Space *space = NULL;
+  Player *player;
+  const char *object_name;
+
+  if(!game || !cmd){
+    return;
+  }
+  
+  object_name = command_get_arg(cmd);
+  if(!object_name) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+  player_location = game_get_player_location(game);
+  space = game_get_space(game, player_location);
+  obj_id = game_get_object_id_by_name(game,object_name);
+  player = game_get_player(game);
+
+  if (obj_id != NO_ID  && (space_has_object(space, obj_id) == TRUE || player_has_object(player, obj_id))) {
+    game_set_last_obj_desc(game, object_get_description(game_get_object(game, obj_id)));
+    printf("%s",object_get_description(game_get_object(game, obj_id)));
+    game_set_last_action(game, OK);
+  } else {
+    game_set_last_action(game, ERROR);
+  }
+
+  game_set_last_command(game, cmd);
 }

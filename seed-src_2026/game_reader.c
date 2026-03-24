@@ -78,12 +78,17 @@ Status game_reader_load(Game *game, const char *filename) {
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
   char gdesc[GDESC_LINES][GDESC_LENGTH + 1] = {""};
+  char player_gdesc[MAX_PLAYER_GDESC+1];
+  char character_gdesc[MAX_CHR_GDESC+1];
+  char char_msg[WORD_SIZE+1];
   char *toks = NULL;
-  Id idSpace = NO_ID, idObject = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
+  Id idCharacter = NO_ID, idSpace = NO_ID, idObject = NO_ID, idPlayer = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
   Space *space = NULL;
   Object *object = NULL;
+  Player *player = NULL;
+  Character *character = NULL;
   Status status = OK;
-  int i, numobjects = 0;
+  int i, health=0, backpack_capacity=0, numobjects=0, friendly;
 
   /* Error control */
   if (!game || !filename) {
@@ -109,7 +114,7 @@ Status game_reader_load(Game *game, const char *filename) {
       if (!toks) { status = ERROR; break; }
       strncpy(name, toks, WORD_SIZE - 1);
       name[WORD_SIZE - 1] = '\0';
-
+      
       toks = strtok(NULL, "|");
       north = atol(toks);
 
@@ -155,7 +160,7 @@ Status game_reader_load(Game *game, const char *filename) {
 
         game_add_space(game, space);
       }
-    } 
+    }
 
     /* Check if the line defines an object */
     else if (strncmp("#o:", line, 3) == 0) {
@@ -206,7 +211,7 @@ Status game_reader_load(Game *game, const char *filename) {
 
       /* Divide the player data */
       toks = strtok(line + 3, "|");
-      idSpace = atol(toks);
+      idPlayer = atol(toks);
 
       toks = strtok(NULL, "|");
       if (!toks) { status = ERROR; break; }
@@ -214,49 +219,76 @@ Status game_reader_load(Game *game, const char *filename) {
       name[WORD_SIZE - 1] = '\0';
 
       toks = strtok(NULL, "|");
-      north = atol(toks);
+      strncpy(player_gdesc, MAX_PLAYER_GDESC, toks);
+      player_gdesc[MAX_PLAYER_GDESC+1]='\0';
+      toks = strtok(NULL, "|");
+      idSpace=atol(toks);
 
       toks = strtok(NULL, "|");
-      east = atol(toks);
+      health = atoi(toks);
 
       toks = strtok(NULL, "|");
-      south = atol(toks);
-
-      toks = strtok(NULL, "|");
-      west = atol(toks);
-
-      for(i = 0; i < GDESC_LINES; i++){
-        toks = strtok(NULL, "|");
-        if (toks) {
-          strncpy(gdesc[i],toks,GDESC_LENGTH);
-          gdesc[i][GDESC_LENGTH] = '\0';
-        }
-        else {
-          gdesc[i][0] = '\0';
-        }
-      }
+      backpack_capacity = atoi(toks);
 
 #ifdef DEBUG
-      printf("Read: s:%ld|%s|%ld|%ld|%ld|%ld|%s|%s|%s|%s|%s|\n",
-             idSpace, name, north, east, south, west, gdesc[0],  gdesc[1], gdesc[2], gdesc[3], gdesc[4]);
+      printf("Read: p:%ld|%s|%s|%ld|%d|%d|\n",
+             idPlayer, name, player_gdesc, idSpace, health, backpack_capacity);
 #endif
 
-      /* Create the space and add it to the game */
-      space = space_create(idSpace);
-      if (space != NULL) {
-        space_set_name(space, name);
-        space_set_north(space, north);
-        space_set_east(space, east);
-        space_set_south(space, south);
-        space_set_west(space, west);
-        
-        for(i = 0; i < GDESC_LINES; i++){
-          if(gdesc[i][0] != '\0'){
-            space_set_gdesc(space,gdesc[i],i);
-          }
-        }
+      /* Create the player and add it to the game */
+      player = player_create(idPlayer, backpack_capacity);
+      if (player != NULL) {
+        player_set_name(player, name);
+        player_set_gdesc(player, gdesc);
+        player_set_location(player, idSpace);
+        player_set_health(player, health);
+        game_add_player(game, player);
+      }
+    }
 
-        game_add_space(game, space);
+    /*LOAD CHARACTERS*/
+    else if (strncmp("#c:", line, 3) == 0) {
+
+      /* Divide the character data */
+      toks = strtok(line + 3, "|");
+      idCharacter = atol(toks);
+
+      toks = strtok(NULL, "|");
+      if (!toks) { status = ERROR; break; }
+      strncpy(name, toks, WORD_SIZE - 1);
+      name[WORD_SIZE - 1] = '\0';
+
+      toks = strtok(NULL, "|");
+      strncpy(character_gdesc, MAX_CHR_GDESC, toks);
+      character_gdesc[MAX_CHR_GDESC+1]='\0';
+      toks = strtok(NULL, "|");
+      idSpace=atol(toks);
+
+      toks = strtok(NULL, "|");
+      health = atoi(toks);
+
+      toks = strtok(NULL, "|");
+      friendly = atoi(toks);
+
+      toks = strtok(NULL, "|");
+      strncpy(char_msg, WORD_SIZE, toks);
+      char_msg[WORD_SIZE+1]='\0';
+
+#ifdef DEBUG
+      printf("Read: p:%ld|%s|%s|%ld|%d|%d|%s|\n",
+             idCharacter, name, character_gdesc, idSpace, health, friendly, char_msg);
+#endif
+
+      /* Create the character and add it to the game */
+      character = character_create(idCharacter);
+      if (character != NULL) {
+        character_set_name(character, name);
+        character_set_gdesc(character, character_gdesc);
+        character_set_location(character, idSpace);
+        character_set_health(character, health);
+        character_set_friendly(character, friendly);
+        character_set_message(character, char_msg);
+        game_add_character(game, character);
       }
     } 
   }

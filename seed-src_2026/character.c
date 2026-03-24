@@ -22,7 +22,7 @@
 struct _Character {
   Id id;                         /*!< Id number of the character */
   char name[WORD_SIZE + 1];      /*!< Name of the character */
-  char gdesc[6];                  /*!< Graphic description of the character */
+  char gdesc[MAX_CHR_GDESC + 1];      /*!< Graphic description of the character */
   int health;                     /*!< Health of the character */
   Bool friendly;                  /*!< if the character is friendly */ 
   char message[WORD_SIZE + 1];   /*!< The message of the character */

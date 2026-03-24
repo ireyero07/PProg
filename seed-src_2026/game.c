@@ -35,6 +35,7 @@ struct _Game {
   Bool finished;                 /*!< Flag that indicates if the game has finished */
   Status last_action_status;     /*!< Status of the last action */
   char last_chat[WORD_SIZE];     /*!< Stores the last chat message generated in the game */
+  char last_obj_desc[WORD_SIZE]; /*!< Stores the last object description (inspect) generated in the game */
 };
 
 
@@ -347,6 +348,25 @@ Object *game_get_object_by_position(Game *game, int pos) {
 
 /*-------------------CHARACTER-----------------------*/
 /**
+ * @brief It adds a character to the game
+ */
+Status game_add_character(Game *game, Character *character) {
+
+  if (!game || !character) {
+    return ERROR;
+  }
+  if (game->n_characters >= MAX_CHARACTERS) {
+    return ERROR;
+  }
+
+  game->character[game->n_characters] = character;
+  game->n_characters++;
+
+  return OK;
+}
+
+
+/**
  * @brief It gets the character of the game
  */
 Character *game_get_character(Game *game, Id id) {
@@ -420,6 +440,22 @@ Character *game_get_character_by_space(Game *game, Id space_id) {
 }
 
 /*-------------------PLAYER-----------------------*/
+/**
+ * @brief It adds a player to the game
+ */
+Status game_add_player(Game *game, Player *player) {
+
+  if (!game || !player) {
+    return ERROR;
+  }
+  
+  game->player = player;
+
+  return OK;
+}
+
+
+
 /**
  * @brief It gets the player of the game
  */
@@ -571,6 +607,29 @@ Status game_set_last_chat(Game *game, const char *msg){
   return OK;
 }
 
+/*-----------------LAST DESCRIPTION---------------------*/
+/**
+ * @brief Gets the last chat message stored in the game.
+ */
+char *game_get_last_obj_desc(Game *game){
+
+  if(!game)
+    return NULL;
+
+  return game->last_obj_desc;
+}
+
+/**
+ * @brief Sets the last chat message generated in the game.
+ */
+Status game_set_last_obj_desc(Game *game, const char *desc){
+  if(!game || !desc)
+    return ERROR;
+
+  strcpy(game->last_obj_desc, desc);
+
+  return OK;
+}
 /*-------------------PRINT-----------------------*/
 /**
  * @brief It prints the game information

@@ -322,10 +322,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Status result;
   const char *result_str;
   char str[255], *chat;
+  char str[255], *desc;
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
   int i;
   Object *obj = NULL;
+  Object *obj_to_desc = NULL;
   Character *ch = NULL;
   Space *space_act = NULL;
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID;
@@ -434,6 +436,20 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     }
   }
 
+  /* ---------- OBJECT DESCRIPTION (INSPECT) ---------- */
+  screen_area_puts(ge->descript, "Object description:");
+  desc = game_get_last_obj_desc(game);
+
+  if (desc && strlen(desc) > 0) {
+    if (command_get_code(game_get_last_command(game)) == INSPECT) {      
+      sprintf(str, " The description of %s is: %s", game_get_object(game, command_get_arg(game_get_last_command)), desc);
+      screen_area_puts(ge->descript, str);
+      
+    } else {
+      game_set_last_obj_desc(game, "");
+    }
+  }
+
 
   /* Paint in the banner area */
   screen_area_puts(ge->banner, " The haunted castle game ");
@@ -459,7 +475,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_puts(ge->feedback, str);
 
   /* Dump to the terminal */
-  screen_paint();
+  screen_paint(0);
   if (player_get_health(player) <= 0) {
     fprintf(stdout, "Game Over (╥﹏╥)\n");
     game_set_finished(game, TRUE);

@@ -21,7 +21,7 @@
  */
 struct _Player {
   Id id;                        /*!< Id number of the player */
-  char gdesc[6];                /*!< Graphic description of the player */
+  char gdesc[MAX_PLAYER_GDESC];  /*!< Graphic description of the player */
   int health;                   /*!< Health of the player */
   char name[WORD_SIZE + 1];      /*!< Name of the player */
   Id location;                   /*!< Space where the player is located */

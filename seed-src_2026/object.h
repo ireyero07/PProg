@@ -10,6 +10,7 @@
 
 #ifndef OBJECT_H
 #define OBJECT_H
+#define MAX_DESC 200
 
 #include "types.h"
 
@@ -60,6 +61,26 @@ Status object_set_name(Object* object, char* name);
  * @return  a string with the name of the object
  */
 const char* object_get_name(Object* object);
+
+/**
+ * @brief It sets the description of an object
+ * @author Ivan Mijangos
+ *
+ * @param object a pointer to the object
+ * @param description a string with the description to store
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status object_set_description(Object* object, char* description);
+
+/**
+ * @brief It gets the description of an object
+ * @author Ivan Mijangos
+ *
+ * @param object a pointer to the object
+ * @return  a string with the description of the object
+ */
+const char* object_get_description(Object* object);
+
 
 /**
  * @brief It prints the object information

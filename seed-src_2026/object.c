@@ -22,6 +22,7 @@
 struct _Object {
   Id id;                    /*!< Id number of the object, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the object */
+  char description[MAX_DESC];
 };
 
 
@@ -90,6 +91,30 @@ const char* object_get_name(Object* object) {
     return NULL;
   }
   return object->name;
+}
+
+/*
+* @brief It sets the description of an object
+*/
+Status object_set_description(Object* object, char* description) {
+  if (!object || !description) {
+    return ERROR;
+  }
+
+  if (!strcpy(object->description, description)) {
+    return ERROR;
+  }
+  return OK;
+}
+
+/*
+* @brief It gets the description of an object
+*/
+const char* object_get_description(Object* object){
+  if(!object){
+    return NULL;
+  }
+  return object->description;
 }
 
 /*

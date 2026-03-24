@@ -2,6 +2,8 @@ EXE=castle
 CC=gcc
 CFLAGS= -Wall -ansi -pedantic
 
+#############################################################################
+
 all: $(EXE)
 
 $(EXE): command.o game_actions.o game_loop.o game_reader.o game.o graphic_engine.o inventory.o object.o player.o space.o set.o character.o link.o
@@ -46,6 +48,8 @@ set.o: set.c set.h types.h
 character.o: character.c character.h types.h
 	$(CC) $(CFLAGS) -c character.c
 
+#############################################################################
+
 space_test.o: space_test.c space_test.h space.h types.h
 	$(CC) $(CFLAGS) -c space_test.c
 
@@ -55,23 +59,14 @@ space_test: space_test.o space.o set.o
 test_space: space_test
 	./space_test
 
-character_test.o: character_test.c character_test.h character.h types.h
-	$(CC) $(CFLAGS) -c character_test.c
+object_test.o: object_test.c object_test.h object.h types.h
+	$(CC) $(CFLAGS) -c object_test.c
 
-character_test: character_test.o character.o
-	$(CC) $(CFLAGS) -o character_test character_test.o character.o
+object_test: object_test.o object.o
+	$(CC) $(CFLAGS) -o object_test object_test.o object.o
 
-test_character: character_test
-	./character_test
-
-set_test.o: set_test.c set_test.h set.h types.h
-	$(CC) $(CFLAGS) -c set_test.c
-
-set_test: set_test.o set.o
-	$(CC) $(CFLAGS) -o set_test set_test.o set.o
-
-test_set: set_test
-	./set_test
+test_object: object_test
+	./object_test
 
 player_test.o: player_test.c player_test.h player.h types.h
 	$(CC) $(CFLAGS) -c player_test.c
@@ -82,11 +77,51 @@ player_test: player_test.o player.o
 test_player: player_test
 	./player_test
 
+set_test.o: set_test.c set_test.h set.h types.h
+	$(CC) $(CFLAGS) -c set_test.c
+
+set_test: set_test.o set.o
+	$(CC) $(CFLAGS) -o set_test set_test.o set.o
+
+test_set: set_test
+	./set_test
+
+character_test.o: character_test.c character_test.h character.h types.h
+	$(CC) $(CFLAGS) -c character_test.c
+
+character_test: character_test.o character.o
+	$(CC) $(CFLAGS) -o character_test character_test.o character.o
+
+test_character: character_test
+	./character_test
+
+link_test.o: link_test.c link_test.h link.h types.h
+	$(CC) $(CFLAGS) -c link_test.c
+
+link_test: link_test.o link.o
+	$(CC) $(CFLAGS) -o link_test link_test.o link.o
+
+test_link: link_test
+	./link_test
+
+inventory_test.o: inventory_test.c inventory_test.h inventory.h types.h
+	$(CC) $(CFLAGS) -c inventory_test.c
+
+inventory_test: inventory_test.o inventory.o
+	$(CC) $(CFLAGS) -o inventory_test inventory_test.o inventory.o
+
+test_inventory: inventory_test
+	./inventory_test
+
+#############################################################################
+
 clear:
 	rm -rf *.o 
 
 clean:
 	rm -rf *.o $(EXE) space_test character_test set_test
+
+#############################################################################
 
 run:
 	./castle castle.dat
