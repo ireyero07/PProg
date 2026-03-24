@@ -21,7 +21,7 @@
  */
 struct _Player {
   Id id;                        /*!< Id number of the player */
-  char gdesc[MAX_PLAYER_GDESC];  /*!< Graphic description of the player */
+  char gdesc[MAX_PLAYER_GDESC+1];  /*!< Graphic description of the player */
   int health;                   /*!< Health of the player */
   char name[WORD_SIZE + 1];      /*!< Name of the player */
   Id location;                   /*!< Space where the player is located */
@@ -171,7 +171,8 @@ const char* player_get_gdesc(Player* player){
 Status player_set_gdesc(Player* player, char* gdesc){
   if (!player || !gdesc) return ERROR;
 
-  strcpy(player->gdesc,gdesc);
+  strncpy(player->gdesc,gdesc, MAX_PLAYER_GDESC);
+  player->gdesc[MAX_PLAYER_GDESC]='\0';
   return OK;
 }
 

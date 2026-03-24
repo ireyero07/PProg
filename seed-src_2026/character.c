@@ -117,7 +117,8 @@ Status character_set_name(Character* character, char* name){
 Status character_set_gdesc(Character* character, char* gdesc){
   if (!character || !gdesc) return ERROR;
 
-  strcpy(character->gdesc,gdesc);
+  strncpy(character->gdesc, gdesc, MAX_CHR_GDESC);
+  character->gdesc[MAX_CHR_GDESC]='\0';
   return OK;
 }
 
