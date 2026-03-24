@@ -49,7 +49,7 @@ void game_actions_take(Game *game, Command *cmd);
  *
  * @param game Pointer to the game to be updated
  */
-void game_actions_drop(Game *game);
+void game_actions_drop(Game *game, Command *cmd);
 
 /**
  * @brief The player attacks to the character
@@ -110,7 +110,7 @@ Status game_actions_update(Game *game, Command *command) {
       break;
 
     case DROP:
-      game_actions_drop(game);
+      game_actions_drop(game, command);
       break;
 
     case ATTACK:
@@ -296,19 +296,19 @@ void game_actions_move(Game *game, Command *cmd){
 
   if(strcmp(arg, "north") == 0 || strcmp(arg, "n") == 0){
 
-    current_id = space_get_north(game_get_space(game, space_id));
+    current_id = game_get_connection(game, space_id, N);
 
   } else if (strcmp(arg, "east") == 0 || strcmp(arg, "e") == 0){
 
-    current_id = space_get_east(game_get_space(game, space_id));
+    current_id = game_get_connection(game, space_id, E);
 
   } else if (strcmp(arg, "south") == 0 || strcmp(arg, "s") == 0){
 
-    current_id = space_get_south(game_get_space(game, space_id));
+    current_id = game_get_connection(game, space_id, S);
 
   } else if (strcmp(arg, "west") == 0 || strcmp(arg, "w") == 0){
 
-    current_id = space_get_west(game_get_space(game, space_id));
+    current_id = game_get_connection(game, space_id, W);
 
   } else {
 

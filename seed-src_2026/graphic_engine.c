@@ -322,7 +322,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Status result;
   const char *result_str;
   char str[255], *chat;
-  char str[255], *desc;
+  char str_desc[255], *desc;
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
   int i;
@@ -442,7 +442,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   if (desc && strlen(desc) > 0) {
     if (command_get_code(game_get_last_command(game)) == INSPECT) {      
-      sprintf(str, " The description of %s is: %s", game_get_object(game, command_get_arg(game_get_last_command)), desc);
+      sprintf(str_desc, " The description of %s is: %s", object_get_name(game_get_object(game, game_get_object_id_by_name(game, command_get_arg(game_get_last_command(game))))), desc);
       screen_area_puts(ge->descript, str);
       
     } else {

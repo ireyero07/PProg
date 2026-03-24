@@ -46,7 +46,6 @@ Game *game_create()
 {
   int i;
   Game *game = NULL;
-  Character *character;
   srand(time(NULL));
 
   game = (Game *)malloc(sizeof(Game));

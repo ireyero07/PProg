@@ -162,7 +162,7 @@ Object *game_get_object_by_position(Game *game, int pos);
  * @param character a pointer to the character that you want to add
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status game_add_character(Game *game, Player *character);
+Status game_add_character(Game *game, Character *character);
 
 /**
  * @brief It gets the character of the game
