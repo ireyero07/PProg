@@ -87,7 +87,7 @@ Status game_reader_load(Game *game, const char *filename)
   char char_msg[WORD_SIZE];
   char *toks = NULL;
   Id idLink = NO_ID, idCharacter = NO_ID, idSpace = NO_ID, idFinal = NO_ID, idObject = NO_ID;
-  Id idPlayer = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
+  Id idPlayer = NO_ID;
   Space *space = NULL;
   Object *object = NULL;
   Player *player = NULL;
@@ -128,18 +128,6 @@ Status game_reader_load(Game *game, const char *filename)
       strncpy(name, toks, WORD_SIZE - 1);
       name[WORD_SIZE - 1] = '\0';
 
-      toks = strtok(NULL, "|");
-      north = atol(toks);
-
-      toks = strtok(NULL, "|");
-      east = atol(toks);
-
-      toks = strtok(NULL, "|");
-      south = atol(toks);
-
-      toks = strtok(NULL, "|");
-      west = atol(toks);
-
       for (i = 0; i < GDESC_LINES; i++)
       {
         toks = strtok(NULL, "|");
@@ -164,11 +152,7 @@ Status game_reader_load(Game *game, const char *filename)
       if (space != NULL)
       {
         space_set_name(space, name);
-        space_set_north(space, north);
-        space_set_east(space, east);
-        space_set_south(space, south);
-        space_set_west(space, west);
-
+        
         for (i = 0; i < GDESC_LINES; i++)
         {
           if (gdesc[i][0] != '\0')
