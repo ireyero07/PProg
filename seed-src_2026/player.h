@@ -14,6 +14,7 @@
 #include "types.h"
 #include "inventory.h"
 #define MAX_PLAYER_GDESC 6
+#define MAX_PLAYERS 8
 
 typedef struct _Player Player;
 

@@ -23,7 +23,9 @@
  */
 struct _Game
 {
-  Player *player;                       /*!< Pointer to the player of the game */
+  Player *players[MAX_PLAYERS];         /*!< Pointer to the player of the game */
+  int n_players;                        /*!< Number of player in the game */
+  Interface_Data *intdata[MAX_PLAYERS]; /*!< Array of pointers to the interface data of each player */
   Object *object[MAX_OBJECTS];          /*!< Array of pointers to the object of the game */
   int n_objects;                        /*!< Number of objects currently in the game */
   Character *character[MAX_CHARACTERS]; /*!< Array of pointers to the character of the game */
@@ -32,10 +34,7 @@ struct _Game
   int n_spaces;                         /*!< Number of spaces currently in the game */
   Link *links[MAX_LINKS];               /*!< Array of pointers to the links of the game */
   int n_links;                          /*!< Number of links currently in the game */
-  Command *last_cmd;                    /*!< Last command introduced by the player */
   Bool finished;                        /*!< Flag that indicates if the game has finished */
-  Status last_action_status;            /*!< Status of the last action */
-  char last_chat[WORD_SIZE];            /*!< Stores the last chat message generated in the game */
   char last_obj_desc[WORD_SIZE];        /*!< Stores the last object description (inspect) generated in the game */
 };
 
@@ -52,7 +51,16 @@ Game *game_create()
   if (!game)
     return NULL;
 
-  game->player = NULL;
+  for (i = 0; i < MAX_PLAYERS; i++)
+  {
+    game->players[i] = NULL;
+  }
+
+  for (i = 0; i < MAX_PLAYERS; i++)
+  {
+    game->players[i] = NULL;
+  }
+
   game->last_cmd = NULL;
 
   for (i = 0; i < MAX_SPACES; i++)
@@ -67,18 +75,18 @@ Game *game_create()
   for (i = 0; i < MAX_LINKS; i++)
     game->links[i] = NULL;
 
+  game->n_players = 0;
   game->n_spaces = 0;
   game->n_objects = 0;
   game->n_characters = 0;
   game->n_links = 0;
-
 
   /* ---------------- COMMAND ---------------- */
 
   game->last_cmd = command_create();
   if (!game->last_cmd)
   {
-    player_destroy(game->player);
+    /*Puede ser que haga falta un player destroy*/
     free(game);
     return NULL;
   }
@@ -111,7 +119,10 @@ Status game_destroy(Game *game)
   }
 
   /* Destroy the player */
-  player_destroy(game->player);
+  for (i = 0; i < game->n_players; i++)
+  {
+    player_destroy(game->players[i]);
+  }
 
   /* Destroy the objects */
   for (i = 0; i < game->n_objects; i++)

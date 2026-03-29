@@ -16,11 +16,12 @@
 #define MAX_CHARACTERS 10
 #define MAX_LINKS 100
 
-#include "command.h"
-#include "space.h"
-#include "types.h"
 #include "player.h"
+#include "space.h"
 #include "object.h"
+#include "command.h"
+#include "interface_data.h"
+#include "types.h"
 #include "character.h"
 #include "link.h"
 
