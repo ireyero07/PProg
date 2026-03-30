@@ -23,7 +23,7 @@ struct _Interface_Data
 {
     Command *last_cmd;         /*!< The last command */
     Status last_action_status; /*!< Status of the last action */
-    char last_chat[WORD_SIZE]; /*!< Stores the last chat message generated in the game */
+    char last_chat[WORD_SIZE+1]; /*!< Stores the last chat message generated in the game */
 };
 
 /**
@@ -38,28 +38,70 @@ Interface_Data *interface_data_create()
     {
         return NULL;
     }
-
+    intdat->last_action_status = OK;
+    intdat->last_cmd=NULL;
+    intdat->last_chat[0]='\0';
     return intdat;
 }
-Status interface_data_free(Interface_Data *intdata)
+Status interface_data_free(Interface_Data *intdat)
 {
+    if (intdat==NULL){
+        return ERROR;
+    }
+    command_destroy(intdat->last_cmd);
+    free(intdat);
+    return OK;
 }
 
 Status interface_data_set_last_cmd(Interface_Data *intdat, Command *cmd)
 {
+    if(intdat==NULL||cmd==NULL){
+        return ERROR;
+    }
+    intdat->last_cmd=cmd;
+    return OK;
 }
+
 Command *interface_data_get_last_cmd(Interface_Data *intdat)
 {
+    if(intdat==NULL){
+        return NULL;
+    }
+    return intdat->last_cmd;
 }
+
 Status interface_data_set_last_action_status(Interface_Data *intdat, Status status)
 {
+    if(intdat==NULL||((status!=OK)&&(status!=ERROR))){
+        return ERROR;
+    }
+    intdat->last_action_status=status;
+    return OK;
 }
-Status interface_data_get_last_action_status(Interface_Data *intdat)
+
+Status interface_data_get_last_action_status(Interface_Data *intdat, Status *status)
 {
+    if(intdat==NULL || status==NULL){
+        return ERROR;
+    }
+    *status = intdat->last_action_status;
+    return OK;
 }
+
 Status interface_data_set_last_chat(Interface_Data *intdat, char *message)
 {
+    if(intdat==NULL||message==NULL){
+        return ERROR;
+    }
+    strncpy(intdat->last_chat, message, WORD_SIZE);
+    intdat->last_chat[WORD_SIZE] = '\0';
+    return OK;
 }
+
 char *interface_data_get_last_chat(Interface_Data *intdat)
 {
+    if(intdat==NULL){
+        return NULL;
+    }
+    return intdat->last_chat;
 }

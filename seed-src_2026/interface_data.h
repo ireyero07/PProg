@@ -32,7 +32,7 @@ Interface_Data *interface_data_create();
  * @param intdata Pointer to the Interface_Data structure to free.
  * @return OK if the operation was successful, or ERROR if the pointer is NULL.
  */
-Status interface_data_free(Interface_Data *intdata);
+Status interface_data_free(Interface_Data *intdat);
 
 /**
  * @brief Sets the last command executed.
@@ -72,9 +72,10 @@ Status interface_data_set_last_action_status(Interface_Data *intdat, Status stat
  *
  * Retrieves the status of the last game action stored in the Interface_Data structure.
  * @param intdat Pointer to the Interface_Data structure.
+ * @param status Pointer to the status of an action
  * @return The Status value of the last action, or ERROR if intdat is NULL.
  */
-Status interface_data_get_last_action_status(Interface_Data *intdat);
+Status interface_data_get_last_action_status(Interface_Data *intdat, Status *status);
 
 /**
  * @brief Sets the last chat message received.
