@@ -39,7 +39,11 @@ Interface_Data *interface_data_create()
         return NULL;
     }
     intdat->last_action_status = OK;
-    intdat->last_cmd = NULL;
+    intdat->last_cmd = command_create();
+    if (intdat->last_cmd==NULL){
+        free(intdat);
+        return NULL;
+    }
     intdat->last_chat[0] = '\0';
     return intdat;
 }
@@ -49,17 +53,20 @@ Status interface_data_free(Interface_Data *intdat)
     {
         return ERROR;
     }
+    if(intdat->last_cmd!=NULL){
+        command_destroy(intdat->last_cmd);
+    }
     free(intdat);
     return OK;
 }
 
-Status interface_data_set_last_cmd(Interface_Data *intdat, Command *cmd)
+Status interface_data_set_last_cmd(Interface_Data *intdat, CommandCode code)
 {
-    if (intdat == NULL || cmd == NULL)
+    if (intdat == NULL || intdat->last_cmd==NULL)
     {
         return ERROR;
     }
-    intdat->last_cmd = cmd;
+    command_set_code(intdat->last_cmd, code);
     return OK;
 }
 

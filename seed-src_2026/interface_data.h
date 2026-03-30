@@ -40,10 +40,10 @@ Status interface_data_free(Interface_Data *intdat);
  *
  * Stores a pointer to the last Command executed in the Interface_Data structure.
  * @param intdat Pointer to the Interface_Data structure.
- * @param cmd Pointer to the Command structure to store.
+ * @param code The code of the command
  * @return OK if the operation was successful, or ERROR if any pointer is NULL.
  */
-Status interface_data_set_last_cmd(Interface_Data *intdat, Command *cmd);
+Status interface_data_set_last_cmd(Interface_Data *intdat, CommandCode code);
 
 /**
  * @brief Gets the last command executed.
@@ -86,7 +86,7 @@ Status interface_data_get_last_action_status(Interface_Data *intdat, Status *sta
  * @param message Pointer to the message string to store.
  * @return OK if the operation was successful, or ERROR if any pointer is NULL.
  */
-Status interface_data_set_last_chat(Interface_Data *intdat, char *message);
+Status interface_data_set_last_chat(Interface_Data *intdat, const char *message);
 
 /**
  * @brief Gets the last chat message received.
