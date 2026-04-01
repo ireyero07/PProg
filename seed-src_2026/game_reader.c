@@ -43,6 +43,7 @@ Status game_reader_load(Game *game, const char *filename);
 Status game_reader_create_from_file(Game **game, char *filename)
 {
   Space *space = NULL;
+  int i, n_players;
 
   if (!game || !filename)
     return ERROR;
@@ -67,8 +68,18 @@ Status game_reader_create_from_file(Game **game, char *filename)
     *game = NULL;
     return ERROR;
   }
+  n_players = game_get_n_players(*game);
+  if (n_players < 0)
+  {
+    return ERROR;
+  }
 
-  game_set_player_location(*game, space_get_id(space));
+  while (i < n_players)
+  {
+    game_set_player_location(*game, space_get_id(space), player_get_id(game_get_player(*game)));
+    game_next_turn(*game);
+    i++;
+  }
   space_set_discovered(space, TRUE);
 
   return OK;
@@ -153,7 +164,7 @@ Status game_reader_load(Game *game, const char *filename)
       if (space != NULL)
       {
         space_set_name(space, name);
-        
+
         for (i = 0; i < GDESC_LINES; i++)
         {
           if (gdesc[i][0] != '\0')
@@ -257,11 +268,14 @@ Status game_reader_load(Game *game, const char *filename)
       player = player_create(idPlayer, backpack_capacity);
       if (player != NULL)
       {
+
         player_set_name(player, name);
         player_set_gdesc(player, player_gdesc);
         player_set_location(player, idSpace);
         player_set_health(player, health);
-        game_add_player(game, player);
+        if(game_add_player(game, player)==ERROR){
+          player_destroy(player);
+        }
       }
     }
 
@@ -296,7 +310,7 @@ Status game_reader_load(Game *game, const char *filename)
 
       toks = strtok(NULL, "|");
       strncpy(char_msg, toks, WORD_SIZE);
-      char_msg[WORD_SIZE-1] = '\0';
+      char_msg[WORD_SIZE - 1] = '\0';
       numchr++;
 
 #ifdef DEBUG
@@ -323,11 +337,14 @@ Status game_reader_load(Game *game, const char *filename)
         character_set_health(character, health);
         character_set_friendly(character, friendly);
         character_set_message(character, char_msg);
-        space=game_get_space(game, idSpace);
-        if(space!=NULL){
-        space_add_character(space, idCharacter);
+        space = game_get_space(game, idSpace);
+        if (space != NULL)
+        {
+          space_add_character(space, idCharacter);
         }
-        game_add_character(game, character);
+        if(game_add_character(game, character)==ERROR){
+          character_destroy(character);
+        }
       }
     }
 
@@ -346,7 +363,7 @@ Status game_reader_load(Game *game, const char *filename)
         break;
       }
       strncpy(name, toks, WORD_SIZE - 1);
-      name[WORD_SIZE-1] = '\0';
+      name[WORD_SIZE - 1] = '\0';
 
       toks = strtok(NULL, "|");
       idSpace = atol(toks);
@@ -374,7 +391,10 @@ Status game_reader_load(Game *game, const char *filename)
         link_set_destination(link, idFinal);
         link_set_direction(link, direction);
         link_set_open(link, open);
-        game_add_link(game, link);
+        if(game_add_link(game, link)==ERROR){
+          link_destroy(link);
+        }
+
       }
     }
   }

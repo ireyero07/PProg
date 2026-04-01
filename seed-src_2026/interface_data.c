@@ -47,7 +47,7 @@ Interface_Data *interface_data_create()
     intdat->last_chat[0] = '\0';
     return intdat;
 }
-Status interface_data_free(Interface_Data *intdat)
+Status interface_data_destroy(Interface_Data *intdat)
 {
     if (intdat == NULL)
     {
@@ -60,13 +60,13 @@ Status interface_data_free(Interface_Data *intdat)
     return OK;
 }
 
-Status interface_data_set_last_cmd(Interface_Data *intdat, CommandCode code)
+Status interface_data_set_last_cmd(Interface_Data *intdat, Command *code)
 {
     if (intdat == NULL || intdat->last_cmd==NULL)
     {
         return ERROR;
     }
-    command_set_code(intdat->last_cmd, code);
+    intdat->last_cmd=code;
     return OK;
 }
 
@@ -89,14 +89,13 @@ Status interface_data_set_last_action_status(Interface_Data *intdat, Status stat
     return OK;
 }
 
-Status interface_data_get_last_action_status(Interface_Data *intdat, Status *status)
+Status interface_data_get_last_action_status(Interface_Data *intdat)
 {
-    if (intdat == NULL || status == NULL)
+    if (intdat == NULL)
     {
         return ERROR;
     }
-    *status = intdat->last_action_status;
-    return OK;
+    return intdat->last_action_status;
 }
 
 Status interface_data_set_last_chat(Interface_Data *intdat, const char *message)

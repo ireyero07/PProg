@@ -260,10 +260,49 @@ Id game_get_player_location(Game *game);
  * @author Ivan
  *
  * @param game a pointer to the game structure
- * @param id the id of the new player location
+ * @param space_id the id of the new player location
+ * @param player_id the id of the player
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status game_set_player_location(Game *game, Id id);
+
+Status game_set_player_location(Game *game, Id space_id, Id player_id);
+
+/**
+ * @brief It increases the turn in the game structure
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status game_next_turn(Game *game);
+
+/**
+ * @brief It returns the position in the array of the actual player
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return The position in the array of the actual player or -1 in case of ERROR
+ */
+int game_get_turn(Game *game);
+
+/**
+ * @brief It returns the number of players in a game
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return The number of player in the game or -1 in case of ERROR
+ */
+int game_get_n_players(Game *game);
+
+/**
+ * @brief It returns the player with the requested id
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param id the player id
+ * @return The player with that id
+ */
+Player *game_get_player_from_id(Game *game, Id id);
 
 /**
  * @brief Adds a link to the game
@@ -400,6 +439,16 @@ char *game_get_last_obj_desc(Game *game);
  * @return OK if the message was stored correctly, ERROR otherwise
  */
 Status game_set_last_obj_desc(Game *game, const char *desc);
+
+/**
+ * @brief It adds an interface data to the game
+ *
+ * @param game Pointer to the Game structure
+ * @param intdata Pointer ti the Interface_Data that wants to be added
+ *
+ * @return OK if the it is added correctly; ERROR otherwise
+ */
+Status game_add_interface_data(Game *game, Interface_Data *intdata);
 
 /**
  * @brief It prints the game information

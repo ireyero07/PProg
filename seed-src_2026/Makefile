@@ -6,7 +6,7 @@ CFLAGS= -Wall -ansi -pedantic
 
 all: $(EXE)
 
-$(EXE): command.o game_actions.o game_loop.o game_reader.o game.o graphic_engine.o inventory.o object.o player.o space.o set.o character.o link.o
+$(EXE): command.o game_actions.o game_loop.o game_reader.o game.o graphic_engine.o inventory.o object.o player.o space.o set.o character.o link.o interface_data.o
 	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L.
 
 command.o: command.c command.h types.h
@@ -21,10 +21,10 @@ game_loop.o: game_loop.c types.h command.h game.h game_reader.h graphic_engine.h
 game_reader.o: game_reader.c game_reader.h types.h space.h game.h object.h
 	$(CC) $(CFLAGS) -c game_reader.c
 
-game.o: game.c game.h types.h space.h command.h object.h player.h character.h
+game.o: game.c game.h types.h space.h command.h object.h player.h character.h interface_data.h
 	$(CC) $(CFLAGS) -c game.c
 
-graphic_engine.o: graphic_engine.c graphic_engine.h types.h space.h command.h game.h libscreen.h
+graphic_engine.o: graphic_engine.c graphic_engine.h types.h space.h command.h game.h player.h libscreen.h
 	$(CC) $(CFLAGS) -c graphic_engine.c
 
 inventory.o: inventory.c inventory.h types.h set.h
@@ -47,6 +47,8 @@ set.o: set.c set.h types.h
 
 character.o: character.c character.h types.h
 	$(CC) $(CFLAGS) -c character.c
+
+interface_data.o: interface_data.c interface_data.h command.h types.h
 
 #############################################################################
 

@@ -18,6 +18,7 @@
 #include "space.h"
 #include "set.h"
 #include "types.h"
+#include "player.h"
 
 #define WIDTH_MAP 57
 #define WIDTH_DES 59
