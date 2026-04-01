@@ -25,6 +25,7 @@ struct _Space {
   Set *objects;                                     /*!< Set of objects in the space*/
   Set *characters;                                  /*!< Ser of characters in the space*/
   char gdesc[GDESC_LINES][GDESC_LENGTH + 1];        /*!< Graphic description of the space (5x9) */
+  Bool discovered;                                  /*!< Says if the space is discovered (TRUE) or not (FALSE)*/
 };
 
 /** space_create allocates memory for a new space
@@ -47,21 +48,23 @@ Space* space_create(Id id) {
   newSpace->name[0] = '\0';
   
   newSpace->objects = set_create();
-    if (!newSpace->objects) {
-        free(newSpace);
-        return NULL;
-    }
+  if (!newSpace->objects) {
+      free(newSpace);
+      return NULL;  
+  }
 
   newSpace->characters = set_create();
-    if (!newSpace->characters) {
-        set_destroy(newSpace->objects);
-        free(newSpace);
-        return NULL;
-    }
+  if (!newSpace->characters) {
+      set_destroy(newSpace->objects);
+      free(newSpace);
+      return NULL;
+  }
 
-    for (i = 0; i < GDESC_LINES; i++) {
-      newSpace->gdesc[i][0] = '\0';
-    }
+  for (i = 0; i < GDESC_LINES; i++) {
+    newSpace->gdesc[i][0] = '\0';
+  }
+  
+  newSpace->discovered = FALSE;
 
   return newSpace;
 }
@@ -190,6 +193,19 @@ const char* space_get_gdesc(Space* space, int line){
   if (!space || line < 0 || line >= GDESC_LINES) return NULL;
 
   return space->gdesc[line];
+}
+
+Status space_set_discovered(Space* space, Bool discovered){
+  if(!space) return ERROR;
+
+  space->discovered = discovered;
+
+  return OK;
+}
+
+Bool space_get_discovered(Space* space){
+  if(!space) return FALSE;
+  return space->discovered;
 }
 
 Status space_print(Space* space) {

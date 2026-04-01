@@ -192,6 +192,23 @@ Status space_set_gdesc(Space* space, char *gdesc, int line);
 const char* space_get_gdesc(Space* space, int line);
 
 /**
+ * @brief Sets if the space has been discovered or not.
+ *
+ * @param space Pointer to the space.
+ * @param discovered Boolean that says if the space is discovered or not.
+ * @return OK if successful, ERROR otherwise.
+ */
+Status space_set_discovered(Space* space, Bool discovered);
+
+/**
+ * @brief Returns if the space has been discovered or not.
+ *
+ * @param space Pointer to the space.
+ * @return Boolean that says if the space is discovered or not.
+ */
+Bool space_get_discovered(Space* space);
+
+/**
  * @brief It prints the space information
  * @author Profesores PPROG
  *

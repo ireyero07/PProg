@@ -279,26 +279,36 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
         strcat(str, " ");
       } 
       else {
-        if (i == 0) { /* borde superior */
-          sprintf(line, "+---------------+ ");
-        }
-        else if (i == 1) { /* linea de player, character e id */
-          if (col == 1) {
-            sprintf(line, "| %3.3s  %3.3s   %3d| ", ply[1], chr[col], (int) ids[col]);
+        if(space_get_discovered(spaces[col])==TRUE){
+          if (i == 0) { /* borde superior */
+            sprintf(line, "+---------------+ ");
+          }
+          else if (i == 1) { /* linea de player, character e id */
+            if (col == 1) {
+              sprintf(line, "| %3.3s  %3.3s   %3d| ", ply[1], chr[col], (int) ids[col]);
+            } 
+            else if (col == 0) {
+              sprintf(line, "|      %3.3s   %3d| ", chr[col], (int) ids[col]);
+            } 
+            else {
+              sprintf(line, "|      %3.3s   %3d| ", chr[col], (int) ids[col]);
+            } 
           } 
-          else if (col == 0) {
-            sprintf(line, "|      %3.3s   %3d| ", chr[col], (int) ids[col]);
-          } 
-          else {
-            sprintf(line, "|      %3.3s   %3d| ", chr[col], (int) ids[col]);
-          } 
-        } 
-        else if (i >= 2 && i < 7) { /* líneas gdesc */
-          sprintf(line, "|%s      | ", gdesc[col][i - 2]);
-        } else if (i == 7) { /* línea de objects */
-          sprintf(line, "|%-15.15s| ", obj_line[col]);
-        } else { /* borde inferior */
-          sprintf(line, "+---------------+ ");
+          else if (i >= 2 && i < 7) { /* líneas gdesc */
+            sprintf(line, "|%s      | ", gdesc[col][i - 2]);
+          } else if (i == 7) { /* línea de objects */
+            sprintf(line, "|%-15.15s| ", obj_line[col]);
+            sprintf(line, "+---------------+ ");
+          }
+        }else{
+          if (i == 0) { /* borde superior */
+            sprintf(line, "+---------------+ ");
+          }
+          else if (i >= 1 && i <= 7) {
+            sprintf(line, "|               | ");
+          } else { /* borde inferior */
+            sprintf(line, "+---------------+ ");
+          }
         }
         strcat(str, line);
       }
@@ -377,8 +387,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   for (i = 0; i<game_get_n_objects(game); i++) {
     obj = game_get_object_by_position(game, i);
-
-    if (obj) {
+    if (obj && space_get_discovered(game_get_object_location(game, object_get_id(obj)))==TRUE) {
       sprintf(str, "  %s (loc:%ld)", object_get_name(obj), game_get_object_location(game, object_get_id(obj)));
       screen_area_puts(ge->descript, str);
     }
@@ -390,7 +399,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   for (i = 0; i<game_get_n_characters(game); i++) {
     ch = game_get_character_by_position(game, i);
 
-    if (ch) {
+    if (ch && space_get_discovered(character_get_location(ch))==TRUE) {
       if (character_get_health(ch) <= 0) {
         sprintf(str, " ");
         screen_area_puts(ge->descript, str);

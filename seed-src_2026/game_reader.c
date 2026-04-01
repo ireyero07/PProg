@@ -69,6 +69,7 @@ Status game_reader_create_from_file(Game **game, char *filename)
   }
 
   game_set_player_location(*game, space_get_id(space));
+  space_set_discovered(space, TRUE);
 
   return OK;
 }

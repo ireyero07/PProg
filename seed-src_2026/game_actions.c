@@ -319,6 +319,7 @@ void game_actions_move(Game *game, Command *cmd){
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
     game_set_last_action(game, OK);
+    space_set_discovered(game_get_space(game, current_id), TRUE);
   } else {
     game_set_last_action(game, ERROR);
   }
