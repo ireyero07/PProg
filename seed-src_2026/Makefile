@@ -49,6 +49,7 @@ character.o: character.c character.h types.h
 	$(CC) $(CFLAGS) -c character.c
 
 interface_data.o: interface_data.c interface_data.h command.h types.h
+	$(CC) $(CFLAGS) -c interface_data.c
 
 #############################################################################
 
@@ -114,6 +115,15 @@ inventory_test: inventory_test.o inventory.o
 
 test_inventory: inventory_test
 	./inventory_test
+
+interface_data_test.o: interface_data_test.c interface_data_test.h interface_data.h types.h
+	$(CC) $(CFLAGS) -c interface_data_test.c
+
+interface_data_test: interface_data_test.o interface_data.o command.o
+	$(CC) $(CFLAGS) -o interface_data_test interface_data_test.o interface_data.o command.o
+
+test_interface_data: interface_data_test
+	./interface_data_test
 
 #############################################################################
 

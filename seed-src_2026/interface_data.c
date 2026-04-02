@@ -22,7 +22,7 @@
 struct _Interface_Data
 {
     Command *last_cmd;             /*!< The last command */
-    Status last_action_status;     /*!< Status of the last action */
+    Status last_action_status;     /*!< Status of the last action */        
     char last_chat[WORD_SIZE + 1]; /*!< Stores the last chat message generated in the game */
 };
 
@@ -39,11 +39,7 @@ Interface_Data *interface_data_create()
         return NULL;
     }
     intdat->last_action_status = OK;
-    intdat->last_cmd = command_create();
-    if (intdat->last_cmd==NULL){
-        free(intdat);
-        return NULL;
-    }
+    intdat->last_cmd = NULL;
     intdat->last_chat[0] = '\0';
     return intdat;
 }
@@ -62,11 +58,24 @@ Status interface_data_destroy(Interface_Data *intdat)
 
 Status interface_data_set_last_cmd(Interface_Data *intdat, Command *code)
 {
-    if (intdat == NULL || intdat->last_cmd==NULL)
+    if (intdat == NULL || code==NULL)
     {
         return ERROR;
     }
-    intdat->last_cmd=code;
+
+    if (intdat->last_cmd != NULL)
+    {
+        command_destroy(intdat->last_cmd);
+    }
+
+    intdat->last_cmd = command_create();
+    if (intdat->last_cmd == NULL)
+    {
+        return ERROR;
+    }
+
+    command_set_code(intdat->last_cmd, command_get_code(code));
+
     return OK;
 }
 
