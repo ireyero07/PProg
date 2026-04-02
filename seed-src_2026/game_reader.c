@@ -43,7 +43,6 @@ Status game_reader_load(Game *game, const char *filename);
 Status game_reader_create_from_file(Game **game, char *filename)
 {
   Space *space = NULL;
-  int i, n_players;
 
   if (!game || !filename)
     return ERROR;
@@ -68,18 +67,7 @@ Status game_reader_create_from_file(Game **game, char *filename)
     *game = NULL;
     return ERROR;
   }
-  n_players = game_get_n_players(*game);
-  if (n_players < 0)
-  {
-    return ERROR;
-  }
-
-  while (i < n_players)
-  {
-    game_set_player_location(*game, space_get_id(space), player_get_id(game_get_player(*game)));
-    game_next_turn(*game);
-    i++;
-  }
+ 
   space_set_discovered(space, TRUE);
 
   return OK;

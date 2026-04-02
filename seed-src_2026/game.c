@@ -305,7 +305,7 @@ Status game_set_object_location(Game *game, Id object_id, Id space_id)
   {
     return ERROR;
   }
-  for (i = 0; i < game->n_spaces; i++)
+  for (i = 0; i < game->n_players; i++)
   {
     if (player_has_object(game->players[i], object_id))
     {
@@ -584,6 +584,19 @@ Player *game_get_player_from_id(Game *game, Id id)
   return NULL;
 }
 
+Bool game_is_any_player_death (Game *game){
+  int i;
+  if(game ==NULL){
+    return TRUE;
+  }
+  for(i=0; i<game->n_players; i++){
+    if(player_get_health(game->players[i])<=0){
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
 /*----------------------LINK--------------------------*/
 Status game_add_link(Game *game, Link *link)
 {
@@ -634,6 +647,7 @@ Bool game_connection_is_open(Game *game, Id space_id, Direction dir)
 
   return FALSE;
 }
+
 
 /*-------------------LAST COMMAND-----------------------*/
 /**

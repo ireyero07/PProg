@@ -15,6 +15,7 @@
 #define MAX_OBJECTS 10
 #define MAX_CHARACTERS 10
 #define MAX_LINKS 100
+#define MAX_PLAYERS 8
 
 #include "player.h"
 #include "space.h"
@@ -303,6 +304,15 @@ int game_get_n_players(Game *game);
  * @return The player with that id
  */
 Player *game_get_player_from_id(Game *game, Id id);
+
+/**
+ * @brief It tells if any of the players death
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return If there is any player death
+ */
+Bool game_is_any_player_death (Game *game);
 
 /**
  * @brief Adds a link to the game
