@@ -51,6 +51,7 @@ Command* command_create() {
 
   /* Initialization of an empty command*/
   newCommand->code = NO_CMD;
+  newCommand->arg[0] ='\0';
 
   return newCommand;
 }

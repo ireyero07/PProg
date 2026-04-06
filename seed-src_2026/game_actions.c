@@ -272,7 +272,6 @@ void game_actions_chat(Game *game) {
   }
 
   game_set_last_chat(game, character_get_message(friend));
-  printf("%s",character_get_message(friend));
   game_set_last_action(game, OK);
 }
 

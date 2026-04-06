@@ -78,11 +78,7 @@ Status set_del(Set* set, Id id) {
     return ERROR;
   }
 
-  /* compact array */
-  for (i = pos; i < set->n_ids - 1; i++) {
-    set->ids[i] = set->ids[i + 1];
-  }
-
+  set->ids[pos] = set->ids[set->n_ids - 1];
   set->n_ids--;
 
   return OK;
