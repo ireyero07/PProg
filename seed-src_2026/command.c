@@ -104,7 +104,7 @@ Status command_get_user_input(Command* command) {
     while (cmd == UNKNOWN && i < N_CMD) {
       if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL])) {
         cmd = i + NO_CMD;
-        if (cmd == TAKE||cmd == DROP||cmd == INSPECT) {
+        if (cmd == TAKE||cmd == DROP||cmd == INSPECT||cmd == MOVE) {
           token = strtok(NULL, " \n"); 
           if (token != NULL) {
             while (*token == ' ') token++;
