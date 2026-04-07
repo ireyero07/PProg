@@ -69,7 +69,7 @@ Status set_add(Set* set, Id id) {
  * @brief Deletes an id from the set
  */
 Status set_del(Set* set, Id id) {
-  int i, pos;
+  int pos;
 
   if (!set || id == NO_ID || set->n_ids <= 0) return ERROR;
 
