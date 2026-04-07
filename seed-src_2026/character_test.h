@@ -2,9 +2,9 @@
  * @brief It declares the tests for the character module
  * 
  * @file character_test.h
- * @author Jian Feng Yin Chen
- * @version 0.0 
- * @date 25-02-2026
+ * @author Gonzalez Hijano, Ivan
+ * @version 0.0  
+ * @date 16-03-2026
  * @copyright GNU Public License
  */
 
@@ -13,177 +13,225 @@
 
 /**
  * @test Test character creation
- * @pre Valid ID
- * @post Non NULL pointer returned
+ * @pre ID
+ * @post Non NULL pointer to character
  */
-void test1_character_create(void);
+void test1_character_create();
 
 /**
- * @test Test character creation  
- * @pre Valid ID
- * @post ID matches input
+ * @test Test character creation
+ * @pre NO_ID
+ * @post NULL pointer to character
  */
-void test2_character_create(void);
+void test2_character_create();
 
 /**
- * @test Test character_get_id
- * @pre Valid character
- * @post Returns correct ID
+ * @test Test destroying a character
+ * @pre pointer to character = NULL 
+ * @post Output==ERROR
  */
-void test1_character_get_id(void);
+void test1_character_destroy();
 
 /**
- * @test Test character_get_id
- * @pre NULL character
- * @post Returns NO_ID
+ * @test Test destroying a character
+ * @pre Pointer to character
+ * @post Output == OK
  */
-void test2_character_get_id(void);
+void test2_character_destroy();
 
 /**
- * @test Test character_get_name
- * @pre Character with set name
- * @post Returns correct name
+ * @test Test getting a character ID
+ * @pre Pointer to character
+ * @post Output == character ID
  */
-void test1_character_get_name(void);
+void test1_character_get_id();
 
 /**
- * @test Test character_get_name
- * @pre NULL character
- * @post Returns NULL
+ * @test Test getting a character ID
+ * @pre pointer to character = NULL 
+ * @post Output==NO_ID
  */
-void test2_character_get_name(void);
+void test2_character_get_id();
 
 /**
- * @test Test character_get_gdesc
- * @pre Character with set gdesc
- * @post Returns correct gdesc
+ * @test Test setting a character name
+ * @pre Pointer to character and a name
+ * @post Output==OK
  */
-void test1_character_get_gdesc(void);
+void test1_character_set_name();
 
 /**
- * @test Test character_get_gdesc
- * @pre NULL character
- * @post Returns NULL
+ * @test Test setting a character name
+ * @pre Pointer to character and name = NULL
+ * @post Output==ERROR
  */
-void test2_character_get_gdesc(void);
+void test2_character_set_name();
 
 /**
- * @test Test character_get_health
- * @pre Character with set health
- * @post Returns correct health
+ * @test Test getting a character name
+ * @pre Pointer to character with a name
+ * @post Output!=NULL
  */
-void test1_character_get_health(void);
+void test1_character_get_name();
 
 /**
- * @test Test character_get_health
- * @pre NULL character
- * @post Returns 0
+ * @test Test getting a character name
+ * @pre pointer to character = NULL 
+ * @post Output==NULL
  */
-void test2_character_get_health(void);
+void test2_character_get_name();
 
 /**
- * @test Test character_get_friendly
- * @pre Character with TRUE friendly
- * @post Returns TRUE
+ * @test Test setting a character description
+ * @pre Pointer to character and a description bigger than MAX_DESCRIPT_SIZE
+ * @post Output==ERROR
  */
-void test1_character_get_friendly(void);
+void test1_character_set_description();
 
 /**
- * @test Test character_get_friendly
- * @pre NULL character
- * @post Returns FALSE
+ * @test Test setting a character description
+ * @pre Pointer to character and a description
+ * @post Output==OK
  */
-void test2_character_get_friendly(void);
+void test2_character_set_description();
 
 /**
- * @test Test character_get_message
- * @pre Character with set message
- * @post Returns correct message
+ * @test Test setting a character description
+ * @pre pointer to character = NULL 
+ * @post Output==ERROR
  */
-void test1_character_get_message(void);
+void test3_character_set_description();
 
 /**
- * @test Test character_get_message
- * @pre NULL character
- * @post Returns NULL
+ * @test Test getting a character description
+ * @pre Pointer to character with a description
+ * @post Output!=NULL
  */
-void test2_character_get_message(void);
+void test1_character_get_description();
 
 /**
- * @test Test character_set_name
- * @pre Valid character and name
- * @post Returns OK
+ * @test Test getting a character description
+ * @pre Pointer to character with NO description
+ * @post Output!=NULL
  */
-void test1_character_set_name(void);
+void test2_character_get_description();
 
 /**
- * @test Test character_set_name
- * @pre NULL character
- * @post Returns ERROR
+ * @test Test setting a character health
+ * @pre Pointer to character and a health
+ * @post Output==OK
  */
-void test2_character_set_name(void);
+void test1_character_set_health();
 
 /**
- * @test Test character_set_name
- * @pre Valid character, NULL name
- * @post Returns ERROR
+ * @test Test setting a character health
+ * @pre pointer to character = NULL 
+ * @post Output==ERROR
  */
-void test3_character_set_name(void);
+void test2_character_set_health();
 
 /**
- * @test Test character_set_gdesc
- * @pre Valid character and gdesc
- * @post Returns OK
+ * @test Test setting a character health
+ * @pre Pointer to character and health = -3
+ * @post Output==ERROR
  */
-void test1_character_set_gdesc(void);
+void test3_character_set_health();
 
 /**
- * @test Test character_set_gdesc
- * @pre NULL character
- * @post Returns ERROR
+ * @test Test getting a character health
+ * @pre Pointer to character
+ * @post Output!=-1
  */
-void test2_character_set_gdesc(void);
+void test1_character_get_health();
 
 /**
- * @test Test character_set_health
- * @pre Valid character and health
- * @post Returns OK
+ * @test Test getting a character health
+ * @pre pointer to character = NULL 
+ * @post Output==-1
  */
-void test1_character_set_health(void);
+void test2_character_get_health();
 
 /**
- * @test Test character_set_health
- * @pre NULL character
- * @post Returns ERROR
+ * @test Test setting a character message
+ * @pre Pointer to character and a message
+ * @post Output==OK
  */
-void test2_character_set_health(void);
+void test1_character_set_message();
 
 /**
- * @test Test character_set_friendly
- * @pre Valid character and friendly
- * @post Returns OK
+ * @test Test setting a character message
+ * @pre Pointer to character and message = NULL
+ * @post Output==OK
  */
-void test1_character_set_friendly(void);
+void test2_character_set_message();
 
 /**
- * @test Test character_set_friendly
- * @pre NULL character
- * @post Returns ERROR
+ * @test Test setting a character message
+ * @pre pointer to character = NULL 
+ * @post Output==OK
  */
-void test2_character_set_friendly(void);
+void test3_character_set_message();
 
 /**
- * @test Test character_set_message
- * @pre Valid character and message
- * @post Returns OK
+ * @test Test getting a character message
+ * @pre Pointer to character
+ * @post Output!=NULL
  */
-void test1_character_set_message(void);
+void test1_character_get_message();
 
 /**
- * @test Test character_set_message
- * @pre NULL character
- * @post Returns ERROR
+ * @test Test getting a character message
+ * @pre pointer to character = NULL 
+ * @post Output==NULL
  */
-void test2_character_set_message(void);
+void test2_character_get_message();
+
+/**
+ * @test Test setting if a character is friendly
+ * @pre Pointer to character and a boolean
+ * @post Output==OK
+ */
+void test1_character_set_friendly();
+
+/**
+ * @test Test setting if a character is friendly
+ * @pre pointer to character = NULL 
+ * @post Output==ERROR
+ */
+void test2_character_set_friendly();
+
+/**
+ * @test Test getting if a character is friendly
+ * @pre Pointer to character
+ * @post Output!=NULL
+ */
+void test1_character_get_friendly();
+
+/**
+ * @test Test getting if a character is friendly
+ * @pre pointer to character = NULL 
+ * @post Output==NULL
+ */
+void test2_character_get_friendly();
+
+/**
+ * @test Test printing a character
+ * @pre Pointer to character
+ * @post Output==OK
+ */
+void test1_character_print();
+
+/**
+ * @test Test printing a character
+ * @pre pointer to character = NULL 
+ * @post Output==ERROR
+ */
+void test2_character_print();
+
+void test1_character_get_location();
+void test2_character_get_location();
+void test1_character_set_location();
+void test2_character_set_location();
+void test3_character_set_location();
 
 #endif

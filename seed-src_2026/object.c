@@ -22,7 +22,7 @@
 struct _Object {
   Id id;                    /*!< Id number of the object, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the object */
-  char description[MAX_DESC];
+  char description[MAX_DESC];/*!< Description of the object */
 };
 
 

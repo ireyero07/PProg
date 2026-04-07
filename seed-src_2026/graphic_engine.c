@@ -176,6 +176,7 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
   Player *player;
   long n_objects;
 
+
   /* Inicializar arrays de spaces, ids y player */
   if (id_left != NO_ID) {
     spaces[0] = game_get_space(game, id_left);
@@ -199,6 +200,7 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
   chars[0] = chars[1] = chars[2] = NULL;
 
   player = game_get_player(game);
+
   strncpy(ply[1], player_get_gdesc(player), MAX_CHR_GDESC);
   ply[1][MAX_CHR_GDESC] = '\0';
   ply[0][0] = '\0';
@@ -472,13 +474,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
 
   /* Paint in the banner area */
-  screen_area_puts(ge->banner, " The haunted castle game ");
+  screen_area_puts(ge->banner, str);
+  sprintf(str, " Player %d ",game_get_turn(game));
+  screen_area_puts(ge->help, str);
 
   /* Paint in the help area */
-  screen_area_clear(ge->help);
+  screen_area_puts(ge->help, str);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "     next or n, back or b, left or l, right or r, take or t, drop or d, attack or a, chat or c, exit or e");
+  sprintf(str, " move or m (north or n, east or e, west or w, south or s, ), take or t, drop or d, attack or a, chat or c, inspect or i, exit or e");
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
@@ -495,7 +499,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_puts(ge->feedback, str);
 
   /* Dump to the terminal */
-  screen_paint(0);
+  screen_paint(game_get_turn(game));
   if (game_is_any_player_death(game)) {
     fprintf(stdout, "Game Over (╥﹏╥)\n");
     game_set_finished(game, TRUE);

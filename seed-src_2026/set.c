@@ -90,7 +90,7 @@ Status set_del(Set* set, Id id) {
 int set_find(Set* set, Id id) {
   int i, position;
 
-  if (!set)
+  if (!set || id<0)
     return -1;
 
   for (i = 0; i < set->n_ids; i++) {

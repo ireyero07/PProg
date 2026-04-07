@@ -85,6 +85,7 @@ Status game_reader_load(Game *game, const char *filename)
   char player_gdesc[MAX_PLAYER_GDESC + 1];
   char character_gdesc[MAX_CHR_GDESC + 1];
   char char_msg[WORD_SIZE];
+  char obj_desc[MAX_DESC];
   char *toks = NULL;
   Id idLink = NO_ID, idCharacter = NO_ID, idSpace = NO_ID, idFinal = NO_ID, idObject = NO_ID;
   Id idPlayer = NO_ID;
@@ -184,6 +185,10 @@ Status game_reader_load(Game *game, const char *filename)
 
       toks = strtok(NULL, "|");
       idSpace = atol(toks);
+
+      toks = strtok(NULL, "|");
+      strncpy(obj_desc, toks, MAX_DESC-1);
+      obj_desc[MAX_DESC-1]='\0';
       numobjects++;
 
 #ifdef DEBUG
@@ -207,6 +212,7 @@ Status game_reader_load(Game *game, const char *filename)
         if (object != NULL)
         {
           object_set_name(object, name);
+          object_set_description(object, obj_desc);
           game_add_object(game, object);
           space = game_get_space(game, idSpace);
 
@@ -302,7 +308,7 @@ Status game_reader_load(Game *game, const char *filename)
       numchr++;
 
 #ifdef DEBUG
-      printf("Read: p:%ld|%s|%s|%ld|%d|%d|%s|\n",
+      printf("Read: c:%ld|%s|%s|%ld|%d|%d|%s|\n",
              idCharacter, name, character_gdesc, idSpace, health, friendly, char_msg);
 #endif
 
@@ -366,7 +372,7 @@ Status game_reader_load(Game *game, const char *filename)
       open = atoi(toks);
 
 #ifdef DEBUG
-      printf("Read: p:%ld|%s|%ld|%ld|%d|%d|\n",
+      printf("Read: l:%ld|%s|%ld|%ld|%d|%d|\n",
              idLink, name, idSpace, idFinal, direction, open);
 #endif
 

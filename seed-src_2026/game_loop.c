@@ -75,9 +75,9 @@ int main(int argc, char *argv[]) {
 
   last_cmd = game_get_last_command(game);
   
-  while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE) && (game_is_any_player_death(game)==FALSE)) {
+  while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE) && (game_is_any_player_death(game) == FALSE)) {
     graphic_engine_paint_game(gengine, game);
-    if ((game_get_finished (game) == TRUE) || (game_is_any_player_death(game)==TRUE)) {
+    if ((game_get_finished(game) == TRUE) || (game_is_any_player_death(game) == TRUE)) {
       break;
     }
     command_get_user_input(last_cmd);
