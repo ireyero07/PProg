@@ -69,7 +69,7 @@ void graphic_engine_destroy(Graphic_engine *ge) {
   free(ge);
 }
 
-void print_empty_space(Area *map){
+void graphic_engine_print_empty_space(Area *map){
   screen_area_puts(map,"                 ");
   screen_area_puts(map,"                 ");
   screen_area_puts(map,"                 ");
@@ -81,7 +81,19 @@ void print_empty_space(Area *map){
   screen_area_puts(map,"                 ");
 }
 
-void print_backOrNext_space (Graphic_engine *ge, Game *game, Id id_backOrNext) {
+void graphic_engine_print_not_discovered_space(Area *map){
+  screen_area_puts(map,"+---------------+");
+  screen_area_puts(map,"|               |");
+  screen_area_puts(map,"|               |");
+  screen_area_puts(map,"|               |");
+  screen_area_puts(map,"|               |");
+  screen_area_puts(map,"|               |");
+  screen_area_puts(map,"|               |");
+  screen_area_puts(map,"|               |");
+  screen_area_puts(map,"+---------------+");
+}
+
+void graphic_engine_print_backOrNext_space (Graphic_engine *ge, Game *game, Id id_backOrNext) {
   Space *space_backOrNext = NULL;
   Id *space_nexOrBack_objects = NULL, obj_id = NO_ID;
   Character *character_backOrNext = NULL;
@@ -92,9 +104,10 @@ void print_backOrNext_space (Graphic_engine *ge, Game *game, Id id_backOrNext) {
   space_backOrNext = game_get_space(game, id_backOrNext);
 
   if (id_backOrNext == NO_ID) {
-    print_empty_space(ge->map);
+    graphic_engine_print_empty_space(ge->map);
+  } else if (!space_get_discovered(game_get_space(game,id_backOrNext))) {
+    graphic_engine_print_not_discovered_space(ge->map);
   } else {
-
     /* character back or next space */
     character_backOrNext = game_get_character_by_space(game, id_backOrNext);
 
@@ -166,7 +179,7 @@ void print_backOrNext_space (Graphic_engine *ge, Game *game, Id id_backOrNext) {
   }
 }
 
-void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, Id id_act, Id id_right) {
+void graphic_engine_print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, Id id_act, Id id_right) {
   int i, j, col;
   Space *spaces[3];
   Id ids[3], obj_id = NO_ID, *objects = NULL;
@@ -319,10 +332,12 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
       }
       /* Flechas entre habitaciones */
       if (col == 0 && spaces[0] != NULL && spaces[1] != NULL && i == (GDESC_LENGTH / 2)) {
-        strcat(str, "<");
+        if(game_connection_is_open(game,ids[1], W)) strcat(str, "<");
+        else strcat(str,"X");
       } 
       else if (col == 1 && spaces[1] != NULL && spaces[2] != NULL && i == (GDESC_LENGTH / 2)) {
-        strcat(str, ">");
+        if(game_connection_is_open(game,ids[1], E)) strcat(str, ">");
+        else strcat(str,"X");
       } 
       else {
         strcat(str, " ");
@@ -341,9 +356,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
   int i;
-  Id *objs = NULL;
+  Id *objs = NULL, obj_loc = NO_ID;
   Object *obj = NULL;
   long n_objs = 0;
+  Space *obj_space = NULL;
+  Space *ch_space = NULL;
   Character *ch = NULL;
   Space *space_act = NULL;
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID;
@@ -362,9 +379,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     /*-------------------------------------------------------*/
     /*                    BACK SPACE                         */
     /*-------------------------------------------------------*/
-    print_backOrNext_space (ge, game, id_back);
+    graphic_engine_print_backOrNext_space (ge, game, id_back);
     if (id_back != NO_ID) {
-      sprintf(str, "                           ^         ");
+      if(game_connection_is_open(game,id_act,N)) sprintf(str, "                           ^         ");
+      else sprintf(str, "                           X         ");
       screen_area_puts(ge->map, str);
     }
     
@@ -373,16 +391,17 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     /*               LEFT/ACTUAL/RIGHT SPACES                */
     /*-------------------------------------------------------*/
     
-    print_left_actual_right_space (ge, game, id_left, id_act, id_right);
+    graphic_engine_print_left_actual_right_space (ge, game, id_left, id_act, id_right);
 
     /*-------------------------------------------------------*/
     /*                    NEXT SPACE                         */
     /*-------------------------------------------------------*/
     if (id_next != NO_ID) { 
-      sprintf(str, "                           V         ");
+      if(game_connection_is_open(game,id_act,S)) sprintf(str, "                           V         ");
+      else sprintf(str, "                           X         ");
       screen_area_puts(ge->map, str);
     }
-    print_backOrNext_space (ge, game, id_next);
+    graphic_engine_print_backOrNext_space (ge, game, id_next);
   }
 
   /* Paint in the description area */
@@ -393,8 +412,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   for (i = 0; i<game_get_n_objects(game); i++) {
     obj = game_get_object_by_position(game, i);
-    if (obj && space_get_discovered(game_get_space(game, game_get_object_location(game, object_get_id(obj))))==TRUE) {
-      sprintf(str, "  %s (loc:%ld)", object_get_name(obj), game_get_object_location(game, object_get_id(obj)));
+    if (!obj) continue;
+    obj_loc = game_get_object_location(game,object_get_id(obj));
+    obj_space = game_get_space(game, obj_loc);
+    if(obj_space && space_get_discovered(obj_space) == TRUE){
+      sprintf(str, " %s (loc:%ld)", object_get_name(obj), obj_loc);
       screen_area_puts(ge->descript, str);
     }
   }
@@ -405,18 +427,17 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   for (i = 0; i<game_get_n_characters(game); i++) {
     ch = game_get_character_by_position(game, i);
 
-    if (ch && space_get_discovered(game_get_space(game, character_get_location(ch)))==TRUE) {
-      if (character_get_health(ch) <= 0) {
-        sprintf(str, " ");
+    if(!ch) continue;
+    ch_space = game_get_space(game, character_get_location(ch));
+    if (ch_space && space_get_discovered(ch_space) == TRUE){
+      if(character_get_health(ch) <=0 ){
+        screen_area_puts(ge->descript, " ");
+      } else {
+        sprintf(str, " %s (loc: %ld, hp:%d)", character_get_gdesc(ch),character_get_location(ch), character_get_health(ch));
         screen_area_puts(ge->descript, str);
-      }
-      else {
-        sprintf(str, "  %s (loc: %ld, hp:%d)", character_get_gdesc(ch), character_get_location(ch), character_get_health(ch));
-        screen_area_puts(ge->descript, str);
-      }
-      
       }
     }
+  }
 
   /* ---------- PLAYER ---------- */
   screen_area_puts(ge->descript, "Player:");
@@ -474,15 +495,14 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
 
   /* Paint in the banner area */
+  sprintf(str, " The haunted castle game - Player %d/%d ",game_get_turn(game)+1, game_get_n_players(game));
   screen_area_puts(ge->banner, str);
-  sprintf(str, " Player %d ",game_get_turn(game));
-  screen_area_puts(ge->help, str);
 
   /* Paint in the help area */
-  screen_area_puts(ge->help, str);
+  screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, " move or m (north or n, east or e, west or w, south or s, ), take or t, drop or d, attack or a, chat or c, inspect or i, exit or e");
+  sprintf(str, " move or m (n,s,e,w), take or t, drop or d, attack or a, chat or c, inspect or i, exit or e");
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
