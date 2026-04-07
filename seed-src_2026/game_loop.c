@@ -51,10 +51,10 @@ void game_loop_cleanup(Game *game, Graphic_engine *gengine);
  * @return 0 if the program ends normally, 1 if there was any initialization error.
  */
 int main(int argc, char *argv[]) {
-  Game *game=NULL;
+  Game *game = NULL;
   Graphic_engine *gengine;
   int result;
-  Command *last_cmd;
+  Command *last_cmd = NULL;
 
   srand(time(NULL));
 
@@ -68,25 +68,24 @@ int main(int argc, char *argv[]) {
   if (result == 1) {
     fprintf(stderr, "Error while initializing game.\n");
     return 1;
-  } else if (result == 2){
+  } else if (result == 2) {
     fprintf(stderr, "Error while initializing graphic engine.\n");
     return 1;
   }
 
-  last_cmd = game_get_last_command(game);
-  
-  while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE) && (game_is_any_player_death(game) == FALSE)) {
+  last_cmd = command_create();
+  if (!last_cmd) return 1;
+
+  while ((game_get_finished(game) == FALSE) && (game_is_any_player_death(game) == FALSE)) {
     graphic_engine_paint_game(gengine, game);
-    if ((game_get_finished(game) == TRUE) || (game_is_any_player_death(game) == TRUE)) {
-      break;
-    }
+    if ((game_get_finished(game) == TRUE) || (game_is_any_player_death(game) == TRUE)) break;
     command_get_user_input(last_cmd);
     if (command_get_code(last_cmd) == EXIT) break;
     game_actions_update(game, last_cmd);
     game_next_turn(game);
-    last_cmd = game_get_last_command(game);
   }
 
+  command_destroy(last_cmd);
   game_loop_cleanup(game, gengine);
 
   return 0;
