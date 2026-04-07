@@ -19,6 +19,7 @@
 #include "set.h"
 #include "types.h"
 #include "player.h"
+#include "inventory.h"
 
 #define WIDTH_MAP 57
 #define WIDTH_DES 59
@@ -270,7 +271,7 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
   }
 
   /* Ahora pintamos fila por fila combinando las 3 habitaciones horizontalmente */
-  for (i = 0; i < GDESC_LINES + 4; i++) { 
+  for (i = 0; i < GDESC_LINES + 5; i++) { 
     str[0] = '\0';
     for (col = 0; col < 3; col++) {
       char line[64];
@@ -299,6 +300,7 @@ void print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, I
             sprintf(line, "|%s      | ", gdesc[col][i - 2]);
           } else if (i == 7) { /* línea de objects */
             sprintf(line, "|%-15.15s| ", obj_line[col]);
+          } else if (i == 8) {
             sprintf(line, "+---------------+ ");
           }
         }else{
@@ -337,8 +339,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
   int i;
+  Id *objs = NULL;
   Object *obj = NULL;
-  Object *obj_to_desc = NULL;
+  long n_objs = 0;
   Character *ch = NULL;
   Space *space_act = NULL;
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID;
@@ -388,7 +391,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   for (i = 0; i<game_get_n_objects(game); i++) {
     obj = game_get_object_by_position(game, i);
-    if (obj && space_get_discovered(game_get_object_location(game, object_get_id(obj)))==TRUE) {
+    if (obj && space_get_discovered(game_get_space(game, game_get_object_location(game, object_get_id(obj))))==TRUE) {
       sprintf(str, "  %s (loc:%ld)", object_get_name(obj), game_get_object_location(game, object_get_id(obj)));
       screen_area_puts(ge->descript, str);
     }
@@ -400,7 +403,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   for (i = 0; i<game_get_n_characters(game); i++) {
     ch = game_get_character_by_position(game, i);
 
-    if (ch && space_get_discovered(character_get_location(ch))==TRUE) {
+    if (ch && space_get_discovered(game_get_space(game, character_get_location(ch)))==TRUE) {
       if (character_get_health(ch) <= 0) {
         sprintf(str, " ");
         screen_area_puts(ge->descript, str);
@@ -421,12 +424,19 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     sprintf(str, "  (loc: %ld, hp:%d)", player_get_location(player), player_get_health(player));
     screen_area_puts(ge->descript, str);
 
-    if (player_get_object(player) != NO_ID) {
-      obj = game_get_object(game, player_get_object(player));
-      sprintf(str, "Player has a %s", object_get_name(obj));
-      screen_area_puts(ge->descript, str);
-    } else {
-    screen_area_puts(ge->descript, "Player has no objects");
+    if (player_get_backpack(player) != NULL) {
+      objs = player_get_objects(player);
+      n_objs = inventory_get_number_objects(player_get_backpack(player));
+      if(n_objs == 0){
+        screen_area_puts(ge->descript, "Player has no objects");
+      } else {
+        sprintf(str, "Player's inventory");
+        screen_area_puts(ge->descript, str);
+        for(i=0; i < n_objs;i++){
+          sprintf(str, "%s", object_get_name(game_get_object(game,objs[i])));
+          screen_area_puts(ge->descript, str);
+        }
+      }
     }
   }
 
@@ -453,7 +463,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   if (desc && strlen(desc) > 0) {
     if (command_get_code(game_get_last_command(game)) == INSPECT) {      
       sprintf(str_desc, " The description of %s is: %s", object_get_name(game_get_object(game, game_get_object_id_by_name(game, command_get_arg(game_get_last_command(game))))), desc);
-      screen_area_puts(ge->descript, str);
+      screen_area_puts(ge->descript, str_desc);
       
     } else {
       game_set_last_obj_desc(game, "");
@@ -486,7 +496,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   /* Dump to the terminal */
   screen_paint(0);
-  if (player_get_health(player) <= 0) {
+  if (game_is_any_player_death(game)) {
     fprintf(stdout, "Game Over (╥﹏╥)\n");
     game_set_finished(game, TRUE);
   }
