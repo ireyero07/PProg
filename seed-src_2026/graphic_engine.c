@@ -82,15 +82,15 @@ void graphic_engine_print_empty_space(Area *map){
 }
 
 void graphic_engine_print_not_discovered_space(Area *map){
-  screen_area_puts(map,"+---------------+");
-  screen_area_puts(map,"|               |");
-  screen_area_puts(map,"|               |");
-  screen_area_puts(map,"|               |");
-  screen_area_puts(map,"|               |");
-  screen_area_puts(map,"|               |");
-  screen_area_puts(map,"|               |");
-  screen_area_puts(map,"|               |");
-  screen_area_puts(map,"+---------------+");
+  screen_area_puts(map,"                   +---------------+");
+  screen_area_puts(map,"                   |               |");
+  screen_area_puts(map,"                   |               |");
+  screen_area_puts(map,"                   |               |");
+  screen_area_puts(map,"                   |               |");
+  screen_area_puts(map,"                   |               |");
+  screen_area_puts(map,"                   |               |");
+  screen_area_puts(map,"                   |               |");
+  screen_area_puts(map,"                   +---------------+");
 }
 
 void graphic_engine_print_backOrNext_space (Graphic_engine *ge, Game *game, Id id_backOrNext) {
@@ -286,7 +286,7 @@ void graphic_engine_print_left_actual_right_space(Graphic_engine *ge, Game *game
   }
 
   /* Ahora pintamos fila por fila combinando las 3 habitaciones horizontalmente */
-  for (i = 0; i < GDESC_LINES + 5; i++) { 
+  for (i = 0; i < GDESC_LINES + 4; i++) { 
     str[0] = '\0';
     for (col = 0; col < 3; col++) {
       char line[64];
@@ -495,7 +495,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
 
   /* Paint in the banner area */
-  sprintf(str, " The haunted castle game - Player %d/%d ",game_get_turn(game)+1, game_get_n_players(game));
+  sprintf(str, " Player %d/%d ",game_get_turn(game)+1, game_get_n_players(game));
   screen_area_puts(ge->banner, str);
 
   /* Paint in the help area */
