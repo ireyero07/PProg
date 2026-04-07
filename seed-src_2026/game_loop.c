@@ -83,7 +83,6 @@ int main(int argc, char *argv[]) {
     command_get_user_input(last_cmd);
     game_actions_update(game, last_cmd);
     game_next_turn(game);
-    last_cmd = game_get_last_command(game);
   }
 
   game_loop_cleanup(game, gengine);
