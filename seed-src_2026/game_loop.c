@@ -81,6 +81,7 @@ int main(int argc, char *argv[]) {
       break;
     }
     command_get_user_input(last_cmd);
+    if (command_get_code(last_cmd) == EXIT) break;
     game_actions_update(game, last_cmd);
     game_next_turn(game);
     last_cmd = game_get_last_command(game);
