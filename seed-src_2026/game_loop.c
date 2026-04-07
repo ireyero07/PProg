@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
   Game *game=NULL;
   Graphic_engine *gengine;
   int result;
-  Command *last_cmd = NULL;
+  Command *last_cmd;
 
   srand(time(NULL));
 
@@ -73,19 +73,20 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  last_cmd = command_create();
-  if(!last_cmd) return 1;
+  last_cmd = game_get_last_command(game);
   
-  while ((game_get_finished(game) == FALSE) && (game_is_any_player_death(game) == FALSE)) {
-    graphic_engine_paint_game(gengine,game);
-    if((game_get_finished(game) == TRUE) || (game_is_any_player_death(game) == TRUE)) break;
+  while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE) && (game_is_any_player_death(game) == FALSE)) {
+    graphic_engine_paint_game(gengine, game);
+    if ((game_get_finished(game) == TRUE) || (game_is_any_player_death(game) == TRUE)) {
+      break;
+    }
     command_get_user_input(last_cmd);
-    if(command_get_code(last_cmd) == EXIT) break;
+    if (command_get_code(last_cmd) == EXIT) break;
     game_actions_update(game, last_cmd);
     game_next_turn(game);
+    last_cmd = game_get_last_command(game);
   }
 
-  command_destroy(last_cmd);
   game_loop_cleanup(game, gengine);
 
   return 0;

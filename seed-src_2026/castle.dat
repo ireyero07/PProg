@@ -31,7 +31,7 @@
 #s:16|Garden| /\ /\ /\|//\\/\\/\|//\\/\\/\| II II II|_________|
 
 #o:21|Sword|11|A weapon to attack enemies in a short range|
-#o:22|Shield|13|An object to defend against enemimes|
+#o:22|Shield|13|An object to defend against enemies|
 #o:23|Hamburger|14|A piece of food that increases your health|
 #o:24|Potion|132|A small crystal bottle that increases your health more than the food|
 #o:25|Key|16|An item used to open doors|
