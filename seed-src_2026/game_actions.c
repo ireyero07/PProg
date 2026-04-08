@@ -293,19 +293,19 @@ void game_actions_move(Game *game, Command *cmd){
 
   arg = command_get_arg(cmd);
 
-  if(strcmp(arg, "north") == 0 || strcmp(arg, "n") == 0){
+  if((strcmp(arg, "north") == 0 || strcmp(arg, "n") == 0) && game_connection_is_open(game, space_id, N)){
 
     current_id = game_get_connection(game, space_id, N);
 
-  } else if (strcmp(arg, "east") == 0 || strcmp(arg, "e") == 0){
+  } else if ((strcmp(arg, "east") == 0 || strcmp(arg, "e") == 0) && game_connection_is_open(game, space_id, E)){
 
     current_id = game_get_connection(game, space_id, E);
 
-  } else if (strcmp(arg, "south") == 0 || strcmp(arg, "s") == 0){
+  } else if ((strcmp(arg, "south") == 0 || strcmp(arg, "s") == 0) && game_connection_is_open(game, space_id, S)){
 
     current_id = game_get_connection(game, space_id, S);
 
-  } else if (strcmp(arg, "west") == 0 || strcmp(arg, "w") == 0){
+  } else if ((strcmp(arg, "west") == 0 || strcmp(arg, "w") == 0) && game_connection_is_open(game, space_id, W)){
 
     current_id = game_get_connection(game, space_id, W);
 

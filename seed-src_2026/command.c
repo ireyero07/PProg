@@ -132,4 +132,10 @@ const char* command_get_arg(Command *command){
   return command->arg;
 }
 
+Status command_set_arg(Command *command,const char *arg){
+  if(!command||!arg) return ERROR;
+  strncpy(command->arg,arg,WORD_SIZE);
+  command->arg[WORD_SIZE] = '\0';
+  return OK;
+}
 

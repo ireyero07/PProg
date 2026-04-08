@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2
-#define N_CMD 11
+#define N_CMD 9
 
 typedef enum { CMDS, CMDL } CommandType;
 
@@ -75,6 +75,16 @@ Status command_get_user_input(Command* command);
  * @return the command argumet, if everything goes well, or NULL if the pointer is NULL.
  */
 const char* command_get_arg(Command *command);
+
+/**
+ * @brief It sets the argument of the command
+ * @author Jian Feng Yin Chen
+ * 
+ * @param command  Pointer to the command that will store the interpreted code.
+ * @param arg  the argument to set argument of the command.
+ * @return OK if everything goes well, or ERROR if the pointer is NULL.
+ */
+Status command_set_arg(Command *command,const char *arg);
 
 #endif
 

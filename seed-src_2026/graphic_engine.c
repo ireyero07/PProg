@@ -23,7 +23,7 @@
 
 #define WIDTH_MAP 57
 #define WIDTH_DES 59
-#define WIDTH_BAN 25
+#define WIDTH_BAN 12
 #define HEIGHT_MAP 30
 #define HEIGHT_BAN 1
 #define HEIGHT_HLP 2
@@ -453,10 +453,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       if(n_objs == 0){
         screen_area_puts(ge->descript, "Player has no objects");
       } else {
-        sprintf(str, "Player's inventory");
+        sprintf(str, "Player's inventory:");
         screen_area_puts(ge->descript, str);
         for(i=0; i < n_objs;i++){
-          sprintf(str, "%s", object_get_name(game_get_object(game,objs[i])));
+          sprintf(str, " %s", object_get_name(game_get_object(game,objs[i])));
           screen_area_puts(ge->descript, str);
         }
       }
@@ -485,7 +485,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   if (desc && strlen(desc) > 0) {
     if (command_get_code(game_get_last_command(game)) == INSPECT) {      
-      sprintf(str_desc, " The description of %s is: %s", object_get_name(game_get_object(game, game_get_object_id_by_name(game, command_get_arg(game_get_last_command(game))))), desc);
+      sprintf(str_desc, " The description of %s is: %s", command_get_arg(game_get_last_command(game)), desc);
       screen_area_puts(ge->descript, str_desc);
       
     } else {
@@ -513,10 +513,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     result_str = "OK";
   else
     result_str = "ERROR";
-
-  sprintf(str, " %s (%s): %s", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS], result_str);
-
-  screen_area_puts(ge->feedback, str);
+  if (last_cmd !=NO_CMD){
+    sprintf(str, " %s (%s): %s", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS], result_str);
+    screen_area_puts(ge->feedback,str);
+  }
 
   /* Dump to the terminal */
   screen_paint(game_get_turn(game));

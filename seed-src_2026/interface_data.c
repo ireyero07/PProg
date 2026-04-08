@@ -75,6 +75,7 @@ Status interface_data_set_last_cmd(Interface_Data *intdat, Command *code)
     }
 
     command_set_code(intdat->last_cmd, command_get_code(code));
+    command_set_arg(intdat->last_cmd, command_get_arg(code));
 
     return OK;
 }
