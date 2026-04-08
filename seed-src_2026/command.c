@@ -139,3 +139,8 @@ Status command_set_arg(Command *command,const char *arg){
   return OK;
 }
 
+const char* command_get_name(Command *command) {
+  if (!command) return NULL;
+
+  return cmd_to_str[command->code - NO_CMD][CMDL];
+}

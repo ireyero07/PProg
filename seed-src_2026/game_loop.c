@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include "command.h"
 #include "game.h"
@@ -56,12 +57,22 @@ int main(int argc, char *argv[]) {
   int result;
   Command *last_cmd = NULL;
   FILE *log_file = NULL;
+  int log_active = 0;
 
   srand(time(NULL));
 
   if (argc < 2) {
     fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
     return 1;
+  }
+
+  if (argc >= 4 && strcmp(argv[2], "-l") == 0) {
+    log_file = fopen(argv[3], "w");
+    if (!log_file) {
+      fprintf(stderr, "Error opening log file.\n");
+      return 1;
+    }
+    log_active = 1;
   }
 
   result = game_loop_init(&game, &gengine, argv[1]);
@@ -95,8 +106,19 @@ int main(int argc, char *argv[]) {
       return 0;
     }
 
-
     game_actions_update(game,last_cmd);
+
+    if (log_active) {
+      char line[128];
+
+      if (command_get_arg(last_cmd)[0] != '\0') {
+        sprintf(line, "%s %s", command_get_name(last_cmd), command_get_arg(last_cmd));
+      } else {
+        sprintf(line, "%s", command_get_name(last_cmd));
+      }
+
+      fprintf(log_file, "%s: %s\n", line, (game_get_last_action(game) == OK) ? "OK" : "ERROR");
+    }
 
     if (game_is_any_player_death(game) == FALSE) {
       game_next_turn(game);
@@ -105,6 +127,10 @@ int main(int argc, char *argv[]) {
   }
   
   graphic_engine_paint_game(gengine, game);
+
+  if (log_active) {
+    fclose(log_file);
+  }
 
   command_destroy(last_cmd);
   game_loop_cleanup(game, gengine);

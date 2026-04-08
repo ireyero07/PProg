@@ -86,6 +86,15 @@ const char* command_get_arg(Command *command);
  */
 Status command_set_arg(Command *command,const char *arg);
 
+/**
+ * @brief Gets the name of the command in text format
+ * @author Ivan Reyero
+ *
+ * @param command Pointer to the command
+ * @return String with the command name, or NULL if error
+ */
+const char* command_get_name(Command *command);
+
 #endif
 
 
