@@ -1,126 +1,76 @@
 EXE=castle
 CC=gcc
-CFLAGS= -Wall -ansi -pedantic
+CFLAGS= -Wall -ansi -pedantic -I$(INCDIR)
+
+SRCDIR = ./src
+INCDIR = ./include
+OBJDIR = ./obj
+LIBDIR = ./lib
+DOCDIR = ./doc
+
+OBJS = $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/game_loop.o \
+       $(OBJDIR)/game_reader.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o \
+       $(OBJDIR)/inventory.o $(OBJDIR)/object.o $(OBJDIR)/player.o \
+       $(OBJDIR)/space.o $(OBJDIR)/set.o $(OBJDIR)/character.o \
+       $(OBJDIR)/link.o $(OBJDIR)/interface_data.o
 
 #############################################################################
 
 all: $(EXE)
 
-$(EXE): command.o game_actions.o game_loop.o game_reader.o game.o graphic_engine.o inventory.o object.o player.o space.o set.o character.o link.o interface_data.o
-	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L.
+$(EXE): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L$(LIBDIR)
 
-command.o: command.c command.h types.h
-	$(CC) $(CFLAGS) -c command.c
-
-game_actions.o: game_actions.c game_actions.h types.h command.h game.h
-	$(CC) $(CFLAGS) -c game_actions.c
-
-game_loop.o: game_loop.c types.h command.h game.h game_reader.h graphic_engine.h game_actions.h
-	$(CC) $(CFLAGS) -c game_loop.c
-
-game_reader.o: game_reader.c game_reader.h types.h space.h game.h object.h
-	$(CC) $(CFLAGS) -c game_reader.c
-
-game.o: game.c game.h types.h space.h command.h object.h player.h character.h interface_data.h
-	$(CC) $(CFLAGS) -c game.c
-
-graphic_engine.o: graphic_engine.c graphic_engine.h types.h space.h command.h game.h player.h libscreen.h
-	$(CC) $(CFLAGS) -c graphic_engine.c
-
-inventory.o: inventory.c inventory.h types.h set.h
-	$(CC) $(CFLAGS) -c inventory.c
-
-link.o: link.c link.h types.h
-	$(CC) $(CFLAGS) -c link.c
-
-object.o: object.c object.h types.h
-	$(CC) $(CFLAGS) -c object.c
-
-player.o: player.c player.h types.h inventory.h
-	$(CC) $(CFLAGS) -c player.c
-
-space.o: space.c space.h types.h set.h
-	$(CC) $(CFLAGS) -c space.c
-
-set.o: set.c set.h types.h
-	$(CC) $(CFLAGS) -c set.c
-
-character.o: character.c character.h types.h
-	$(CC) $(CFLAGS) -c character.c
-
-interface_data.o: interface_data.c interface_data.h command.h types.h
-	$(CC) $(CFLAGS) -c interface_data.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 #############################################################################
 
-space_test.o: space_test.c space_test.h space.h types.h
-	$(CC) $(CFLAGS) -c space_test.c
-
-space_test: space_test.o space.o set.o
-	$(CC) $(CFLAGS) -o space_test space_test.o space.o set.o -lscreen -L.
+space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
+	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L.
 
 test_space: space_test
 	./space_test
 
-object_test.o: object_test.c object_test.h object.h types.h
-	$(CC) $(CFLAGS) -c object_test.c
-
-object_test: object_test.o object.o
-	$(CC) $(CFLAGS) -o object_test object_test.o object.o
+object_test: $(OBJDIR)/object_test.o $(OBJDIR)/object.o
+	$(CC) $(CFLAGS) -o $@ $^
 
 test_object: object_test
 	./object_test
 
-player_test.o: player_test.c player_test.h player.h types.h
-	$(CC) $(CFLAGS) -c player_test.c
-
-player_test: player_test.o player.o
-	$(CC) $(CFLAGS) -o player_test player_test.o player.o
+player_test: $(OBJDIR)/player_test.o $(OBJDIR)/player.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
+	$(CC) $(CFLAGS) -o $@ $^
 
 test_player: player_test
 	./player_test
 
-set_test.o: set_test.c set_test.h set.h types.h
-	$(CC) $(CFLAGS) -c set_test.c
-
-set_test: set_test.o set.o
-	$(CC) $(CFLAGS) -o set_test set_test.o set.o
+set_test: $(OBJDIR)/set_test.o $(OBJDIR)/set.o
+	$(CC) $(CFLAGS) -o $@ $^
 
 test_set: set_test
 	./set_test
 
-character_test.o: character_test.c character_test.h character.h types.h
-	$(CC) $(CFLAGS) -c character_test.c
-
-character_test: character_test.o character.o
-	$(CC) $(CFLAGS) -o character_test character_test.o character.o
+character_test: $(OBJDIR)/character_test.o $(OBJDIR)/character.o
+	$(CC) $(CFLAGS) -o $@ $^
 
 test_character: character_test
 	./character_test
 
-link_test.o: link_test.c link_test.h link.h types.h
-	$(CC) $(CFLAGS) -c link_test.c
-
-link_test: link_test.o link.o
-	$(CC) $(CFLAGS) -o link_test link_test.o link.o
+link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o
+	$(CC) $(CFLAGS) -o $@ $^
 
 test_link: link_test
 	./link_test
 
-inventory_test.o: inventory_test.c inventory_test.h inventory.h types.h
-	$(CC) $(CFLAGS) -c inventory_test.c
-
-inventory_test: inventory_test.o inventory.o
-	$(CC) $(CFLAGS) -o inventory_test inventory_test.o inventory.o
+inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
+	$(CC) $(CFLAGS) -o $@ $^
 
 test_inventory: inventory_test
 	./inventory_test
 
-interface_data_test.o: interface_data_test.c interface_data_test.h interface_data.h types.h
-	$(CC) $(CFLAGS) -c interface_data_test.c
-
-interface_data_test: interface_data_test.o interface_data.o command.o
-	$(CC) $(CFLAGS) -o interface_data_test interface_data_test.o interface_data.o command.o
+interface_data_test: $(OBJDIR)/interface_data_test.o $(OBJDIR)/interface_data.o $(OBJDIR)/command.o
+	$(CC) $(CFLAGS) -o $@ $^
 
 test_interface_data: interface_data_test
 	./interface_data_test
@@ -128,10 +78,10 @@ test_interface_data: interface_data_test
 #############################################################################
 
 clear:
-	rm -rf *.o 
+	rm -rf $(OBJDIR)/*.o 
 
 clean:
-	rm -rf *.o $(EXE) space_test character_test set_test
+	rm -rf $(OBJDIR) $(EXE) *_test $(DOCDIR)
 
 #############################################################################
 
