@@ -1,6 +1,7 @@
 EXE=castle
 CC=gcc
 CFLAGS= -Wall -ansi -pedantic -I$(INCDIR)
+TESTS = space_test object_test player_test set_test character_test link_test inventory_test interface_data_test
 
 SRCDIR = ./src
 INCDIR = ./include
@@ -27,53 +28,31 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 #############################################################################
 
-space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
-	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L.
+tests: $(TESTS)
 
-test_space: space_test
-	./space_test
+space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
+	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L$(LIBDIR)
 
 object_test: $(OBJDIR)/object_test.o $(OBJDIR)/object.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-test_object: object_test
-	./object_test
-
 player_test: $(OBJDIR)/player_test.o $(OBJDIR)/player.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
 	$(CC) $(CFLAGS) -o $@ $^
-
-test_player: player_test
-	./player_test
 
 set_test: $(OBJDIR)/set_test.o $(OBJDIR)/set.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-test_set: set_test
-	./set_test
-
 character_test: $(OBJDIR)/character_test.o $(OBJDIR)/character.o
 	$(CC) $(CFLAGS) -o $@ $^
-
-test_character: character_test
-	./character_test
 
 link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-test_link: link_test
-	./link_test
-
 inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-test_inventory: inventory_test
-	./inventory_test
-
 interface_data_test: $(OBJDIR)/interface_data_test.o $(OBJDIR)/interface_data.o $(OBJDIR)/command.o
 	$(CC) $(CFLAGS) -o $@ $^
-
-test_interface_data: interface_data_test
-	./interface_data_test
 
 #############################################################################
 
@@ -86,11 +65,31 @@ clean:
 #############################################################################
 
 run:
+	@echo ">>>>>> Running castle"
 	./castle castle.dat
 
 runv:
 	@echo ">>>>>> Running castle with valgrind"
 	valgrind --leak-check=full ./castle castle.dat
+
+run_log:
+	@echo ">>>>>> Running castle with LOG and valgrind"
+	valgrind --leak-check=full ./castle castle.dat -l output.log
+
+run_cmd:
+	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
+	valgrind --leak-check=full ./castle castle.dat -l output.log < game1.cmd
+
+run_tests: $(TESTS)
+	@echo ">>>>>> Running all tests"
+	@for test in $(TESTS); do \
+		echo "Running $$test"; \
+		./$$test; \
+	done
+
+#############################################################################
+
+.PHONY: all clear clean run runv run_log run_cmd tests run_tests
 
 #############################################################################
 

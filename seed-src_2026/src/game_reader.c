@@ -95,7 +95,7 @@ Status game_reader_load(Game *game, const char *filename)
   Character *character = NULL;
   Link *link = NULL;
   Status status = OK;
-  int i, health, backpack_capacity, friendly, direction, open, numobjects = 0, numchr = 0;
+  int i, health, backpack_capacity, friendly, direction, open, numobjects = 0, numchr = 0, numlinks = 0, numplayers = 0, numspaces = 0;
 
   /* Error control */
   if (!game || !filename)
@@ -142,28 +142,38 @@ Status game_reader_load(Game *game, const char *filename)
           gdesc[i][0] = '\0';
         }
       }
+      numspaces++;
 
 #ifdef DEBUG
       printf("Read: s:%ld|%s|%ld|%ld|%ld|%ld|%s|%s|%s|%s|%s|\n",
              idSpace, name, north, east, south, west, gdesc[0], gdesc[1], gdesc[2], gdesc[3], gdesc[4]);
 #endif
 
-      /* Create the space and add it to the game */
-      space = space_create(idSpace);
-      if (space != NULL)
+      if (numspaces > MAX_SPACES)
       {
-        space_set_name(space, name);
-
-        for (i = 0; i < GDESC_LINES; i++)
-        {
-          if (gdesc[i][0] != '\0')
-          {
-            space_set_gdesc(space, gdesc[i], i);
-          }
-        }
-
-        game_add_space(game, space);
+        printf("Error: demasiados espacios\n");
+        game_set_finished(game, TRUE);
+        fclose(file);
+        return ERROR;
       }
+      else {
+        /* Create the space and add it to the game */
+        space = space_create(idSpace);
+        if (space != NULL)
+        {
+          space_set_name(space, name);
+
+          for (i = 0; i < GDESC_LINES; i++)
+          {
+            if (gdesc[i][0] != '\0')
+            {
+              space_set_gdesc(space, gdesc[i], i);
+            }
+          }
+          game_add_space(game, space);
+        }
+      }
+      
     }
 
     /* Check if the line defines an object */
@@ -196,17 +206,15 @@ Status game_reader_load(Game *game, const char *filename)
              idObject, name, idSpace);
 #endif
 
-      /* Create the object and add it to the space */
       if (numobjects > MAX_OBJECTS)
       {
-        printf("\nFichero no válido\n");
-        printf("\n");
-        printf("Forzando salida del juego...\n");
-        printf("\n");
+        printf("Error: demasiados objetos\n");
         game_set_finished(game, TRUE);
-        break;
+        fclose(file);
+        return ERROR;
       }
       else
+      /* Create the object and add it to the space */
       {
         object = object_create(idObject);
         if (object != NULL)
@@ -252,23 +260,33 @@ Status game_reader_load(Game *game, const char *filename)
 
       toks = strtok(NULL, "|");
       backpack_capacity = atoi(toks);
+      numplayers++;
 
 #ifdef DEBUG
       printf("Read: p:%ld|%s|%s|%ld|%d|%d|\n",
              idPlayer, name, player_gdesc, idSpace, health, backpack_capacity);
 #endif
 
-      /* Create the player and add it to the game */
-      player = player_create(idPlayer, backpack_capacity);
-      if (player != NULL)
+      if (numplayers > MAX_PLAYERS)
       {
-
-        player_set_name(player, name);
-        player_set_gdesc(player, player_gdesc);
-        player_set_location(player, idSpace);
-        player_set_health(player, health);
-        if(game_add_player(game, player)==ERROR){
-          player_destroy(player);
+        printf("Error: demasiados jugadores\n");
+        game_set_finished(game, TRUE);
+        fclose(file);
+        return ERROR;
+      }
+      else
+        /* Create the player and add it to the game */
+      {
+        player = player_create(idPlayer, backpack_capacity);
+        if (player != NULL)
+        {
+          player_set_name(player, name);
+          player_set_gdesc(player, player_gdesc);
+          player_set_location(player, idSpace);
+          player_set_health(player, health);
+          if(game_add_player(game, player)==ERROR){
+            player_destroy(player);
+          }
         }
       }
     }
@@ -314,32 +332,34 @@ Status game_reader_load(Game *game, const char *filename)
 
       if (numchr > MAX_CHARACTERS)
       {
-        printf("\nFichero no válido\n");
-        printf("\n");
-        printf("Forzando salida del juego...\n");
-        printf("\n");
+        printf("Error: demasiados characters\n");
         game_set_finished(game, TRUE);
-        break;
+        fclose(file);
+        return ERROR;
       }
-      /* Create the character and add it to the game */
-      character = character_create(idCharacter);
-      if (character != NULL)
+      else 
       {
-        character_set_name(character, name);
-        character_set_gdesc(character, character_gdesc);
-        character_set_location(character, idSpace);
-        character_set_health(character, health);
-        character_set_friendly(character, friendly);
-        character_set_message(character, char_msg);
-        space = game_get_space(game, idSpace);
-        if (space != NULL)
+        /* Create the character and add it to the game */
+        character = character_create(idCharacter);
+        if (character != NULL)
         {
-          space_add_character(space, idCharacter);
-        }
-        if(game_add_character(game, character)==ERROR){
-          character_destroy(character);
+          character_set_name(character, name);
+          character_set_gdesc(character, character_gdesc);
+          character_set_location(character, idSpace);
+          character_set_health(character, health);
+          character_set_friendly(character, friendly);
+          character_set_message(character, char_msg);
+          space = game_get_space(game, idSpace);
+          if (space != NULL)
+          {
+            space_add_character(space, idCharacter);
+          }
+          if(game_add_character(game, character)==ERROR){
+            character_destroy(character);
+          }
         }
       }
+      
     }
 
     /*LOAD LINKS*/
@@ -370,25 +390,34 @@ Status game_reader_load(Game *game, const char *filename)
 
       toks = strtok(NULL, "|");
       open = atoi(toks);
+      numlinks++;
 
 #ifdef DEBUG
       printf("Read: l:%ld|%s|%ld|%ld|%d|%d|\n",
              idLink, name, idSpace, idFinal, direction, open);
 #endif
 
-      /* Create the link and add it to the game */
-      link = link_create(idLink);
-      if (link != NULL)
+      if (numlinks > MAX_LINKS)
       {
-        link_set_name(link, name);
-        link_set_origin(link, idSpace);
-        link_set_destination(link, idFinal);
-        link_set_direction(link, direction);
-        link_set_open(link, open);
-        if(game_add_link(game, link)==ERROR){
-          link_destroy(link);
+        printf("Error: demasiados links\n");
+        game_set_finished(game, TRUE);
+        fclose(file);
+        return ERROR;
+      }
+      else {
+        /* Create the link and add it to the game */
+        link = link_create(idLink);
+        if (link != NULL)
+        {
+          link_set_name(link, name);
+          link_set_origin(link, idSpace);
+          link_set_destination(link, idFinal);
+          link_set_direction(link, direction);
+          link_set_open(link, open);
+          if(game_add_link(game, link)==ERROR){
+            link_destroy(link);
+          }
         }
-
       }
     }
   }
