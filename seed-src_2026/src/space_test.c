@@ -68,6 +68,30 @@ int main(int argc, char** argv) {
   if (all || test == 22) test2_space_set_gdesc();
   if (all || test == 23) test1_space_get_gdesc();
   if (all || test == 24) test2_space_get_gdesc();
+  if (all || test == 25) test1_space_destroy();
+  if (all || test == 26) test2_space_destroy();
+  if (all || test == 27) test1_space_get_objects_ids();
+  if (all || test == 28) test2_space_get_objects_ids();
+  if (all || test == 29) test1_space_get_number_objects();
+  if (all || test == 30) test2_space_get_number_objects();
+  if (all || test == 31) test1_space_add_character();
+  if (all || test == 32) test2_space_add_character();
+  if (all || test == 33) test1_space_del_character();
+  if (all || test == 34) test2_space_del_character();
+  if (all || test == 34) test1_space_get_character();
+  if (all || test == 34) test2_space_get_character();
+  if (all || test == 34) test1_space_has_character();
+  if (all || test == 34) test2_space_has_character();
+  if (all || test == 34) test1_space_set_discovered();
+  if (all || test == 34) test2_space_set_discovered();
+  if (all || test == 34) test3_space_set_discovered();
+  if (all || test == 34) test1_space_get_discovered();
+  if (all || test == 34) test2_space_get_discovered();
+
+
+
+
+
 
 
   PRINT_PASSED_PERCENTAGE;
@@ -241,3 +265,27 @@ void test1_space_get_gdesc() {
 void test2_space_get_gdesc() {
   PRINT_TEST_RESULT(space_get_gdesc(NULL, 0) == NULL);
 }
+
+void test1_space_destroy(){
+
+}
+void test2_space_destroy(){
+
+}
+void test1_space_get_objects_ids();
+void test2_space_get_objects_ids();
+void test1_space_get_number_objects();
+void test2_space_get_number_objects();
+void test1_space_add_character();
+void test2_space_add_character();
+void test1_space_del_character();
+void test2_space_del_character();
+void test1_space_get_character();
+void test2_space_get_character();
+void test1_space_has_character();
+void test2_space_has_character();
+void test1_space_set_discovered();
+void test2_space_set_discovered();
+void test3_space_set_discovered();
+void test1_space_get_discovered();
+void test2_space_get_discovered();
