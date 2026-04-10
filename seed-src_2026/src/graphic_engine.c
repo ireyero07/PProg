@@ -454,8 +454,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       if(n_objs == 0){
         screen_area_puts(ge->descript, "Player has no objects");
       } else {
-        sprintf(str, "Player's inventory:");
-        screen_area_puts(ge->descript, str);
+        if(n_objs >= inventory_get_max_objs(player_get_backpack(player))){
+          sprintf(str, "Player's inventory: (FULL)");
+          screen_area_puts(ge->descript, str);
+        } else {
+          sprintf(str, "Player's inventory:");
+          screen_area_puts(ge->descript, str);
+        }
         for(i=0; i < n_objs;i++){
           sprintf(str, " %s", object_get_name(game_get_object(game,objs[i])));
           screen_area_puts(ge->descript, str);
