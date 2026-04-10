@@ -93,74 +93,74 @@ void graphic_engine_print_not_discovered_space(Area *map){
   screen_area_puts(map,"                   +---------------+");
 }
 
-void graphic_engine_print_backOrNext_space (Graphic_engine *ge, Game *game, Id id_backOrNext) {
-  Space *space_backOrNext = NULL;
-  Id *space_nexOrBack_objects = NULL, obj_id = NO_ID;
-  Character *character_backOrNext = NULL;
+void graphic_engine_print_SouthOrNorth_space (Graphic_engine *ge, Game *game, Id id_SouthOrNorth) {
+  Space *space_SouthOrNorth = NULL;
+  Id *space_SouthOrNorth_objects = NULL, obj_id = NO_ID;
+  Character *character_SouthOrNorth = NULL;
   Object *obj = NULL;
-  char chr[MAX_CHR_GDESC + 1] = "",  space_backOrNext_objects_line[WORD_SIZE] = "", str[255], gdesc[GDESC_LINES][GDESC_LENGTH + 1];
+  char chr[MAX_CHR_GDESC + 1] = "",  space_SouthOrNorth_objects_line[WORD_SIZE] = "", str[255], gdesc[GDESC_LINES][GDESC_LENGTH + 1];
   int i, k;
   long n_objects;
-  space_backOrNext = game_get_space(game, id_backOrNext);
+  space_SouthOrNorth = game_get_space(game, id_SouthOrNorth);
 
-  if (id_backOrNext == NO_ID) {
+  if (id_SouthOrNorth == NO_ID) {
     graphic_engine_print_empty_space(ge->map);
-  } else if (!space_get_discovered(game_get_space(game,id_backOrNext))) {
+  } else if (!space_get_discovered(game_get_space(game,id_SouthOrNorth))) {
     graphic_engine_print_not_discovered_space(ge->map);
   } else {
     /* character back or next space */
-    character_backOrNext = game_get_character_by_space(game, id_backOrNext);
+    character_SouthOrNorth = game_get_character_by_space(game, id_SouthOrNorth);
 
     chr[0] = '\0';
-    if (character_backOrNext != NULL) {
-      strncpy(chr, character_get_gdesc(character_backOrNext), MAX_CHR_GDESC);
+    if (character_SouthOrNorth != NULL) {
+      strncpy(chr, character_get_gdesc(character_SouthOrNorth), MAX_CHR_GDESC);
       chr[MAX_CHR_GDESC] = '\0';
     }
     /* object back or next space */
-    space_nexOrBack_objects = space_get_objects_ids(space_backOrNext);
-    n_objects = space_get_number_objects(space_backOrNext);
+    space_SouthOrNorth_objects = space_get_objects_ids(space_SouthOrNorth);
+    n_objects = space_get_number_objects(space_SouthOrNorth);
 
     if (n_objects >= 3) {
       for (i = 0, k = 0; i < n_objects; i++) {
-        while ((obj_id = space_nexOrBack_objects[k]) == NO_ID) {
+        while ((obj_id = space_SouthOrNorth_objects[k]) == NO_ID) {
           k++;
         }
         obj = game_get_object(game, obj_id);
         k++;
         if (obj != NULL) {
-          if (strlen(space_backOrNext_objects_line) > 0) {
-          strcat(space_backOrNext_objects_line, ", ");
+          if (strlen(space_SouthOrNorth_objects_line) > 0) {
+          strcat(space_SouthOrNorth_objects_line, ", ");
           }
-          strncat(space_backOrNext_objects_line, object_get_name(obj), 2);
+          strncat(space_SouthOrNorth_objects_line, object_get_name(obj), 2);
         }
       }
     }
     else
     {
       for (i = 0, k = 0; i < n_objects; i++) {
-        while ((obj_id = space_nexOrBack_objects[k]) == NO_ID) {
+        while ((obj_id = space_SouthOrNorth_objects[k]) == NO_ID) {
           k++;
         }     
         obj = game_get_object(game, obj_id);
         k++;
         if (obj != NULL) {
-          if (strlen(space_backOrNext_objects_line) > 0) {
-            strcat(space_backOrNext_objects_line, ", ");
+          if (strlen(space_SouthOrNorth_objects_line) > 0) {
+            strcat(space_SouthOrNorth_objects_line, ", ");
           }
-          strcat(space_backOrNext_objects_line, object_get_name(obj));
+          strcat(space_SouthOrNorth_objects_line, object_get_name(obj));
         }
       }
     }
 
     /* Gdesc back or next space  */
     for(i=0; i<GDESC_LINES; i++){
-      strncpy(gdesc[i], space_get_gdesc(space_backOrNext, i), GDESC_LENGTH);
+      strncpy(gdesc[i], space_get_gdesc(space_SouthOrNorth, i), GDESC_LENGTH);
       gdesc[i][GDESC_LENGTH] = '\0';
     }
 
     sprintf(str, "                   +---------------+");
     screen_area_puts(ge->map, str);
-    sprintf(str, "                   |      %3.3s   %3d|", chr, (int) id_backOrNext);
+    sprintf(str, "                   |      %3.3s   %3d|", chr, (int) id_SouthOrNorth);
     screen_area_puts(ge->map, str);
     sprintf(str, "                   |%s      |", gdesc[0]);
     screen_area_puts(ge->map, str);
@@ -172,14 +172,14 @@ void graphic_engine_print_backOrNext_space (Graphic_engine *ge, Game *game, Id i
     screen_area_puts(ge->map, str);
     sprintf(str, "                   |%s      |", gdesc[4]);
     screen_area_puts(ge->map, str);
-    sprintf(str, "                   |%-15.15s|", space_backOrNext_objects_line);
+    sprintf(str, "                   |%-15.15s|", space_SouthOrNorth_objects_line);
     screen_area_puts(ge->map, str);
     sprintf(str, "                   +---------------+");
     screen_area_puts(ge->map, str);
   }
 }
 
-void graphic_engine_print_left_actual_right_space(Graphic_engine *ge, Game *game, Id id_left, Id id_act, Id id_right) {
+void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game, Id id_west, Id id_act, Id id_east) {
   int i, j, col;
   Space *spaces[3];
   Id ids[3], obj_id = NO_ID, *objects = NULL;
@@ -191,8 +191,8 @@ void graphic_engine_print_left_actual_right_space(Graphic_engine *ge, Game *game
 
 
   /* Inicializar arrays de spaces, ids y player */
-  if (id_left != NO_ID) {
-    spaces[0] = game_get_space(game, id_left);
+  if (id_west != NO_ID) {
+    spaces[0] = game_get_space(game, id_west);
   } else {
     spaces[0] = NULL;
   }
@@ -203,13 +203,13 @@ void graphic_engine_print_left_actual_right_space(Graphic_engine *ge, Game *game
     spaces[1] = NULL;
   }
 
-  if (id_right != NO_ID) {
-    spaces[2] = game_get_space(game, id_right);
+  if (id_east != NO_ID) {
+    spaces[2] = game_get_space(game, id_east);
   } else {
     spaces[2] = NULL;
   }
 
-  ids[0] = id_left; ids[1] = id_act; ids[2] = id_right;
+  ids[0] = id_west; ids[1] = id_act; ids[2] = id_east;
   chars[0] = chars[1] = chars[2] = NULL;
 
   player = game_get_player(game);
@@ -218,6 +218,8 @@ void graphic_engine_print_left_actual_right_space(Graphic_engine *ge, Game *game
   ply[1][MAX_CHR_GDESC] = '\0';
   ply[0][0] = '\0';
   ply[2][0] = '\0';
+
+  
 
   /* Inicializar arrays de gdesc, objects y characters */
   for (col = 0; col < 3; col++) {
@@ -284,7 +286,7 @@ void graphic_engine_print_left_actual_right_space(Graphic_engine *ge, Game *game
       }
     }
   }
-
+  space_set_discovered(game_get_space(game,id_act),TRUE);
   /* Ahora pintamos fila por fila combinando las 3 habitaciones horizontalmente */
   for (i = 0; i < GDESC_LINES + 4; i++) { 
     str[0] = '\0';
@@ -365,8 +367,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Space *space_act = NULL;
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID;
 
-
-
+  
   /* Paint the in the map area */
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID) {
