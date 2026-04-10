@@ -2,7 +2,7 @@
  * @brief It declares the tests for the interface_data module
  *
  * @file interface_data_test.h
- * @author Profesores Pprog
+ * @author Gonzalez Hijano Ivan
  * @version 0.0
  * @date 17-02-2025
  * @copyright GNU Public License
@@ -21,7 +21,7 @@ void test1_interface_data_create();
 /**
  * @test Test interface_data creation
  * @pre Nothing
- * @post Pointer is valid
+ * @post Default last action status is OK
  */
 void test2_interface_data_create();
 
