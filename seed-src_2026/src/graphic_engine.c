@@ -365,44 +365,44 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Space *ch_space = NULL;
   Character *ch = NULL;
   Space *space_act = NULL;
-  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID;
+  Id id_act = NO_ID, id_north = NO_ID, id_south = NO_ID, id_west = NO_ID, id_east = NO_ID;
 
   
   /* Paint the in the map area */
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID) {
     space_act = game_get_space(game, id_act);
-    id_back  = game_get_connection(game, id_act, N);
-    id_next  = game_get_connection(game, id_act, S);
-    id_left  = game_get_connection(game, id_act, W);
-    id_right = game_get_connection(game, id_act, E);
+    id_north = game_get_connection(game, id_act, N);
+    id_south = game_get_connection(game, id_act, S);
+    id_west  = game_get_connection(game, id_act, W);
+    id_east  = game_get_connection(game, id_act, E);
 
     /*-------------------------------------------------------*/
-    /*                    BACK SPACE                         */
+    /*                    NORTH SPACE                        */
     /*-------------------------------------------------------*/
-    graphic_engine_print_backOrNext_space (ge, game, id_back);
-    if (id_back != NO_ID) {
+    graphic_engine_print_SouthOrNorth_space(ge, game, id_north);
+    if (id_north != NO_ID) {
       if(game_connection_is_open(game,id_act,N)) sprintf(str, "                           ^         ");
       else sprintf(str, "                           X         ");
       screen_area_puts(ge->map, str);
     }
-    
-    
-    /*-------------------------------------------------------*/
-    /*               LEFT/ACTUAL/RIGHT SPACES                */
-    /*-------------------------------------------------------*/
-    
-    graphic_engine_print_left_actual_right_space (ge, game, id_left, id_act, id_right);
+
 
     /*-------------------------------------------------------*/
-    /*                    NEXT SPACE                         */
+    /*               WEST/ACTUAL/EAST SPACES                 */
     /*-------------------------------------------------------*/
-    if (id_next != NO_ID) { 
+
+    graphic_engine_print_west_actual_east_space(ge, game, id_west, id_act, id_east);
+
+    /*-------------------------------------------------------*/
+    /*                    SOUTH SPACE                        */
+    /*-------------------------------------------------------*/
+    if (id_south != NO_ID) {
       if(game_connection_is_open(game,id_act,S)) sprintf(str, "                           V         ");
       else sprintf(str, "                           X         ");
       screen_area_puts(ge->map, str);
     }
-    graphic_engine_print_backOrNext_space (ge, game, id_next);
+    graphic_engine_print_SouthOrNorth_space(ge, game, id_south);
   }
 
   /* Paint in the description area */

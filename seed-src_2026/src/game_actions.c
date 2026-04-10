@@ -169,6 +169,7 @@ void game_actions_take(Game *game, Command *cmd){
     backpack = player_get_backpack(game_get_player(game));
     if(inventory_get_number_objects(backpack) >= inventory_get_max_objs(backpack)){
       game_set_last_action(game,ERROR);
+      return;
     }
     space_del_object(space, obj_id);
     player_add_object(game_get_player(game), obj_id);
