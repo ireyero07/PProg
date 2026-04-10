@@ -13,7 +13,7 @@
 
 #include "types.h"
 
-typedef struct _Link Link;
+typedef struct _Link Link; /*!< Opaque type representing a connection between two spaces */
 
 /**
  * @brief It creates a new link, allocating memory and initializing its members
@@ -102,15 +102,17 @@ Id link_get_destination(Link* link);
 
 /**
  * @brief Sets the direction of the link
+ * @author Ivan Reyero
  *
  * @param link Pointer to the link
- * @param direction Direction (N, S, E, W, UNKNOWN_DIR)
+ * @param direction Direction (N, S, E, W)
  * @return OK if success, ERROR otherwise
  */
 Status link_set_direction(Link *link, Direction direction);
 
 /**
  * @brief Gets the direction of the link
+ * @author Ivan Reyero
  *
  * @param link Pointer to the link
  * @return Direction of the link

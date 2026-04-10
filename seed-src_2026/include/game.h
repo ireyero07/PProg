@@ -11,11 +11,11 @@
 #ifndef GAME_H
 #define GAME_H
 
-#define MAX_SPACES 100
-#define MAX_OBJECTS 10
-#define MAX_CHARACTERS 10
-#define MAX_LINKS 100
-#define MAX_PLAYERS 8
+#define MAX_SPACES 100     /*!< Maximum number of spaces allowed in the game */
+#define MAX_OBJECTS 10     /*!< Maximum number of objects allowed in the game */
+#define MAX_CHARACTERS 10  /*!< Maximum number of characters allowed in the game */
+#define MAX_LINKS 100      /*!< Maximum number of links allowed in the game */
+#define MAX_PLAYERS 8      /*!< Maximum number of players allowed in the game */
 
 #include "player.h"
 #include "space.h"
@@ -26,7 +26,7 @@
 #include "character.h"
 #include "link.h"
 
-typedef struct _Game Game;
+typedef struct _Game Game; /*!< Opaque type representing the game state */
 
 /**
  * @brief It creates a new game and initializes its members

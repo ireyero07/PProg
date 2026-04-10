@@ -13,19 +13,25 @@
 
 #include "types.h"
 
-#define N_CMDT 2
-#define N_CMD 9
+#define N_CMDT 2  /*!< Number of command type formats: short and long */
+#define N_CMD 9   /*!< Total number of commands available in the game */
 
+/**
+ * @brief Selects between the short or long name of a command
+ */
 typedef enum { CMDS, CMDL } CommandType;
 
+/**
+ * @brief Codes for each command available in the game
+ */
 typedef enum { NO_CMD = -1, UNKNOWN, EXIT, TAKE, DROP, ATTACK, CHAT, MOVE, INSPECT} CommandCode;
 
-typedef struct _Command Command;
+typedef struct _Command Command; /*!< Opaque type representing a game command */
 
 /**
  * @brief It creates a new command, allocating memory and initializing with code NO_CMD.
  * @author Jian Feng Yin Chen
- * 
+ *
  * @return A pointer to the new command if everything goes well, or NULL if memory could not be reserved.
  */
 Command* command_create();
@@ -60,7 +66,7 @@ CommandCode command_get_code(Command* command);
 /**
  * @brief Reads user input and updates the command code accordingly.
  * @author Jian Feng Yin Chen
- * 
+ *
  * This function reads a line from stdin, parses the first word and compares it with the known commands to set the corresponding CommandCode.
  * @param command  Pointer to the command that will store the interpreted code.
  * @return OK if everything goes well, or ERROR if the pointer is NULL.
@@ -70,7 +76,7 @@ Status command_get_user_input(Command* command);
 /**
  * @brief It gets the argument of the command
  * @author Jian Feng Yin Chen
- * 
+ *
  * @param command  Pointer to the command that will store the interpreted code.
  * @return the command argumet, if everything goes well, or NULL if the pointer is NULL.
  */
@@ -79,7 +85,7 @@ const char* command_get_arg(Command *command);
 /**
  * @brief It sets the argument of the command
  * @author Jian Feng Yin Chen
- * 
+ *
  * @param command  Pointer to the command that will store the interpreted code.
  * @param arg  the argument to set argument of the command.
  * @return OK if everything goes well, or ERROR if the pointer is NULL.
@@ -96,6 +102,3 @@ Status command_set_arg(Command *command,const char *arg);
 const char* command_get_name(Command *command);
 
 #endif
-
-
-

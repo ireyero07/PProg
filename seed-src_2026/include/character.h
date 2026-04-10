@@ -13,9 +13,9 @@
 
 #include "types.h"
 
-#define MAX_CHR_GDESC 6
+#define MAX_CHR_GDESC 6 /*!< Maximum length of the character graphic description string */
 
-typedef struct _Character Character;
+typedef struct _Character Character; /*!< Opaque type representing a character in the game */
 
 /**
  * @brief It creates a new character, allocating memory and initializing its members

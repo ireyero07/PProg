@@ -5,7 +5,7 @@
  * @author Profesores PPROG && Ivan
  * @version 0
  * @date 25-02-2026
- * @copyright GNU Public License
+ * @copyright GNU Public Licenses
  */
 
 #ifndef SPACE_H
@@ -14,11 +14,11 @@
 #include "types.h"
 #include "set.h"
 
-#define GDESC_LINES 5
-#define GDESC_LENGTH 9
-#define MAX_OBJECTS_SPACE 2
+#define GDESC_LINES 5        /*!< Number of lines in the graphic description of a space */
+#define GDESC_LENGTH 9       /*!< Number of characters per line in the graphic description */
+#define MAX_OBJECTS_SPACE 2  /*!< Maximum number of objects that can be in a space */
 
-typedef struct _Space Space;
+typedef struct _Space Space; /*!< Opaque type representing a location in the game */
 
 /**
  * @brief It creates a new space, allocating memory and initializing its members

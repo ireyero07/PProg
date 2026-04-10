@@ -10,11 +10,12 @@
 
 #ifndef OBJECT_H
 #define OBJECT_H
-#define MAX_DESC 200
+
+#define MAX_DESC 200 /*!< Maximum length of an object description */
 
 #include "types.h"
 
-typedef struct _Object Object;
+typedef struct _Object Object; /*!< Opaque type representing an object in the game */
 
 /**
  * @brief It creates a new object, allocating memory and initializing its members

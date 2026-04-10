@@ -12,9 +12,9 @@
 
 #include "types.h"
 
-#define MAX_IDS 100
+#define MAX_IDS 100 /*!< Maximum number of ids that a set can store */
 
-typedef struct _Set Set;
+typedef struct _Set Set; /*!< Opaque type representing a collection of unique identifiers */
 
 /**
  * @brief Creates a new set
@@ -38,7 +38,7 @@ Status set_destroy(Set* set);
  * @author Ivan
  *
  * @param set a pointer to set
- * @param id 
+ * @param id the identifier to add
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status set_add(Set* set, Id id);
@@ -48,7 +48,7 @@ Status set_add(Set* set, Id id);
  * @author Ivan
  *
  * @param set a pointer to set
- * @param id 
+ * @param id the identifier to delete
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status set_del(Set* set, Id id);

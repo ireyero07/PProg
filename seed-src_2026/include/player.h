@@ -13,9 +13,10 @@
 
 #include "types.h"
 #include "inventory.h"
-#define MAX_PLAYER_GDESC 6
 
-typedef struct _Player Player;
+#define MAX_PLAYER_GDESC 6 /*!< Maximum length of the player graphic description string */
+
+typedef struct _Player Player; /*!< Opaque type representing a player in the game */
 
 /**
  * @brief It creates a new player, allocating memory and initializing its members

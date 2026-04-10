@@ -13,7 +13,7 @@
 #include "types.h"
 #include "set.h"
 
-typedef struct _Inventory Inventory;
+typedef struct _Inventory Inventory; /*!< Opaque type representing a player's inventory */
 
 /**
  * @brief It creates a new inventory, allocating memory and initializing its members
@@ -114,7 +114,7 @@ long inventory_get_number_objects(Inventory* inventory);
 /**
  * @brief It prints the inventory information
  * @author Jian Feng Yin Chen
- *.
+ *
  * @param inventory a pointer to the inventory
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
