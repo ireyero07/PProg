@@ -86,35 +86,35 @@ void test2_character_get_name();
  * @pre Pointer to character and a description bigger than MAX_DESCRIPT_SIZE
  * @post Output==ERROR
  */
-void test1_character_set_description();
+void test1_character_set_gdesc();
 
 /**
  * @test Test setting a character description
  * @pre Pointer to character and a description
  * @post Output==OK
  */
-void test2_character_set_description();
+void test2_character_set_gdesc();
 
 /**
  * @test Test setting a character description
  * @pre pointer to character = NULL 
  * @post Output==ERROR
  */
-void test3_character_set_description();
+void test3_character_set_gdesc();
 
 /**
  * @test Test getting a character description
  * @pre Pointer to character with a description
  * @post Output!=NULL
  */
-void test1_character_get_description();
+void test1_character_get_gdesc();
 
 /**
  * @test Test getting a character description
  * @pre Pointer to character with NO description
  * @post Output!=NULL
  */
-void test2_character_get_description();
+void test2_character_get_gdesc();
 
 /**
  * @test Test setting a character health
@@ -234,4 +234,7 @@ void test1_character_set_location();
 void test2_character_set_location();
 void test3_character_set_location();
 
+void test1_character_set_id();
+void test2_character_set_id();
+void test3_character_set_id();
 #endif
