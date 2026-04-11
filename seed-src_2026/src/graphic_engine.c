@@ -526,6 +526,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   /* Dump to the terminal */
   screen_paint(game_get_turn(game));
+  
   if (game_is_any_player_death(game)) {
     fprintf(stdout, "Game Over (╥﹏╥)\n");
     game_set_finished(game, TRUE);

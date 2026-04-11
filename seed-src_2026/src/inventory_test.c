@@ -83,7 +83,7 @@ int main(int argc, char **argv)
   if (all || test == 22)
     test2_inventory_destroy();
   if (all || test == 23)
-    test1_inventory_ge23t_objects_ids();
+    test1_inventory_get_objects_ids();
   if (all || test == 24)
     test1_inventory_get_objects_ids();
 
