@@ -15,7 +15,7 @@
 #include "player_test.h"
 #include "test.h"
  
-#define MAX_TESTS 32
+#define MAX_TESTS 36
  
 int main(int argc, char** argv) {
   int test = 0;
