@@ -98,21 +98,21 @@ void test3_set_print();
 /**
  * @test Test getting ids from a set
  * @pre Pointer to an empty set
- * @post Output==NULL
+ * @post Output==NO_ID
  */
 void test1_set_get_id_at();
 
 /**
  * @test Test getting ids from a set
  * @pre pointer to set = NULL 
- * @post Output==NULL
+ * @post Output==NO_ID
  */
 void test2_set_get_id_at();
 
 /**
  * @test Test getting ids from a set
  * @pre Pointer to a set with ids
- * @post Output!=NULL
+ * @post Output!=NO_ID
  */
 void test3_set_get_id_at();
 
@@ -132,29 +132,29 @@ void test2_set_get_n_ids();
 
 /**
  * @test Test getting a list of ids
- * @pre pointer to set = NULL 
- * @post Output==-1
+ * @pre Pointer to an empty set
+ * @post Output!=NULL
  */
 void test1_set_get_list_ids();
 
 /**
  * @test Test getting a list of ids
  * @pre pointer to set = NULL 
- * @post Output==-1
+ * @post Output==NULL
  */
 void test2_set_get_list_ids();
 
 /**
  * @test Test getting a list of ids
- * @pre pointer to set = NULL 
- * @post Output==-1
+ * @pre Pointer to a set with ids
+ * @post Output!=NULL
  */
 void test3_set_get_list_ids();
 
 /**
  * @test Test finding an ID in a set
- * @pre pointer to set = NULL 
- * @post Output==-1
+ * @pre Pointer to a set with the id
+ * @post Output==0
  */
 void test1_set_find();
 
@@ -167,7 +167,7 @@ void test2_set_find();
 
 /**
  * @test Test finding an ID in a set
- * @pre pointer to set = NULL 
+ * @pre Pointer to a set without the id
  * @post Output==-1
  */
 void test3_set_find();

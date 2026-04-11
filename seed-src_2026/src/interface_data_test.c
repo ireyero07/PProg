@@ -2,7 +2,7 @@
  * @brief It tests interface_data module
  *
  * @file interface_data_test.c
- * @author Profesores Pprog
+ * @author Gonzalez Hijano Ivan
  * @version 0.0
  * @date 17-02-2025
  * @copyright GNU Public License
@@ -16,10 +16,10 @@
 #include "command.h"
 #include "test.h"
 
-#define MAX_TESTS 16
+#define MAX_TESTS 18
 
 /**
- * @brief Main function for SPACE unit tests.
+ * @brief Main function for INTERFACE DATA unit tests.
  *
  * You may execute ALL or a SINGLE test
  *   1.- No parameter -> ALL test are executed
@@ -103,9 +103,8 @@ void test1_interface_data_create()
 
 void test2_interface_data_create()
 {
-    Interface_Data *id;
-    id = interface_data_create();
-    PRINT_TEST_RESULT(id != NULL);
+    Interface_Data *id = interface_data_create();
+    PRINT_TEST_RESULT(interface_data_get_last_action_status(id) == OK); 
     interface_data_destroy(id);
 }
 

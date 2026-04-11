@@ -15,7 +15,8 @@
 /**
  * @brief Set structure
  */
-struct _Set {
+struct _Set
+{
   Id ids[MAX_IDS];
   int n_ids;
 };
@@ -23,12 +24,14 @@ struct _Set {
 /**
  * @brief Creates a new set
  */
-Set* set_create() {
+Set *set_create()
+{
   Set *newSet = NULL;
   int i;
 
-  newSet = (Set*)calloc(1, sizeof(Set));
-  if (!newSet) return NULL;
+  newSet = (Set *)calloc(1, sizeof(Set));
+  if (!newSet)
+    return NULL;
 
   newSet->n_ids = 0;
 
@@ -41,8 +44,10 @@ Set* set_create() {
 /**
  * @brief Destroys a set
  */
-Status set_destroy(Set* set) {
-  if (!set) return ERROR;
+Status set_destroy(Set *set)
+{
+  if (!set)
+    return ERROR;
 
   free(set);
   return OK;
@@ -51,11 +56,14 @@ Status set_destroy(Set* set) {
 /**
  * @brief Adds an id to the set
  */
-Status set_add(Set* set, Id id) {
-  if (!set || id == NO_ID || set->n_ids >= MAX_IDS) return ERROR;
+Status set_add(Set *set, Id id)
+{
+  if (!set || id == NO_ID || set->n_ids >= MAX_IDS)
+    return ERROR;
 
   /* avoid duplicates */
-  if (set_find(set, id)!=-1) {
+  if (set_find(set, id) != -1)
+  {
     return ERROR;
   }
 
@@ -68,13 +76,16 @@ Status set_add(Set* set, Id id) {
 /**
  * @brief Deletes an id from the set
  */
-Status set_del(Set* set, Id id) {
+Status set_del(Set *set, Id id)
+{
   int pos;
 
-  if (!set || id == NO_ID || set->n_ids <= 0) return ERROR;
+  if (!set || id == NO_ID || set->n_ids <= 0)
+    return ERROR;
 
   pos = set_find(set, id);
-  if (pos==-1) {
+  if (pos == -1)
+  {
     return ERROR;
   }
 
@@ -87,15 +98,18 @@ Status set_del(Set* set, Id id) {
 /**
  * @brief Checks if id exists
  */
-int set_find(Set* set, Id id) {
+int set_find(Set *set, Id id)
+{
   int i, position;
 
-  if (!set || id<0)
+  if (!set || id < 0)
     return -1;
 
-  for (i = 0; i < set->n_ids; i++) {
-    if (set->ids[i] == id) {
-      position=i;
+  for (i = 0; i < set->n_ids; i++)
+  {
+    if (set->ids[i] == id)
+    {
+      position = i;
       return position;
     }
   }
@@ -106,8 +120,10 @@ int set_find(Set* set, Id id) {
 /**
  * @brief Gets number of ids
  */
-int set_get_n_ids(Set* set) {
-  if (!set) return -1;
+int set_get_n_ids(Set *set)
+{
+  if (!set)
+    return -1;
 
   return set->n_ids;
 }
@@ -115,15 +131,18 @@ int set_get_n_ids(Set* set) {
 /**
  * @brief Gets id at position
  */
-Id set_get_id_at(Set* set, int position) {
+Id set_get_id_at(Set *set, int position)
+{
   if (!set || position < 0 || position >= set->n_ids)
     return NO_ID;
 
   return set->ids[position];
 }
 
-Id* set_get_list_ids(Set *set){
-  if (!set) return NULL;
+Id *set_get_list_ids(Set *set)
+{
+  if (!set)
+    return NULL;
 
   return set->ids;
 }
@@ -131,10 +150,12 @@ Id* set_get_list_ids(Set *set){
 /**
  * @brief Prints set information
  */
-Status set_print(Set* set) {
+Status set_print(Set *set)
+{
   int i;
 
-  if (!set) return ERROR;
+  if (!set)
+    return ERROR;
 
   printf("Set: ");
 

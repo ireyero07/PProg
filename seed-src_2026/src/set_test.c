@@ -82,8 +82,6 @@ int main(int argc, char **argv)
     test1_set_get_n_ids();
   if (all || test == 17)
     test2_set_get_n_ids();
-  if (all || test == 17)
-    test2_set_get_n_ids();
   if (all || test == 18)
     test1_set_get_list_ids();
   if (all || test == 19)
@@ -117,7 +115,7 @@ void test1_set_destroy()
   Status result;
   Set *s = set_create();
   result = set_destroy(s);
-  PRINT_TEST_RESULT(result = OK);
+  PRINT_TEST_RESULT(result == OK);
 }
 
 void test2_set_destroy()

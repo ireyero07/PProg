@@ -248,5 +248,33 @@ void test1_player_set_gdesc();
  * @post Output==ERROR
  */
 void test2_player_set_gdesc();
- 
+
+/**
+ * @test Test player_get_gdesc
+ * @pre Valid player pointer
+ * @post Output==0
+ */
+void test1_player_get_gdesc();
+
+/**
+ * @test Test player_get_gdesc
+ * @pre NULL player pointer
+ * @post Output!=0
+ */
+void test2_player_get_gdesc();
+
+/**
+ * @test Test player_destroy
+ * @pre Valid player pointer
+ * @post Output==OK
+ */
+void test1_player_destroy();
+
+/**
+ * @test Test player_destroy
+ * @pre NULL player pointer
+ * @post Output==ERROR
+ */
+void test2_player_destroy();
+
 #endif

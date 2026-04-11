@@ -52,7 +52,14 @@ void test1_inventory_set_max_objs();
  * @post Output==ERROR
  */
 void test2_inventory_set_max_objs();
- 
+
+/**
+ * @test Test inventory_set_max_objs
+ * @pre Valid inventory and max_objs = -1
+ * @post Output==ERROR
+ */
+void test3_inventory_set_max_objs();
+
 /**
  * @test Test inventory_add_object
  * @pre Valid inventory and valid object Id
@@ -150,5 +157,32 @@ void test2_inventory_get_number_objects();
  * @post Output==OK
  */
 void test1_inventory_print();
- 
+
+/**
+ * @test Test inventory_destory
+ * @pre Valid inventory
+ * @post Output==OK
+ */
+void test1_inventory_destroy();
+
+/**
+ * @test Test inventory_destory
+ * @pre Valid inventory
+ * @post Output==ERROR
+ */
+void test2_inventory_destroy();
+
+/**
+ * @test Test inventory_get_objects_ids
+ * @pre NULL inventory pointer
+ * @post Output==NULL
+ */
+void test1_inventory_get_objects_ids();
+
+/**
+ * @test Test inventory_get_objects_ids
+ * @pre Valid inventory pointer
+ * @post Output!=NULL
+ */
+void test2_inventory_get_objects_ids();
 #endif

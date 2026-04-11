@@ -15,7 +15,7 @@
 #include "player_test.h"
 #include "test.h"
  
-#define MAX_TESTS 32
+#define MAX_TESTS 36
  
 int main(int argc, char** argv) {
   int test = 0;
@@ -65,6 +65,11 @@ int main(int argc, char** argv) {
   if (all || test == 30) test2_player_set_health();
   if (all || test == 31) test1_player_set_gdesc();
   if (all || test == 32) test2_player_set_gdesc();
+  if (all || test == 33) test1_player_get_gdesc();
+  if (all || test == 34) test2_player_get_gdesc();
+  if (all || test == 35) test1_player_destroy();
+  if (all || test == 36) test2_player_destroy();
+
  
   PRINT_PASSED_PERCENTAGE;
  
@@ -239,4 +244,26 @@ void test1_player_set_gdesc() {
  
 void test2_player_set_gdesc() {
   PRINT_TEST_RESULT(player_set_gdesc(NULL, "^C>") == ERROR);
+}
+
+void test1_player_get_gdesc(){
+  Player *p = player_create(5, 3);
+  player_set_gdesc(p, "^C>");
+  PRINT_TEST_RESULT(strcmp(player_get_gdesc(p), "^C>")==0);
+  player_destroy(p);
+}
+
+void test2_player_get_gdesc(){
+  Player *p = NULL;
+  PRINT_TEST_RESULT(player_get_gdesc(p)==NULL);
+}
+
+void test1_player_destroy(){
+  Player *p = player_create(5, 3);
+  PRINT_TEST_RESULT(player_destroy(p)==OK);
+}
+
+void test2_player_destroy(){
+  Player *p = NULL;
+  PRINT_TEST_RESULT(player_destroy(p) == ERROR);
 }

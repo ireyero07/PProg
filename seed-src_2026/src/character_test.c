@@ -15,7 +15,7 @@
 #include "character_test.h"
 #include "test.h"
 
-#define MaX_TESTS 36
+#define MaX_TESTS 39
 
 /**
  * @brief Main function for CHaRaCTER unit tests.
@@ -136,6 +136,13 @@ int main(int argc, char **argv)
   if (all || test == 36)
     test3_character_set_location();
 
+  if (all || test == 37)
+    test1_character_set_id();
+  if (all || test == 38)
+    test2_character_set_id();
+  if (all || test == 39)
+    test3_character_set_id();
+  
   PRINT_PASSED_PERCENTAGE;
 
   return 1;
@@ -210,8 +217,13 @@ void test2_character_get_name()
 void test1_character_set_gdesc()
 {
   Character *c = NULL;
+  char big_gdesc[210];
+  int i;
   c = character_create(1);
-  PRINT_TEST_RESULT(character_set_gdesc(c, "DESCRIPCION DE MAS DE MAX_DESCRIPT_SIZE") == ERROR);
+  for(i=0; i<210; i++){
+    big_gdesc[i]='a';
+  }
+  PRINT_TEST_RESULT(character_set_gdesc(c, big_gdesc) == OK);
   character_destroy(c);
 }
 void test2_character_set_gdesc()
@@ -282,7 +294,7 @@ void test2_character_get_health()
   int result;
   Character *c = NULL;
   result = character_get_health(c);
-  PRINT_TEST_RESULT(result == -1);
+  PRINT_TEST_RESULT(result == 0);
 }
 
 void test1_character_set_message()
@@ -313,19 +325,15 @@ void test3_character_set_message()
 
 void test1_character_get_message()
 {
-  char *result;
   Character *c;
   c = character_create(5);
-  result = character_get_message(c);
-  PRINT_TEST_RESULT(result != NULL);
+  PRINT_TEST_RESULT(character_get_message(c) != NULL);
   character_destroy(c);
 }
 void test2_character_get_message()
 {
-  char *result;
   Character *c = NULL;
-  result = character_get_message(c);
-  PRINT_TEST_RESULT(result == NULL);
+  PRINT_TEST_RESULT(character_get_message(c) == NULL);
 }
 
 void test1_character_set_friendly()
@@ -359,7 +367,7 @@ void test2_character_get_friendly()
   Bool result;
   Character *c = NULL;
   result = character_get_friendly(c);
-  PRINT_TEST_RESULT(result == -1);
+  PRINT_TEST_RESULT(result == FALSE);
 }
 
 void test1_character_print()
@@ -381,37 +389,51 @@ void test2_character_print()
 
 
 void test1_character_get_location(){
-  Status result;
   Character *c = NULL;
-  result = character_get_location(c);
-  PRINT_TEST_RESULT(result == NO_ID);
+  PRINT_TEST_RESULT(character_get_location(c) == NO_ID);
 }
 void test2_character_get_location(){
-  Status result;
   Character *c = NULL;
+  Id c_id=0;
   c=character_create(5);
-  result = character_get_location(c);
-  PRINT_TEST_RESULT(result != NO_ID);
-}
-void test1_character_set_location(){
-  Status result;
-  Character *c = NULL;
-  c=character_create(5);
-  result = character_set_location(c);
-  PRINT_TEST_RESULT(result != NO_ID);
-}
-void test2_character_set_location(){
-  Status result;
-  Character *c = NULL;
-  c=character_create(5);
-  result = character_set_location(c);
-  PRINT_TEST_RESULT(result != NO_ID);
-}
-void test3_character_set_location(){
-  Status result;
-  Character *c = NULL;
-  c=character_create(5);
-  result = character_set_location(c);
-  PRINT_TEST_RESULT(result != NO_ID);
+  character_set_location(c, 5);
+  c_id = character_get_location(c);
+  PRINT_TEST_RESULT(c_id == 5);
+  character_destroy(c);
 }
 
+void test1_character_set_location(){
+  Character *c = NULL;
+  c=character_create(5);
+  PRINT_TEST_RESULT(character_set_location(c, 5) == OK);
+  character_destroy(c);
+}
+
+void test2_character_set_location(){
+  Character *c = NULL;
+  c=character_create(5);
+  PRINT_TEST_RESULT(character_set_location(c, NO_ID) == ERROR);
+  character_destroy(c);
+}
+
+void test3_character_set_location(){
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_set_location(c, 5) == ERROR);
+}
+
+void test1_character_set_id(){
+  Character *c = NULL;
+  c=character_create(5);
+  PRINT_TEST_RESULT(character_set_id(c, 5) == OK);
+  character_destroy(c);
+}
+void test2_character_set_id(){
+  Character *c = NULL;
+  c=character_create(5);
+  PRINT_TEST_RESULT(character_set_id(c, NO_ID) == ERROR);
+  character_destroy(c);
+}
+void test3_character_set_id(){
+  Character *c = NULL;
+  PRINT_TEST_RESULT(character_set_id(c, 5) == ERROR);
+}
