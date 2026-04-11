@@ -2,7 +2,7 @@
  * @brief It tests interface_data module
  *
  * @file interface_data_test.c
- * @author Profesores Pprog
+ * @author Gonzalez Hijano Ivan
  * @version 0.0
  * @date 17-02-2025
  * @copyright GNU Public License
@@ -104,7 +104,7 @@ void test1_interface_data_create()
 void test2_interface_data_create()
 {
     Interface_Data *id = interface_data_create();
-    PRINT_TEST_RESULT(interface_data_get_last_action_status(id) == OK);  // estado inicial
+    PRINT_TEST_RESULT(interface_data_get_last_action_status(id) == OK); 
     interface_data_destroy(id);
 }
 

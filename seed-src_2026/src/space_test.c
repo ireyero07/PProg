@@ -358,6 +358,7 @@ void test1_space_get_objects_ids()
   s = space_create(1);
   space_add_object(s, 1);
   PRINT_TEST_RESULT(space_get_objects_ids(s) != NULL);
+  space_destroy(s);
 }
 
 void test2_space_get_objects_ids()
@@ -378,6 +379,7 @@ void test2_space_get_number_objects()
   s = space_create(1);
   space_add_object(s, 1);
   PRINT_TEST_RESULT(space_get_number_objects(s) == 1);
+  space_destroy(s);
 }
 
 void test1_space_add_character()
@@ -385,6 +387,7 @@ void test1_space_add_character()
   Space *s = NULL;
   s = space_create(1);
   PRINT_TEST_RESULT(space_add_character(s, 1) != ERROR);
+  space_destroy(s);
 }
 
 void test2_space_add_character()
@@ -399,6 +402,7 @@ void test1_space_del_character()
   s = space_create(1);
   space_add_character(s, 1);
   PRINT_TEST_RESULT(space_del_character(s, 1) == OK);
+  space_destroy(s);
 }
 
 void test2_space_del_character()
@@ -407,6 +411,7 @@ void test2_space_del_character()
   s = space_create(1);
   space_add_character(s, 1);
   PRINT_TEST_RESULT(space_del_character(s, 2) == ERROR);
+  space_destroy(s);
 }
 
 void test3_space_del_character()
@@ -421,6 +426,7 @@ void test1_space_get_character()
   s = space_create(1);
   space_add_character(s, 1);
   PRINT_TEST_RESULT(space_get_character(s) != NULL);
+  space_destroy(s);
 }
 
 void test2_space_get_character()
@@ -428,6 +434,7 @@ void test2_space_get_character()
   Space *s = NULL;
   s = space_create(1);
   PRINT_TEST_RESULT(space_get_character(s) != NULL);
+  space_destroy(s);
 }
 
 void test3_space_get_character()
@@ -448,6 +455,7 @@ void test2_space_has_character()
   s = space_create(1);
   space_add_character(s, 1);
   PRINT_TEST_RESULT(space_has_character(s, 2) == FALSE);
+  space_destroy(s);
 }
 
 void test3_space_has_character()
@@ -456,6 +464,7 @@ void test3_space_has_character()
   s = space_create(1);
   space_add_character(s, 1);
   PRINT_TEST_RESULT(space_has_character(s, 2) == FALSE);
+  space_destroy(s);
 }
 
 void test1_space_set_discovered()
@@ -463,6 +472,7 @@ void test1_space_set_discovered()
   Space *s = NULL;
   s = space_create(1);
   PRINT_TEST_RESULT(space_set_discovered(s, TRUE) == OK);
+  space_destroy(s);
 }
 
 void test2_space_set_discovered()
@@ -476,6 +486,7 @@ void test3_space_set_discovered()
   Space *s = NULL;
   s = space_create(1);
   PRINT_TEST_RESULT(space_set_discovered(s, FALSE) == OK);
+  space_destroy(s);
 }
 
 void test1_space_get_discovered()
@@ -484,6 +495,7 @@ void test1_space_get_discovered()
   s = space_create(1);
   space_set_discovered(s, TRUE);
   PRINT_TEST_RESULT(space_get_discovered(s) == TRUE);
+  space_destroy(s);
 }
 
 void test2_space_get_discovered()
@@ -492,6 +504,7 @@ void test2_space_get_discovered()
   s = space_create(1);
   space_set_discovered(s, FALSE);
   PRINT_TEST_RESULT(space_get_discovered(s) == FALSE);
+  space_destroy(s);
 }
 
 void test3_space_get_discovered()
