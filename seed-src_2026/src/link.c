@@ -118,7 +118,9 @@ Id link_get_destination(Link* link) {
 }
 
 Status link_set_direction(Link *link, Direction direction) {
-  if (!link) return ERROR;
+  if (!link || ((direction!=N) && (direction!=S) && (direction!=W) && (direction!=E))){
+    return ERROR;
+  }
 
   link->direction = direction;
   return OK;
