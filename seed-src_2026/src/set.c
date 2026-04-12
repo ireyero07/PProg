@@ -17,8 +17,8 @@
  */
 struct _Set
 {
-  Id ids[MAX_IDS];
-  int n_ids;
+  Id ids[MAX_IDS]; /*!< Array of stored identifiers */
+  int n_ids;       /*!< Number of ids currently stored */
 };
 
 /**

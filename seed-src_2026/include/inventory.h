@@ -46,6 +46,7 @@ int inventory_get_max_objs(Inventory* inventory);
  * @author Jian Feng Yin Chen
  *
  * @param inventory a pointer to the inventory
+ * @param n_objects the new maximum number of objects
  * @return  OK, if everything goes well or ERROR if there was some mistake
  */
 Status inventory_set_max_objs(Inventory* inventory, int n_objects);

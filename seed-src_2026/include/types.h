@@ -13,7 +13,6 @@
 
 #define WORD_SIZE 1000    /*!< Maximum length of a word/string in the project */
 #define NO_ID -1          /*!< Represents an invalid or unassigned identifier */
-#define NO_DIRECTION -1   /*!< Represents an invalid or unassigned direction */
 
 typedef long Id; /*!< Type used for unique identifiers of game entities */
 
@@ -30,6 +29,6 @@ typedef enum { ERROR, OK } Status;
 /**
  * @brief Cardinal directions used for navigation between spaces
  */
-typedef enum { N, S, E, W } Direction;
+typedef enum { N, S, E, W, NO_DIRECTION = -1 } Direction;
 
 #endif

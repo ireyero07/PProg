@@ -13,7 +13,7 @@
 #include "command.h"
 #include "types.h"
 
-typedef struct _Interface_Data Interface_Data;
+typedef struct _Interface_Data Interface_Data; /*!< Opaque type representing the interface data for a player */
 
 /**
  * @brief Creates a new Interface_Data structure.
@@ -29,7 +29,7 @@ Interface_Data *interface_data_create();
  * @author Gonzalez Hijano, Ivan
  *
  * Deallocates all memory associated with the given Interface_Data structure.
- * @param intdata Pointer to the Interface_Data structure to free.
+ * @param intdat Pointer to the Interface_Data structure to free.
  * @return OK if the operation was successful, or ERROR if the pointer is NULL.
  */
 Status interface_data_destroy(Interface_Data *intdat);

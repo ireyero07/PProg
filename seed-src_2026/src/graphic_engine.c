@@ -21,17 +21,21 @@
 #include "player.h"
 #include "inventory.h"
 
-#define WIDTH_MAP 57
-#define WIDTH_DES 59
-#define WIDTH_BAN 12
-#define HEIGHT_MAP 30
-#define HEIGHT_BAN 1
-#define HEIGHT_HLP 2
-#define HEIGHT_FDB 3
+#define WIDTH_MAP 57  /*!< Width of the map area in characters */
+#define WIDTH_DES 59  /*!< Width of the description area in characters */
+#define WIDTH_BAN 12  /*!< Width of the banner area in characters */
+#define HEIGHT_MAP 30 /*!< Height of the map area in lines */
+#define HEIGHT_BAN 1  /*!< Height of the banner area in lines */
+#define HEIGHT_HLP 2  /*!< Height of the help area in lines */
+#define HEIGHT_FDB 3  /*!< Height of the feedback area in lines */
 
-
+/** @brief Graphic engine structure containing all screen areas */
 struct _Graphic_engine {
-  Area *map, *descript, *banner, *help, *feedback;
+  Area *map;      /*!< Map display area */
+  Area *descript; /*!< Description display area */
+  Area *banner;   /*!< Banner display area */
+  Area *help;     /*!< Help text display area */
+  Area *feedback; /*!< Feedback/command result display area */
 };
 
 Graphic_engine *graphic_engine_create() {
@@ -69,6 +73,10 @@ void graphic_engine_destroy(Graphic_engine *ge) {
   free(ge);
 }
 
+/**
+ * @brief Prints an empty (blank) space section in the map area
+ * @param map Pointer to the map screen area
+ */
 void graphic_engine_print_empty_space(Area *map){
   screen_area_puts(map,"                 ");
   screen_area_puts(map,"                 ");
@@ -81,6 +89,10 @@ void graphic_engine_print_empty_space(Area *map){
   screen_area_puts(map,"                 ");
 }
 
+/**
+ * @brief Prints a placeholder for an undiscovered space in the map area
+ * @param map Pointer to the map screen area
+ */
 void graphic_engine_print_not_discovered_space(Area *map){
   screen_area_puts(map,"                   +---------------+");
   screen_area_puts(map,"                   |               |");
@@ -93,6 +105,12 @@ void graphic_engine_print_not_discovered_space(Area *map){
   screen_area_puts(map,"                   +---------------+");
 }
 
+/**
+ * @brief Prints the north or south neighbouring space in the map area
+ * @param ge Pointer to the graphic engine
+ * @param game Pointer to the game
+ * @param id_SouthOrNorth Id of the north or south space to print
+ */
 void graphic_engine_print_SouthOrNorth_space (Graphic_engine *ge, Game *game, Id id_SouthOrNorth) {
   Space *space_SouthOrNorth = NULL;
   Id *space_SouthOrNorth_objects = NULL, obj_id = NO_ID;
@@ -179,6 +197,14 @@ void graphic_engine_print_SouthOrNorth_space (Graphic_engine *ge, Game *game, Id
   }
 }
 
+/**
+ * @brief Prints the west, current and east spaces side by side in the map area
+ * @param ge Pointer to the graphic engine
+ * @param game Pointer to the game
+ * @param id_west Id of the west space
+ * @param id_act Id of the current (actual) space
+ * @param id_east Id of the east space
+ */
 void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game, Id id_west, Id id_act, Id id_east) {
   int i, j, col;
   Space *spaces[3];

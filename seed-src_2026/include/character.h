@@ -163,7 +163,7 @@ Id character_get_location(Character *character);
  * @author Jian Feng Yin Chen
  *
  * @param character a pointer to the character
- * @param id the id number of the space where the character is located
+ * @param location the id number of the space where the character is located
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status character_set_location(Character *character, Id location);

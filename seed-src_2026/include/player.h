@@ -23,6 +23,7 @@ typedef struct _Player Player; /*!< Opaque type representing a player in the gam
  * @author Jian Feng Yin Chen
  *
  * @param id the identification number for the new player
+ * @param max_objs the maximum number of objects the player can carry
  * @return a new player, initialized
  */
 Player* player_create(Id id, int max_objs);

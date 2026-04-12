@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 
     if (argc < 2)
     {
-        printf("Running all test for module Space:\n");
+        printf("Running all test for module Interface data:\n");
     }
     else
     {
