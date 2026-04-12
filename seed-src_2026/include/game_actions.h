@@ -21,9 +21,9 @@
  *
  * It stores the las command in the game structure, ontains its code and calls the corresponding action function.
  * @param game Pointer to the game to be updated.
- * @param cmd Pointer to the command that has been entered by the user.
+ * @param command Pointer to the command that has been entered by the user.
  * @return OK if everything goes well, if not ERROR.
  */
-Status game_actions_update(Game *game, Command *cmd);
+Status game_actions_update(Game *game, Command *command);
 
 #endif

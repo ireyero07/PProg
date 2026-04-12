@@ -12,7 +12,9 @@
 #define LIBSCREEN_H
 
 typedef struct _Area Area; /*!< Opaque type representing a screen area */
-typedef enum {BLUE, GREEN, BLACK, RED, YELLOW, PURPLE, CYAN, WHITE} Frame_color; /*!< Color options for screen frames */
+
+/** @brief Color options for screen frames */
+typedef enum {BLUE, GREEN, BLACK, RED, YELLOW, PURPLE, CYAN, WHITE} Frame_color;
 
 
 
