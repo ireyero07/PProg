@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "command.h"
 #include "game.h"
@@ -120,6 +121,8 @@ int main(int argc, char *argv[]) {
       fprintf(log_file, "%s: %s\n", line, (game_get_last_action(game) == OK) ? "OK" : "ERROR");
     }
 
+    graphic_engine_paint_game(gengine, game);
+    sleep(3);
     if (game_is_any_player_death(game) == FALSE) {
       game_next_turn(game);
     }
