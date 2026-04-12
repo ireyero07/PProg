@@ -15,8 +15,14 @@
 #include "link_test.h"
 #include "test.h"
 
-#define MAX_TESTS 30
+#define MAX_TESTS 30 /*!< Total number of link tests */
 
+/**
+ * @brief Main function for LINK unit tests.
+ * @param argc Number of arguments
+ * @param argv Argument vector
+ * @return 0 on success
+ */
 int main(int argc, char **argv)
 {
   int test = 0;

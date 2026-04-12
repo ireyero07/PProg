@@ -15,8 +15,14 @@
 #include "inventory_test.h"
 #include "test.h"
 
-#define MAX_TESTS 24
+#define MAX_TESTS 24 /*!< Total number of inventory tests */
 
+/**
+ * @brief Main function for INVENTORY unit tests.
+ * @param argc Number of arguments
+ * @param argv Argument vector
+ * @return 0 on success
+ */
 int main(int argc, char **argv)
 {
   int test = 0;

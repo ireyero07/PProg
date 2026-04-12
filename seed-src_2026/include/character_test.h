@@ -228,13 +228,21 @@ void test1_character_print();
  */
 void test2_character_print();
 
+/** @brief Tests character_get_location with NULL character */
 void test1_character_get_location();
+/** @brief Tests character_get_location with valid character */
 void test2_character_get_location();
+/** @brief Tests character_set_location with valid parameters */
 void test1_character_set_location();
+/** @brief Tests character_set_location with NO_ID */
 void test2_character_set_location();
+/** @brief Tests character_set_location with NULL character */
 void test3_character_set_location();
 
+/** @brief Tests character_set_id with valid parameters */
 void test1_character_set_id();
+/** @brief Tests character_set_id with NO_ID */
 void test2_character_set_id();
+/** @brief Tests character_set_id with NULL character */
 void test3_character_set_id();
 #endif

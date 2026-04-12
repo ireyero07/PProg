@@ -16,7 +16,7 @@
 #include "command.h"
 #include "test.h"
 
-#define MAX_TESTS 18
+#define MAX_TESTS 18 /*!< Total number of interface_data tests */
 
 /**
  * @brief Main function for INTERFACE DATA unit tests.

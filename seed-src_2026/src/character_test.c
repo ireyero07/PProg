@@ -15,7 +15,7 @@
 #include "character_test.h"
 #include "test.h"
 
-#define MaX_TESTS 39
+#define MaX_TESTS 39 /*!< Total number of character tests */
 
 /**
  * @brief Main function for CHaRaCTER unit tests.
@@ -388,10 +388,12 @@ void test2_character_print()
 }
 
 
+/** @brief Tests character_get_location with NULL character */
 void test1_character_get_location(){
   Character *c = NULL;
   PRINT_TEST_RESULT(character_get_location(c) == NO_ID);
 }
+/** @brief Tests character_get_location with valid character */
 void test2_character_get_location(){
   Character *c = NULL;
   Id c_id=0;
@@ -402,6 +404,7 @@ void test2_character_get_location(){
   character_destroy(c);
 }
 
+/** @brief Tests character_set_location with valid parameters */
 void test1_character_set_location(){
   Character *c = NULL;
   c=character_create(5);
@@ -409,6 +412,7 @@ void test1_character_set_location(){
   character_destroy(c);
 }
 
+/** @brief Tests character_set_location with NO_ID */
 void test2_character_set_location(){
   Character *c = NULL;
   c=character_create(5);
@@ -416,23 +420,27 @@ void test2_character_set_location(){
   character_destroy(c);
 }
 
+/** @brief Tests character_set_location with NULL character */
 void test3_character_set_location(){
   Character *c = NULL;
   PRINT_TEST_RESULT(character_set_location(c, 5) == ERROR);
 }
 
+/** @brief Tests character_set_id with valid parameters */
 void test1_character_set_id(){
   Character *c = NULL;
   c=character_create(5);
   PRINT_TEST_RESULT(character_set_id(c, 5) == OK);
   character_destroy(c);
 }
+/** @brief Tests character_set_id with NO_ID */
 void test2_character_set_id(){
   Character *c = NULL;
   c=character_create(5);
   PRINT_TEST_RESULT(character_set_id(c, NO_ID) == ERROR);
   character_destroy(c);
 }
+/** @brief Tests character_set_id with NULL character */
 void test3_character_set_id(){
   Character *c = NULL;
   PRINT_TEST_RESULT(character_set_id(c, 5) == ERROR);

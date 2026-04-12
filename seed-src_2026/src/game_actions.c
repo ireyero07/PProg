@@ -81,7 +81,7 @@ void game_actions_move(Game *game, Command *cmd);
  * @author Ivan Mijangos Alvarez
  *
  * @param game Pointer to the game to be updated.
- * @param cmd Pointer to the command that has been entered
+ * @param command Pointer to the command that has been entered
  */
 void game_actions_inspect(Game *game, Command *cmd);
 

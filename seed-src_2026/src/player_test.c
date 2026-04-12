@@ -15,8 +15,14 @@
 #include "player_test.h"
 #include "test.h"
  
-#define MAX_TESTS 36
- 
+#define MAX_TESTS 36 /*!< Total number of player tests */
+
+/**
+ * @brief Main function for PLAYER unit tests.
+ * @param argc Number of arguments
+ * @param argv Argument vector
+ * @return 0 on success
+ */
 int main(int argc, char** argv) {
   int test = 0;
   int all = 1;
