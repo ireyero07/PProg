@@ -128,8 +128,6 @@ void test3_interface_data_set_last_chat();
  * @pre Valid interface_data with message set
  * @post Returns correct message
  */
-void test1_interface_data_get_last_chat();
-
 /**
  * @test Test function for interface_data_get_last_chat
  * @pre NULL interface_data
@@ -137,13 +135,38 @@ void test1_interface_data_get_last_chat();
  */
 void test2_interface_data_get_last_chat();
 
+/**
+ * @test Test function for interface_data_get_last_obj_desc
+ * @pre Valid interface_data with description set
+ * @post Returns correct description
+ */
 void test1_interface_data_get_last_obj_desc();
 
+/**
+ * @test Test function for interface_data_get_last_obj_desc
+ * @pre NULL interface_data
+ * @post Returns NULL
+ */
 void test2_interface_data_get_last_obj_desc();
 
+/**
+ * @test Test function for interface_data_set_last_obj_desc
+ * @pre Valid interface_data and description
+ * @post Output==OK
+ */
 void test1_interface_data_set_last_obj_desc();
 
+/**
+ * @test Test function for interface_data_set_last_obj_desc
+ * @pre NULL interface_data
+ * @post Output==ERROR
+ */
 void test2_interface_data_set_last_obj_desc();
 
+/**
+ * @test Test function for interface_data_set_last_obj_desc
+ * @pre Valid interface_data and NULL description
+ * @post Output==ERROR
+ */
 void test3_interface_data_set_last_obj_desc();
 #endif
