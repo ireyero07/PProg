@@ -137,4 +137,13 @@ void test1_interface_data_get_last_chat();
  */
 void test2_interface_data_get_last_chat();
 
+void test1_interface_data_get_last_obj_desc();
+
+void test2_interface_data_get_last_obj_desc();
+
+void test1_interface_data_set_last_obj_desc();
+
+void test2_interface_data_set_last_obj_desc();
+
+void test3_interface_data_set_last_obj_desc();
 #endif

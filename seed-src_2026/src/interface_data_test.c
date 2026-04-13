@@ -16,7 +16,7 @@
 #include "command.h"
 #include "test.h"
 
-#define MAX_TESTS 18 /*!< Total number of interface_data tests */
+#define MAX_TESTS 23 /*!< Total number of interface_data tests */
 
 /**
  * @brief Main function for INTERFACE DATA unit tests.
@@ -85,6 +85,16 @@ int main(int argc, char **argv)
         test1_interface_data_get_last_chat();
     if (all || test == 18)
         test2_interface_data_get_last_chat();
+    if (all || test == 19)
+        test1_interface_data_get_last_obj_desc();
+    if (all || test == 20)
+        test2_interface_data_get_last_obj_desc();
+    if (all || test == 21)
+        test1_interface_data_set_last_obj_desc();
+    if (all || test == 22)
+        test2_interface_data_set_last_obj_desc();
+    if (all || test == 23)
+        test3_interface_data_set_last_obj_desc();
 
     PRINT_PASSED_PERCENTAGE;
 
@@ -235,4 +245,36 @@ void test2_interface_data_get_last_chat()
 {
     Interface_Data *id = NULL;
     PRINT_TEST_RESULT(interface_data_get_last_chat(id) == NULL);
+}
+
+void test1_interface_data_get_last_obj_desc(){
+    Interface_Data *id;
+    id = interface_data_create();
+    interface_data_set_last_desc(id, "hello");
+    PRINT_TEST_RESULT(strcmp(interface_data_get_last_desc(id), "hello") == 0);
+    interface_data_destroy(id);
+}
+
+void test2_interface_data_get_last_obj_desc(){
+    Interface_Data *id = NULL;
+    PRINT_TEST_RESULT(interface_data_get_last_desc(id) == NULL);
+}
+
+void test1_interface_data_set_last_obj_desc(){
+    Interface_Data *id;
+    id = interface_data_create();
+    PRINT_TEST_RESULT(interface_data_set_last_desc(id, "hello") == OK);
+    interface_data_destroy(id);
+}
+
+void test2_interface_data_set_last_obj_desc(){
+    Interface_Data *id = NULL;
+    PRINT_TEST_RESULT(interface_data_set_last_desc(id, "hello") == ERROR);
+}
+
+void test3_interface_data_set_last_obj_desc(){
+    Interface_Data *id;
+    id = interface_data_create();
+    PRINT_TEST_RESULT(interface_data_set_last_chat(id, NULL) == ERROR);
+    interface_data_destroy(id);
 }
