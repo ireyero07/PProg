@@ -48,7 +48,7 @@ Player *player_create(Id id, int max_objs)
   {
     newPlayer->gdesc[i] = '\0';
   }
-  newPlayer->health = 5;
+  newPlayer->health = 0;
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;

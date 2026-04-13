@@ -60,14 +60,21 @@ Status game_reader_create_from_file(Game **game, char *filename)
     return ERROR;
   }
 
-  space = game_get_space_at(*game, 0);
+  if (game_get_n_players(*game) <= 0)
+  {
+    game_destroy(*game);
+    *game = NULL;
+    return ERROR;
+  }
+
+  space = game_get_space(*game, game_get_player_location(*game));
   if (!space)
   {
     game_destroy(*game);
     *game = NULL;
     return ERROR;
   }
- 
+
   space_set_discovered(space, TRUE);
 
   return OK;
