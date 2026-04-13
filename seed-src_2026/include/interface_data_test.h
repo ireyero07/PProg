@@ -128,6 +128,8 @@ void test3_interface_data_set_last_chat();
  * @pre Valid interface_data with message set
  * @post Returns correct message
  */
+void test1_interface_data_get_last_chat();
+
 /**
  * @test Test function for interface_data_get_last_chat
  * @pre NULL interface_data
