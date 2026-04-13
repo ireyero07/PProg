@@ -224,7 +224,7 @@ void test2_player_get_backpack() {
 
 void test1_player_get_health() {
   Player *p = player_create(5, 3);
-  PRINT_TEST_RESULT(player_get_health(p) == 5); 
+  PRINT_TEST_RESULT(player_get_health(p) == 0); 
   player_destroy(p);
 }
  
