@@ -24,6 +24,7 @@ struct _Interface_Data
     Command *last_cmd;             /*!< The last command */
     Status last_action_status;     /*!< Status of the last action */        
     char last_chat[WORD_SIZE + 1]; /*!< Stores the last chat message generated in the game */
+    char last_obj_desc[WORD_SIZE + 1];       /*!< Stores the last object description generated in the game */
 };
 
 /**
@@ -41,6 +42,7 @@ Interface_Data *interface_data_create()
     intdat->last_action_status = OK;
     intdat->last_cmd = NULL;
     intdat->last_chat[0] = '\0';
+    intdat->last_obj_desc[0] = '\0';
     return intdat;
 }
 Status interface_data_destroy(Interface_Data *intdat)
@@ -126,4 +128,24 @@ char *interface_data_get_last_chat(Interface_Data *intdat)
         return NULL;
     }
     return intdat->last_chat;
+}
+
+Status interface_data_set_last_desc(Interface_Data *intdat, const char *desc)
+{
+    if (intdat == NULL || desc == NULL)
+    {
+        return ERROR;
+    }
+    strncpy(intdat->last_obj_desc, desc, WORD_SIZE);
+    intdat->last_obj_desc[WORD_SIZE] = '\0';
+    return OK;
+}
+
+char *interface_data_get_last_desc (Interface_Data *intdat)
+{
+    if (intdat == NULL)
+    {
+        return NULL;
+    }
+    return intdat->last_obj_desc;
 }

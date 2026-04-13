@@ -1,0 +1,41 @@
+Move north: ERROR
+Take sword: OK
+Move south: OK
+Take key: ERROR
+Move south: OK
+Move south: ERROR
+Take key: ERROR
+Move south: OK
+Attack: ERROR
+Move north: ERROR
+Chat: ERROR
+Move south: ERROR
+Move south: OK
+Inspect sword: OK
+Take shield: ERROR
+Move north: OK
+Move south: OK
+Move east: ERROR
+Inspect key: ERROR
+Take shield: ERROR
+Take key: OK
+Move north: ERROR
+Move south: OK
+Move east: ERROR
+Chat: ERROR
+Take hamburger: ERROR
+Take potion: ERROR
+Inspect hamburger: ERROR
+Move south: OK
+Drop potion: ERROR
+Move south: OK
+Inspect key: ERROR
+Move west: ERROR
+Move north: OK
+Drop hamburger: ERROR
+Move east: ERROR
+Move south: OK
+Inspect hamburger: ERROR
+Take potion: ERROR
+Take key: ERROR
+Move north: OK

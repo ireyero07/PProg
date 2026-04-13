@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "command.h"
 #include "game.h"
@@ -54,8 +53,8 @@ void game_loop_cleanup(Game *game, Graphic_engine *gengine);
  */
 int main(int argc, char *argv[]) {
   Game *game = NULL;
-  Graphic_engine *gengine;
-  int result;
+  Graphic_engine *gengine = NULL;
+  int result = 0;
   Command *last_cmd = NULL;
   FILE *log_file = NULL;
   int log_active = 0;
@@ -102,6 +101,9 @@ int main(int argc, char *argv[]) {
     command_get_user_input(last_cmd);
 
     if (command_get_code(last_cmd) == EXIT) {
+      if (log_active) {
+        fclose(log_file);
+      }
       command_destroy(last_cmd);
       game_loop_cleanup(game, gengine);
       return 0;
@@ -121,8 +123,6 @@ int main(int argc, char *argv[]) {
       fprintf(log_file, "%s: %s\n", line, (game_get_last_action(game) == OK) ? "OK" : "ERROR");
     }
 
-    graphic_engine_paint_game(gengine, game);
-    sleep(3);
     if (game_is_any_player_death(game) == FALSE) {
       game_next_turn(game);
     }

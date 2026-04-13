@@ -97,4 +97,25 @@ Status interface_data_set_last_chat(Interface_Data *intdat, const char *message)
  */
 char *interface_data_get_last_chat(Interface_Data *intdat);
 
+/**
+ * @brief Sets the last object description.
+ * @author Gonzalez Hijano, Ivan
+ *
+ * Stores an object description string in the Interface_Data structure.
+ * @param intdat Pointer to the Interface_Data structure.
+ * @param desc Pointer to the description string to store.
+ * @return OK if the operation was successful, or ERROR if any pointer is NULL.
+ */
+Status interface_data_set_last_desc(Interface_Data *intdat, const char *desc);
+
+/**
+ * @brief Gets the last object description.
+ * @author Gonzalez Hijano, Ivan
+ *
+ * Retrieves the last object description string stored in the Interface_Data structure.
+ * @param intdat Pointer to the Interface_Data structure.
+ * @return Pointer to the message string if available, or NULL if intdat is NULL or no message has been set.
+ */
+char *interface_data_get_last_desc(Interface_Data *intdat);
+
 #endif

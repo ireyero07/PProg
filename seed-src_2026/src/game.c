@@ -36,7 +36,6 @@ struct _Game
   Link *links[MAX_LINKS];               /*!< Array of pointers to the links of the game */
   int n_links;                          /*!< Number of links currently in the game */
   Bool finished;                        /*!< Flag that indicates if the game has finished */
-  char last_obj_desc[WORD_SIZE];        /*!< Stores the last object description (inspect) generated in the game */
 };
 
 /**
@@ -93,7 +92,6 @@ Game *game_create()
   /* ---------------- GAME STATE ---------------- */
 
   game->finished = FALSE;
-  strcpy(game->last_obj_desc, "");
 
   return game;
 }
@@ -741,7 +739,7 @@ Status game_set_last_chat(Game *game, const char *msg)
 
 /*-----------------LAST DESCRIPTION---------------------*/
 /**
- * @brief Gets the last chat message stored in the game.
+ * @brief Gets the last object description stored in the game.
  */
 char *game_get_last_obj_desc(Game *game)
 {
@@ -749,21 +747,19 @@ char *game_get_last_obj_desc(Game *game)
   if (!game)
     return NULL;
 
-  return game->last_obj_desc;
+  return interface_data_get_last_desc(game->intdata[game->turn]);
 }
 
 /**
- * @brief Sets the last chat message generated in the game.
+ * @brief Sets the last object description generated in the game.
  */
 Status game_set_last_obj_desc(Game *game, const char *desc)
 {
   if (!game || !desc)
     return ERROR;
 
-  strcpy(game->last_obj_desc, desc);
-
-  return OK;
-}
+  return interface_data_set_last_desc(game->intdata[game->turn], desc);
+} 
 
 /*-------------------INTERFACE_DATA-----------------------*/
 

@@ -516,10 +516,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   desc = game_get_last_obj_desc(game);
 
   if (desc && strlen(desc) > 0) {
-    if (command_get_code(game_get_last_command(game)) == INSPECT) {      
+    if (command_get_code(game_get_last_command(game)) == INSPECT && game_get_last_action(game) == OK) {      
       sprintf(str_desc, " The description of %s is: %s", command_get_arg(game_get_last_command(game)), desc);
       screen_area_puts(ge->descript, str_desc);
-      
+      } else {
+      game_set_last_chat(game, "");
     } 
   }
 
