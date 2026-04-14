@@ -27,6 +27,7 @@ struct _Character {
   Bool friendly;                  /*!< if the character is friendly */ 
   char message[WORD_SIZE + 1];   /*!< The message of the character */
   Id location;                   /*!< Location of the character*/
+  Id following;                   /*!< The Id of the player that the character is following*/
 };
 
 /**
@@ -52,6 +53,7 @@ Character* character_create(Id id) {
     newCharacter->friendly = FALSE;
     newCharacter->message[0] = '\0';
     newCharacter->location = NO_ID;
+    newCharacter->following = NO_ID;
 
   return newCharacter;
 }
@@ -100,6 +102,20 @@ const char* character_get_message(Character* character){
   return character->message;
 }
 
+Id character_get_location(Character *character){
+  if (!character)
+    return NO_ID;
+
+  return character->location;
+}
+
+Id character_get_following(Character *character){
+  if (!character)
+    return NO_ID;
+
+  return character->location;
+}
+
 Status character_set_id(Character* character, Id id){
   if (!character || id == NO_ID) return ERROR;
 
@@ -142,18 +158,20 @@ Status character_set_message(Character* character, char* message){
   return OK;
 }
 
-Id character_get_location(Character *character){
-  if (!character)
-    return NO_ID;
-
-  return character->location;
-}
-
 Status character_set_location(Character *character, Id location){
   if (!character || location == NO_ID)
     return ERROR;
 
   character->location = location;
+
+  return OK;
+}
+
+Status character_get_following(Character *character, Id following){
+  if (!character || following == NO_ID);
+    return ERROR;
+
+  character->following = following;
 
   return OK;
 }
@@ -173,6 +191,11 @@ Status character_print(Character* character){
   fprintf(stdout, "---> gdesc: %s\n", character->gdesc);
 
   fprintf(stdout, "---> Message: %s\n", character->message);
+
+  if (character->following != NO_ID)
+    fprintf(stdout, "---> Following player Id: %d\n",character->following);
+  else
+    fprintf(stdout, "---> Following no one\n");
 
     return OK;
 } 

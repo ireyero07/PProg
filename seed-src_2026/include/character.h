@@ -90,6 +90,24 @@ Bool character_get_friendly(Character* character);
 const char* character_get_message(Character* character);
 
 /**
+ * @brief It gets the location of the character
+ * @author Jian Feng Yin Chen
+ *
+ * @param character a pointer to the character
+ * @return the id number of the space where the character is located
+ */
+Id character_get_location(Character *character);
+
+/**
+ * @brief It gets the id of the player the charater is following
+ * @author Jian Feng Yin Chen
+ *
+ * @param character a pointer to the character
+ * @return the id of the player the charater is following
+ */
+Id character_get_following(Character *character);
+
+/**
  * @brief It sets the id of a character
  * @author Jian Feng Yin Chen
  *
@@ -150,15 +168,6 @@ Status character_set_friendly(Character* character, Bool friendly);
 Status character_set_message(Character* character, char* message);
 
 /**
- * @brief It gets the location of the character
- * @author Jian Feng Yin Chen
- *
- * @param character a pointer to the character
- * @return the id number of the space where the character is located
- */
-Id character_get_location(Character *character);
-
-/**
  * @brief It sets the location of the character
  * @author Jian Feng Yin Chen
  *
@@ -167,6 +176,16 @@ Id character_get_location(Character *character);
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status character_set_location(Character *character, Id location);
+
+/**
+ * @brief It sets the id of the player the charater is following
+ * @author Jian Feng Yin Chen
+ *
+ * @param character a pointer to the character
+ * @param following the id of the player the charater is following
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status character_set_following(Character *character, Id following);
 
 /**
  * @brief It prints a character
