@@ -86,6 +86,25 @@ void game_actions_move(Game *game, Command *cmd);
 void game_actions_inspect(Game *game, Command *cmd);
 
 /**
+ * @brief Command for recruiting a character
+ * @author Jian Feng Yin Chen
+ *
+ * @param game Pointer to the game to be updated.
+ * @param command Pointer to the command that has been entered
+ */
+void game_actions_recruit(Game *game, Command *cmd);
+
+
+/**
+ * @brief Command for abandoning a character
+ * @author Jian Feng Yin Chen
+ *
+ * @param game Pointer to the game to be updated.
+ * @param command Pointer to the command that has been entered
+ */
+void game_actions_abandon(Game *game, Command *cmd);
+
+/**
    Game actions implementation
 */
 

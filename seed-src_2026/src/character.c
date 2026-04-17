@@ -192,11 +192,11 @@ Status character_print(Character* character){
 
   fprintf(stdout, "---> Message: %s\n", character->message);
 
-  if (character->following != NO_ID)
-    fprintf(stdout, "---> Following player Id: %d\n",character->following);
-  else
+  if (character->following != NO_ID){
+    fprintf(stdout, "---> Following player Id: %ld\n",character->following);    
+  } else{
     fprintf(stdout, "---> Following no one\n");
-
-    return OK;
+  }
+  return OK;
 } 
 
