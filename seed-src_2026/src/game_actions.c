@@ -129,6 +129,14 @@ Status game_actions_update(Game *game, Command *command) {
     game_actions_inspect(game, command);
     break;
 
+    case RECRUIT:
+    game_actions_recruit(game, command);
+    break;
+
+    case ABANDON:
+    game_actions_abandon(game, command);
+    break;    
+
     default:
       break;
   }
@@ -214,8 +222,9 @@ void game_actions_attack(Game *game) {
   Id player_loc = NO_ID;
   Space *space = NULL;
   Id space_id = NO_ID;
-  Character *enemy = NULL;
-  int roll;
+  Player *player = NULL;
+  Character *enemy = NULL, *follower = NULL;
+  int roll, num_followers, attackers, random_attacker;
 
   if (!game) {
     return;
@@ -241,14 +250,27 @@ void game_actions_attack(Game *game) {
     return;
   }
 
+  player = game_get_player(game);
+  num_followers= game_count_followers(game,player_get_id(player));
+  attackers = 1 + num_followers;
+
   roll = rand() % 10;
-  if (roll <= 4) {
-    Player *p = game_get_player(game);
-    player_set_health(p, player_get_health(p) - 1);
+
+  if(roll <= 4){
+    random_attacker =rand() % attackers;
+    if(random_attacker == 0){
+      player_set_health(player,player_get_health(player) - 1);
+    } else {
+      follower = game_get_nth_follower(game,player_get_id(player), random_attacker - 1);
+      character_set_health(follower, character_get_health(follower)-1);
+    }
   } else {
-    character_set_health(enemy, character_get_health(enemy) - 1);
+      character_set_health(enemy, character_get_health(enemy)-attackers);
   }
-  if (character_get_health(enemy) <= 0) character_set_gdesc(enemy, " ");
+
+  if(character_get_health(enemy) <= 0){
+    character_set_gdesc(enemy, " ");
+  }
 
   game_set_last_action(game, OK);
 }
@@ -346,6 +368,7 @@ void game_actions_inspect(Game *game, Command *cmd){
   object_name = command_get_arg(cmd);
   if(!object_name) {
     game_set_last_action(game, ERROR);
+    game_set_last_command(game, cmd);
     return;
   }
 
@@ -361,6 +384,71 @@ void game_actions_inspect(Game *game, Command *cmd){
   } else {
     game_set_last_action(game, ERROR);
   }
-
   game_set_last_command(game, cmd);
+  return;
+}
+
+void game_actions_recruit(Game *game, Command *cmd){
+  Id player_location = NO_ID;
+  Id chr_id = NO_ID;
+  Character *chr = NULL;
+  Player *player;
+  const char *chr_name;
+
+  if(!game || !cmd){
+    return;
+  }
+
+  chr_name = command_get_arg(cmd);
+  if(!chr_name) {
+    game_set_last_action(game, ERROR);
+    game_set_last_command(game, cmd);
+    return;
+  }
+  player_location = game_get_player_location(game);
+  chr_id = game_get_character_id_by_name(game,chr_name);
+  player = game_get_player(game);
+  chr = game_get_character_by_id(game,chr_id);
+
+  if(player != NULL && chr != NULL && chr_id != NO_ID && character_get_location(chr) == player_location && character_get_friendly(chr) == TRUE && character_get_following(chr) == NO_ID){
+    character_set_following(chr,player_get_id(player));
+    game_set_last_action(game, OK);
+  } else{
+    game_set_last_action(game, ERROR);
+  }
+  game_set_last_command(game, cmd);
+  return;
+}
+
+void game_actions_abandon(Game *game, Command *cmd){
+  Id player_location = NO_ID;
+  Id chr_id = NO_ID;
+  Character *chr = NULL;
+  Player *player;
+  const char *chr_name;
+
+  if(!game || !cmd){
+    return;
+  }
+
+  chr_name = command_get_arg(cmd);
+  if(!chr_name) {
+    game_set_last_action(game, ERROR);
+    game_set_last_command(game, cmd);
+    return;
+  }
+  player_location = game_get_player_location(game);
+  chr_id = game_get_character_id_by_name(game,chr_name);
+  player = game_get_player(game);
+  chr = game_get_character_by_id(game,chr_id);
+
+  if(player != NULL && chr != NULL && chr_id != NO_ID && character_get_following(chr) == player_get_id(player)){
+    character_set_following(chr,NO_ID);
+    character_set_location(chr,player_location);
+    game_set_last_action(game, OK);
+  } else{
+    game_set_last_action(game, ERROR);
+  }
+  game_set_last_command(game, cmd);
+  return;
 }

@@ -230,6 +230,37 @@ Character *game_get_character_by_position(Game *game, int pos);
 Character *game_get_character_by_space(Game *game, Id space_id);
 
 /**
+ * @brief Gets a character by its character id
+ * @author Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param chr_id the id of the character
+ * @return Pointer to the character if found, otherSwise NULL
+ */
+Character *game_get_character_by_id(Game *game, Id chr_id);
+
+/**
+ * @brief It gets the character id by the character name
+ * @author Jian Feng
+ *
+ * @param game a pointer to the game structure
+ * @param name the name of the character 
+ * @return The id of the character, if everything goes well or NO_ID if there was some mistake
+ */
+Id game_get_character_id_by_name(Game *game, const char *name);
+
+/**
+ * @brief Returns the nth follower of a given player.
+ * @author Jian Feng
+ *
+ * @param game a pointer to the game structure
+ * @param player_id ID of the player 
+ * @param n Position of the follower to retrieve.
+ * @return Pointer to the nth follower Character, or NULL if the player has fewer 
+ */
+Character *game_get_nth_follower(Game *game, Id player_id, int n);
+
+/**
  * @brief Adds a player to the game
  * @author Gonzalez Hijano, Ivan
  *
@@ -316,6 +347,16 @@ Player *game_get_player_from_id(Game *game, Id id);
  * @return If there is any player death
  */
 Bool game_is_any_player_death (Game *game);
+
+/**
+ * @brief It counts the amount of characters following th player
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param player_id the player id
+ * @return the amount of characters following th player
+ */
+int game_count_followers(Game *game, Id player_id);
 
 /**
  * @brief Adds a link to the game

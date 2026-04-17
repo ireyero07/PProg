@@ -466,6 +466,59 @@ Character *game_get_character_by_space(Game *game, Id space_id)
   return NULL;
 }
 
+Character *game_get_character_by_id(Game *game, Id chr_id){
+  int i;
+  if (!game || chr_id == NO_ID)
+    return NULL;
+  for (i = 0; i < game->n_characters; i++)
+  {
+    if (character_get_id(game->character[i]) == chr_id)
+    {
+      return game->character[i];
+    }
+  }
+
+}
+
+/**
+ * @brief It gets the character id by the character name
+ */
+Id game_get_character_id_by_name(Game *game, const char *name)
+{
+  int i;
+  if (!game || !name)
+    return NO_ID;
+
+  for (i = 0; i < game->n_characters && i < MAX_CHARACTERS; i++)
+  {
+    if (game->character[i] && strcasecmp(character_get_name(game->character[i]), name) == 0)
+    {
+      return character_get_id(game->character[i]);
+    }
+  }
+  return NO_ID;
+}
+
+Character *game_get_nth_follower(Game *game, Id player_id, int n) {
+  int i, count = 0;
+
+    if (!game || player_id == NO_ID || n < 0) {
+        return NULL;
+    }
+
+    for (i = 0; i < game->n_characters; i++) {
+        if (game->character[i] != NULL &&
+            character_get_following(game->character[i]) == player_id) {
+            if (count == n) {
+                return game->character[i];
+            }
+            count++;
+        }
+    }
+
+    return NULL;
+}
+
 /*-------------------PLAYER-----------------------*/
 /**
  * @brief It adds a player to the game
@@ -593,6 +646,23 @@ Bool game_is_any_player_death (Game *game){
     }
   }
   return FALSE;
+}
+
+int game_count_followers(Game *game, Id player_id){
+  int count = 0;
+  int i = 0;
+  Character *chr = NULL;
+  if (!game || player_id == NO_ID){
+    return 0;
+  }
+
+  for( i=0; i<game->n_characters; i++){
+    chr = game->character[i];
+    if(chr != NULL && character_get_following(chr) == player_id){
+      count++;
+    }
+  }
+  return count++;
 }
 
 /*----------------------LINK--------------------------*/

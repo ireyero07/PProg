@@ -27,7 +27,10 @@ char *cmd_to_str[N_CMD][N_CMDT] = {
   {"a", "Attack"},
   {"c", "Chat"},
   {"m", "Move"},
-  {"i", "Inspect"},};
+  {"i", "Inspect"},
+  {"r", "Recruit"},
+  {"a", "Abandon"},
+  }; 
 
 /**
  * @brief Command
@@ -105,7 +108,7 @@ Status command_get_user_input(Command* command) {
     while (cmd == UNKNOWN && i < N_CMD) {
       if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL])) {
         cmd = i + NO_CMD;
-        if (cmd == TAKE||cmd == DROP||cmd == INSPECT||cmd == MOVE) {
+        if (cmd == TAKE||cmd == DROP||cmd == INSPECT||cmd == MOVE||cmd == RECRUIT||cmd == ABANDON) {
           token = strtok(NULL, " \n"); 
           if (token != NULL) {
             while (*token == ' ') token++;
