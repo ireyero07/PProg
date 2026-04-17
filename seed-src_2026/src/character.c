@@ -113,7 +113,7 @@ Id character_get_following(Character *character){
   if (!character)
     return NO_ID;
 
-  return character->location;
+  return character->following;
 }
 
 Status character_set_id(Character* character, Id id){
@@ -167,8 +167,8 @@ Status character_set_location(Character *character, Id location){
   return OK;
 }
 
-Status character_get_following(Character *character, Id following){
-  if (!character || following == NO_ID);
+Status character_set_following(Character *character, Id following){
+  if (!character || following == NO_ID)
     return ERROR;
 
   character->following = following;

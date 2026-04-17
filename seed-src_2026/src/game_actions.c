@@ -114,28 +114,28 @@ Status game_actions_update(Game *game, Command *command) {
       break;
 
     case ATTACK:
-    game_actions_attack(game);
-    break;
+      game_actions_attack(game);
+      break;
 
     case CHAT:
-    game_actions_chat(game);
-    break;
+      game_actions_chat(game);
+      break;
 
     case MOVE:
-    game_actions_move(game, command);
-    break;
+      game_actions_move(game, command);
+      break;
 
     case INSPECT:
-    game_actions_inspect(game, command);
-    break;
+      game_actions_inspect(game, command);
+      break;
 
     case RECRUIT:
-    game_actions_recruit(game, command);
-    break;
+      game_actions_recruit(game, command);
+      break;
 
     case ABANDON:
-    game_actions_abandon(game, command);
-    break;    
+      game_actions_abandon(game, command);
+      break;    
 
     default:
       break;
