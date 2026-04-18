@@ -64,8 +64,9 @@ void game_actions_attack(Game *game);
  * @author Jian Feng Yin Chen
  *
  * @param game Pointer to the game to be updated.
+ * @param cmd Pointer to the command that has been entered
  */
-void game_actions_chat(Game *game);
+void game_actions_chat(Game *game, Command *cmd);
 
 /**
  * @brief The player moves north, east, south or west, depending on the input
@@ -137,7 +138,7 @@ Status game_actions_update(Game *game, Command *command) {
       break;
 
     case CHAT:
-      game_actions_chat(game);
+      game_actions_chat(game, command);
       break;
 
     case MOVE:
@@ -190,6 +191,10 @@ void game_actions_take(Game *game, Command *cmd){
 
   player_location = game_get_player_location(game);
   space = game_get_space(game, player_location);
+  if (!space) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
   obj_id = game_get_object_id_by_name(game,object_name);
 
   if (obj_id != NO_ID  && space_has_object(space, obj_id) == TRUE) {
@@ -225,6 +230,12 @@ void game_actions_drop(Game *game, Command *cmd){
 
   player_location = game_get_player_location(game);
   space = game_get_space(game, player_location);
+
+  if (!space) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
   player = game_get_player(game);
   obj_id = game_get_object_id_by_name(game,object_name);
 
@@ -277,44 +288,58 @@ void game_actions_attack(Game *game) {
 
   if(roll <= 4){
     random_attacker =rand() % attackers;
-    if(random_attacker == 0){
+    if(random_attacker == 0){ 
+      /* daño al jugador */
       player_set_health(player,player_get_health(player) - 1);
-    } else {
+    } else { 
+      /* daño a follower */
       follower = game_get_nth_follower(game,player_get_id(player), random_attacker - 1);
-      character_set_health(follower, character_get_health(follower)-1);
+      if (follower) {
+        character_set_health(follower, character_get_health(follower)-1);
+
+        if (character_get_health(follower) <= 0) {
+          character_set_following(follower, NO_ID);
+          character_set_location(follower, NO_ID);
+        }
+      }
     }
-  } else {
+  } else { 
+    /* daño al enemigo */
       character_set_health(enemy, character_get_health(enemy)-attackers);
   }
 
-  if(character_get_health(enemy) <= 0){
-    character_set_gdesc(enemy, " ");
+  if (character_get_health(enemy) <= 0){
+    character_set_location(enemy, NO_ID);
   }
 
   game_set_last_action(game, OK);
 }
 
-void game_actions_chat(Game *game) {
+void game_actions_chat(Game *game, Command *cmd) {
   Id player_loc = NO_ID;
-  Space *space = NULL;
   Character *friend = NULL;
+  Id chr_id = NO_ID;
+  const char *chr_name;
 
-  if (!game) {
+  if (!game || !cmd) {
     game_set_last_action(game, ERROR);
+    return;
+  }
+
+  chr_name = command_get_arg(cmd);
+  if (!chr_name) {
+    game_set_last_action(game, ERROR);
+    game_set_last_chat(game, "");
     return;
   }
 
   player_loc = game_get_player_location(game);
-  space = game_get_space(game, player_loc);
+  chr_id = game_get_character_id_by_name(game, chr_name);
+  friend = game_get_character_by_id(game, chr_id);
 
-  if (!space) {
+  if (!friend || !character_get_friendly(friend) || character_get_location(friend) != player_loc) {
     game_set_last_action(game, ERROR);
-    return;
-  }
-
-  friend = game_get_character_by_space(game, space_get_id(space));
-  if (!friend || !character_get_friendly(friend)) {
-    game_set_last_action(game, ERROR);
+    game_set_last_chat(game, "");
     return;
   }
 
@@ -326,6 +351,9 @@ void game_actions_move(Game *game, Command *cmd){
   Id current_id = NO_ID;
   Id space_id = NO_ID;
   const char *arg;
+  Player *player = NULL;
+  Character *chr = NULL;
+  int i;
 
   if (!game || !cmd) {
     return;
@@ -339,37 +367,50 @@ void game_actions_move(Game *game, Command *cmd){
   }
 
   arg = command_get_arg(cmd);
+  if (!arg) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
 
   if((strcmp(arg, "north") == 0 || strcmp(arg, "n") == 0) && game_connection_is_open(game, space_id, N)){
-
     current_id = game_get_connection(game, space_id, N);
 
   } else if ((strcmp(arg, "east") == 0 || strcmp(arg, "e") == 0) && game_connection_is_open(game, space_id, E)){
-
     current_id = game_get_connection(game, space_id, E);
 
   } else if ((strcmp(arg, "south") == 0 || strcmp(arg, "s") == 0) && game_connection_is_open(game, space_id, S)){
-
     current_id = game_get_connection(game, space_id, S);
 
   } else if ((strcmp(arg, "west") == 0 || strcmp(arg, "w") == 0) && game_connection_is_open(game, space_id, W)){
-
     current_id = game_get_connection(game, space_id, W);
 
   } else {
-
     current_id = NO_ID;
-
   }
 
   if (current_id != NO_ID) {
-    game_set_player_location(game, current_id, player_get_id(game_get_player(game)));
-    game_set_last_action(game, OK);
+    player = game_get_player(game);
+    if (!player) {
+      game_set_last_action(game, ERROR);
+      return;
+    }
+
+    game_set_player_location(game, current_id, player_get_id(player));
     space_set_discovered(game_get_space(game, current_id), TRUE);
+
+    for (i = 0; i < game_get_n_characters(game); i++) {
+      chr = game_get_character_by_position(game, i);
+
+      if (chr != NULL && character_get_following(chr) == player_get_id(player) && character_get_health(chr) > 0) {
+        character_set_location(chr, current_id);
+      }
+    }
+    game_set_last_action(game, OK);
+
   } else {
     game_set_last_action(game, ERROR);
   }
-  
+
   return;
 }
 
@@ -387,23 +428,25 @@ void game_actions_inspect(Game *game, Command *cmd){
   object_name = command_get_arg(cmd);
   if(!object_name) {
     game_set_last_action(game, ERROR);
-    game_set_last_command(game, cmd);
     return;
   }
 
   player_location = game_get_player_location(game);
   space = game_get_space(game, player_location);
+  if (!space) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
   obj_id = game_get_object_id_by_name(game,object_name);
   player = game_get_player(game);
 
   if (obj_id != NO_ID  && (space_has_object(space, obj_id) == TRUE || player_has_object(player, obj_id))) {
     game_set_last_obj_desc(game, object_get_description(game_get_object(game, obj_id)));
-    printf("%s",object_get_description(game_get_object(game, obj_id)));
     game_set_last_action(game, OK);
   } else {
     game_set_last_action(game, ERROR);
   }
-  game_set_last_command(game, cmd);
   return;
 }
 
@@ -421,7 +464,6 @@ void game_actions_recruit(Game *game, Command *cmd){
   chr_name = command_get_arg(cmd);
   if(!chr_name) {
     game_set_last_action(game, ERROR);
-    game_set_last_command(game, cmd);
     return;
   }
   player_location = game_get_player_location(game);
@@ -435,7 +477,6 @@ void game_actions_recruit(Game *game, Command *cmd){
   } else{
     game_set_last_action(game, ERROR);
   }
-  game_set_last_command(game, cmd);
   return;
 }
 
@@ -453,7 +494,6 @@ void game_actions_abandon(Game *game, Command *cmd){
   chr_name = command_get_arg(cmd);
   if(!chr_name) {
     game_set_last_action(game, ERROR);
-    game_set_last_command(game, cmd);
     return;
   }
   player_location = game_get_player_location(game);
@@ -468,6 +508,5 @@ void game_actions_abandon(Game *game, Command *cmd){
   } else{
     game_set_last_action(game, ERROR);
   }
-  game_set_last_command(game, cmd);
   return;
 }

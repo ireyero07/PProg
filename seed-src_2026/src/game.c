@@ -477,7 +477,7 @@ Character *game_get_character_by_id(Game *game, Id chr_id){
       return game->character[i];
     }
   }
-
+  return NULL;
 }
 
 /**
@@ -507,8 +507,7 @@ Character *game_get_nth_follower(Game *game, Id player_id, int n) {
     }
 
     for (i = 0; i < game->n_characters; i++) {
-        if (game->character[i] != NULL &&
-            character_get_following(game->character[i]) == player_id) {
+        if (game->character[i] != NULL && character_get_following(game->character[i]) == player_id && character_get_health(game->character[i]) > 0) {
             if (count == n) {
                 return game->character[i];
             }
@@ -658,11 +657,11 @@ int game_count_followers(Game *game, Id player_id){
 
   for( i=0; i<game->n_characters; i++){
     chr = game->character[i];
-    if(chr != NULL && character_get_following(chr) == player_id){
+    if(chr != NULL && character_get_following(chr) == player_id && character_get_health(chr) > 0){
       count++;
     }
   }
-  return count++;
+  return count;
 }
 
 /*----------------------LINK--------------------------*/

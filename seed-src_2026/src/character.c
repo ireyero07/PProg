@@ -126,7 +126,8 @@ Status character_set_id(Character* character, Id id){
 Status character_set_name(Character* character, char* name){
   if (!character || !name) return ERROR;
 
-  strcpy(character->name,name);
+  strncpy(character->name, name, WORD_SIZE);
+  character->name[WORD_SIZE] = '\0';
   return OK;
 }
 
@@ -154,7 +155,8 @@ character->friendly = friendly;
 Status character_set_message(Character* character, char* message){
   if (!character || !message) return ERROR;
 
-  strcpy(character->message, message);
+  strncpy(character->message, message, WORD_SIZE);
+  character->message[WORD_SIZE] = '\0';
   return OK;
 }
 
@@ -168,7 +170,7 @@ Status character_set_location(Character *character, Id location){
 }
 
 Status character_set_following(Character *character, Id following){
-  if (!character || following == NO_ID)
+  if (!character)
     return ERROR;
 
   character->following = following;
