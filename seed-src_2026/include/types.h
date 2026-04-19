@@ -29,6 +29,6 @@ typedef enum { ERROR, OK } Status;
 /**
  * @brief Cardinal directions used for navigation between spaces
  */
-typedef enum { N, S, E, W, NO_DIRECTION = -1 } Direction;
+typedef enum { N, S, E, W, UP, DOWN, NO_DIRECTION = -1 } Direction;
 
 #endif

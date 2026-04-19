@@ -118,7 +118,7 @@ Id link_get_destination(Link* link) {
 }
 
 Status link_set_direction(Link *link, Direction direction) {
-  if (!link || ((direction!=N) && (direction!=S) && (direction!=W) && (direction!=E))){
+  if (!link || ((direction!=N) && (direction!=S) && (direction!=W) && (direction!=E) && (direction!=UP) && (direction!=DOWN))){
     return ERROR;
   }
 
@@ -157,6 +157,9 @@ Status link_print(Link* link) {
     case S: dir_str = "SOUTH"; break;
     case E: dir_str = "EAST"; break;
     case W: dir_str = "WEST"; break;
+    case UP: dir_str = "UP"; break;
+    case DOWN: dir_str = "DOWN"; break;
+    case -1: dir_str = "NO_DIRECTION"; break;
     default: dir_str = "UNKNOWN"; break;
   }
 

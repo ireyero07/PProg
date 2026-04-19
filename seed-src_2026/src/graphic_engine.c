@@ -391,7 +391,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Space *ch_space = NULL;
   Character *ch = NULL;
   Space *space_act = NULL;
-  Id id_act = NO_ID, id_north = NO_ID, id_south = NO_ID, id_west = NO_ID, id_east = NO_ID;
+  Id id_act = NO_ID, id_north = NO_ID, id_south = NO_ID, id_west = NO_ID, id_east = NO_ID, id_up = NO_ID, id_down = NO_ID;;
 
   
   /* Paint the in the map area */
@@ -402,6 +402,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     id_south = game_get_connection(game, id_act, S);
     id_west  = game_get_connection(game, id_act, W);
     id_east  = game_get_connection(game, id_act, E);
+    id_up   = game_get_connection(game, id_act, UP);
+    id_down = game_get_connection(game, id_act, DOWN);
 
     /*-------------------------------------------------------*/
     /*                    NORTH SPACE                        */
@@ -412,7 +414,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       else sprintf(str, "                           X         ");
       screen_area_puts(ge->map, str);
     }
-
+    
 
     /*-------------------------------------------------------*/
     /*               WEST/ACTUAL/EAST SPACES                 */
@@ -533,7 +535,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, " move or m (n,s,e,w), take or t, drop or d, attack or a, chat or c, inspect or i, exit or e");
+  sprintf(str, " move or m (n,s,e,w,u,d), take or t, drop or d, attack or a, chat or c, inspect or i, exit or e");
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */

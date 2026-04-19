@@ -384,7 +384,15 @@ void game_actions_move(Game *game, Command *cmd){
   } else if ((strcmp(arg, "west") == 0 || strcmp(arg, "w") == 0) && game_connection_is_open(game, space_id, W)){
     current_id = game_get_connection(game, space_id, W);
 
-  } else {
+  } else if ((strcmp(arg, "down") == 0 || strcmp(arg, "d") == 0) && game_connection_is_open(game, space_id, DOWN)){
+    current_id = game_get_connection(game, space_id, DOWN);
+
+  } else if ((strcmp(arg, "up") == 0 || strcmp(arg, "u") == 0) && game_connection_is_open(game, space_id, UP)){
+    current_id = game_get_connection(game, space_id, UP);
+
+  } 
+  
+  else {
     current_id = NO_ID;
   }
 
