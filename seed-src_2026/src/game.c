@@ -36,6 +36,7 @@ struct _Game
   Link *links[MAX_LINKS];               /*!< Array of pointers to the links of the game */
   int n_links;                          /*!< Number of links currently in the game */
   Bool finished;                        /*!< Flag that indicates if the game has finished */
+  Bool deterministic;                   /*!< Flag that indicates if the game is deterministic */
 };
 
 /**
@@ -45,7 +46,6 @@ Game *game_create()
 {
   int i;
   Game *game = NULL;
-  srand(time(NULL));
 
   game = (Game *)malloc(sizeof(Game));
   if (!game)
@@ -88,6 +88,7 @@ Game *game_create()
   game->n_spaces = 0;
   game->n_links = 0;
   game->finished = FALSE;
+  game->deterministic = FALSE;
 
   /* ---------------- GAME STATE ---------------- */
 
@@ -831,7 +832,9 @@ Status game_set_last_obj_desc(Game *game, const char *desc)
 } 
 
 /*-------------------INTERFACE_DATA-----------------------*/
-
+/**
+ * @brief It adds an interface data to the game
+ */
 Status game_add_interface_data(Game *game, Interface_Data *intdata)
 {
   if (game == NULL || intdata == NULL || game->n_players >= MAX_PLAYERS)
@@ -843,6 +846,30 @@ Status game_add_interface_data(Game *game, Interface_Data *intdata)
 
   return OK;
 }
+
+/*-------------------DETERMINISTIC-----------------------*/
+/**
+ * @brief It sets the deterministic flag of the game
+ */
+Status game_set_deterministic(Game *game, Bool deterministic){
+  if (!game) 
+    return ERROR;
+
+  game->deterministic = deterministic;
+
+  return OK;
+}
+
+/**
+ * @brief It gets the deterministic flag of the game
+ */
+Bool game_get_deterministic(Game *game){
+  if (!game) 
+    return FALSE;
+
+  return game->deterministic;
+}
+
 /*-------------------PRINT-----------------------*/
 /**
  * @brief It prints the game information

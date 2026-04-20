@@ -57,9 +57,7 @@ int main(int argc, char *argv[]) {
   int result = 0;
   Command *last_cmd = NULL;
   FILE *log_file = NULL;
-  int log_active = 0;
-
-  srand(time(NULL));
+  int log_active = 0, deterministic = 0;
 
   if (argc < 2) {
     fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
@@ -82,10 +80,17 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     log_active = 1;
+    deterministic = 1;
   }
 
   if (argc >= 3 && strcmp(argv[2], "-d") == 0) {
+    deterministic = 1;
+  }
 
+  if (deterministic) {
+    game_set_deterministic(game, deterministic);
+  } else {
+    srand(time(NULL));
   }
 
   result = game_loop_init(&game, &gengine, argv[1]);

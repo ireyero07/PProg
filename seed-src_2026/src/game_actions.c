@@ -292,28 +292,33 @@ void game_actions_attack(Game *game) {
   num_followers= game_count_followers(game,player_get_id(player));
   attackers = 1 + num_followers;
 
-  roll = rand() % 10;
+  if (game_get_deterministic(game)) {
+    /* siempre hacer daño al enemigo */
+    character_set_health(enemy, character_get_health(enemy)-attackers);
+  } else {
+    roll = rand() % 10;
 
-  if(roll <= 4){
-    random_attacker =rand() % attackers;
-    if(random_attacker == 0){ 
-      /* daño al jugador */
-      player_set_health(player,player_get_health(player) - 1);
-    } else { 
-      /* daño a follower */
-      follower = game_get_nth_follower(game,player_get_id(player), random_attacker - 1);
-      if (follower) {
-        character_set_health(follower, character_get_health(follower)-1);
+    if(roll <= 4){
+      random_attacker =rand() % attackers;
+      if(random_attacker == 0){ 
+        /* daño al jugador */
+        player_set_health(player,player_get_health(player) - 1);
+      } else { 
+        /* daño a follower */
+        follower = game_get_nth_follower(game,player_get_id(player), random_attacker - 1);
+        if (follower) {
+          character_set_health(follower, character_get_health(follower)-1);
 
-        if (character_get_health(follower) <= 0) {
-          character_set_following(follower, NO_ID);
-          character_set_location(follower, NO_ID);
+          if (character_get_health(follower) <= 0) {
+            character_set_following(follower, NO_ID);
+            character_set_location(follower, NO_ID);
+          }
         }
       }
+    } else { 
+      /* daño al enemigo */
+        character_set_health(enemy, character_get_health(enemy)-attackers);
     }
-  } else { 
-    /* daño al enemigo */
-      character_set_health(enemy, character_get_health(enemy)-attackers);
   }
 
   if (character_get_health(enemy) <= 0){
