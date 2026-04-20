@@ -76,6 +76,14 @@ run_log:
 	@echo ">>>>>> Running castle with LOG and valgrind"
 	valgrind --leak-check=full ./castle castle.dat -l output.log
 
+run_deterministic:
+	@echo ">>>>>> Running castle with deterministic seed and valgrind"
+	valgrind --leak-check=full ./castle castle.dat -d
+
+run_deterministic_with_log:
+	@echo ">>>>>> Running castle with deterministic seed, LOG and valgrind"
+	valgrind --leak-check=full ./castle castle.dat -l output.log -d
+
 run_cmd:
 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
 	valgrind --leak-check=full ./castle castle.dat -l game1.log < game1.cmd

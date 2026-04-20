@@ -30,6 +30,9 @@ char *cmd_to_str[N_CMD][N_CMDT] = {
   {"i", "Inspect"},
   {"r", "Recruit"},
   {"a", "Abandon"},
+  {"u", "Use"},
+  {"o", "Open"}
+
   }; 
 
 /**
@@ -120,6 +123,19 @@ Status command_get_user_input(Command* command) {
             }
           }
         }
+        if (cmd == USE||cmd == OPEN) {
+          token = strtok(NULL, "\n"); 
+          if (token != NULL) {
+            while (*token == ' ') token++;
+            strncpy(command->arg, token, WORD_SIZE);
+            command->arg[WORD_SIZE] = '\0';
+            len = strlen(command->arg);
+            while (len > 0 && (command->arg[len-1] == ' ' || command->arg[len-1] == '\n')) {
+              command->arg[--len] = '\0';
+            }
+          }
+        }
+
       } else {
         i++;
       }

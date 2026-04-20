@@ -1,9 +1,25 @@
-#p:1|Knigth|^C>|11|1|3|
-#p:2|Ivan|0-0|11|5|3|
-#p:3|Jian|0^0|15|5|3|
+#p:11|Chef|^C>|11|3|10|
 
-#c:50|Phantom|(o)|12|5|0|I won't talk to you!|
-#c:51|Magician|^M*|14|5|1|Aprobemus el trabajus, please|
+#c:21|Bread|(o)|xx|5|0|I'm the one who puts the rest of the food together|
+#c:22|Meat|^M*|xx|5|0|I'm the one who gives it the flavor|
+#c:23|Cheese|^M*|xx|5|0|I'm better when I'm melted|
+#c:24|Chest|!-!|xx|5|0|Take some objects that will help you on your adventure|
+#c:25|Trap Chest|!-!|xx|5|1|Your greed will be your downfall|
+#c:26|Ant|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:27|Spider|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:28|Cockroach|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:29|Cockroach King|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:210|Ratatta|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:211|Raticate|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:212|Ratatouille|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:213|Raticate King|   |xx|5|1|Give me your cheese or you will suffer from my raticate wrath|
+#c:214|Ratatta|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:215|Raticate|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:216|Ratatouille|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:217|Dishwasher|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:218|Chef|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:219|Master Chef|   |xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|
+#c:220|Fat Michelin Chef|   |xx|5|1|You are so cooked for challenge me to a duel, I will crush you, literally|
 
 #l:31|Entry South|11|12|1|1|
 #l:32|Corridor North|12|11|0|1|
@@ -14,26 +30,51 @@
 #l:37|Living Room South|13|14|1|1|
 #l:38|Living Room East|13|131|2|1|
 #l:39|Bedroom East|131|132|2|1|
-#l:40|Bedroom West|131|13|3|1|
-#l:41|Bathroom West|132|131|3|1|
-#l:42|Kitchen North|14|13|0|1|
-#l:43|Kitchen South|14|15|1|1|
-#l:44|Backyard North|15|14|0|1|
-#l:45|Backyard South|15|16|1|1|
-#l:46|Garden North|16|15|0|1|
+#l:310|Bedroom West|131|13|3|1|
+#l:311|Bathroom West|132|131|3|1|
+#l:312|Kitchen North|14|13|0|1|
+#l:314|Kitchen South|14|15|1|1|
+#l:315|Backyard North|15|14|0|1|
+#l:316|Backyard South|15|16|1|1|
+#l:317|Garden North|16|15|0|1|
 
-#s:11|Entry|  _____  | /  !  \ | !  !  ! | ! 0!0 ! |_!__!__!_|
-#s:12|Corridor|  ./T\.  |.__. .__.|!  ! !()!|! 0! !__!|!__!_____|
-#s:121|Dungeon|  ______.| / ___ \!| !!+++!!!|\!!+++!!!|_!!+++!!0|
-#s:13|Living Room|  -+-->  | _______ | ! ___ ! | !! S !! |_!!_#_!!_|
-#s:131|Bedroom|    !    |  ./T\._ |.___. ! !|!___! !o!|!===!_!_!|
-#s:132|Bathroom|      _  |     ! ! |  ___! ! | (    .' |  )  (   |
-#s:14|Kitchen|!___!____| /_\ 444 |_________|!ooo!    |!!=!! ** |
-#s:15|Backyard|  _ _ _  |!_!!_!!_!|  _ O _  |( )/ \( )|_ [___] _|
-#s:16|Garden| /\ /\ /\|//\\/\\/\|//\\/\\/\| II II II|_________|
+#s:51|Entry|  _____  | /  !  \ | !  !  ! | ! 0!0 ! |_!__!__!_|
+#s:52|Corridor|  ./T\.  |.__. .__.|!  ! !()!|! 0! !__!|!__!_____|
+#s:53|Dungeon|  ______.| / ___ \!| !!+++!!!|\!!+++!!!|_!!+++!!0|
+#s:54|Living Room|  -+-->  | _______ | ! ___ ! | !! S !! |_!!_#_!!_|
+#s:55|Bedroom|    !    |  ./T\._ |.___. ! !|!___! !o!|!===!_!_!|
+#s:56|Bathroom|      _  |     ! ! |  ___! ! | (    .' |  )  (   |
+#s:57|Kitchen|!___!____| /_\ 444 |_________|!ooo!    |!!=!! ** |
+#s:58|Backyard|  _ _ _  |!_!!_!!_!|  _ O _  |( )/ \( )|_ [___] _|
+#s:59|Garden| /\ /\ /\|//\\/\\/\|//\\/\\/\| II II II|_________|
+#s:510|Staircase-top|  ./T\.  |         |_________| !! !_.  | \/   !_ |
+#s:511|Staircase-mid| /\   ._!| !! ._!  |____!____| !! !_.  | \/   !_ |
+#s:512|Staircase-bot| /\   ._!| !! ._!  |____!____|         |         |
 
-#o:21|Sword|11|A weapon to attack enemies in a short range|
-#o:22|Shield|13|An object to defend against enemies|
-#o:23|Hamburger|14|A BigMac with pickles|
-#o:24|Potion|132|A small crystal bottle that increases your health more than the food|
-#o:25|Key|16|An item used to open doors|
+
+
+
+
+#o:201|Golden Chef Chest|1|A heavy golden chest that cannot be moved|0|0|0|0|
+#o:202|Iron Storage Chest|2|A sturdy iron chest fixed to the floor|0|0|0|0|
+#o:203|Frozen Chest|4|A massive chest bolted inside the freezer|0|0|214|0|
+#o:204|Old Wooden Chest|6|A rotten chest that stays in its place|0|0|0|0|
+#o:205|Master Chef Trunk|8|The ultimate secret chest|0|0|214|0|
+#o:206|Stone Spice Chest|10|A heavy chest carved out of solid rock|0|0|0|0|
+
+#o:207|First Aid Kit|2|Essential supplies to save your life|5|1|0|0|
+#o:208|Hot Chicken Soup|3|Delicious broth that restores your energy|2|1|0|0|
+#o:209|Sizzling Tray|5|A burning hot tray with food that requires oven protection to pick up|2|1|217|0|
+#o:210|Fresh Apple|7|A healthy fruit that heals a small amount|1|1|0|0|
+#o:211|Energy Drink|9|Sugar-filled drink for a quick health boost|3|1|0|0|
+
+#o:212|Silver Key|3|A small silver key|0|1|0|0|
+#o:213|Rusty Key|6|An old key covered in oxidation|0|1|0|0|
+#o:214|Master Access Card|7|Electronic card|0|1|0|0|
+
+#o:215|Kitchen Knife|1|A sharp tool for chopping ingredients|0|1|0|0|
+#o:216|Crowbar|4|Used to force open stuck doors or cabinets|0|1|0|0|
+#o:217|Oven protection|5|Protective gear needed to handle hot items|0|1|0|0|
+#o:218|Small Screwdriver|10|A tool used to open delicate containers|0|1|0|0|
+#o:219|Bottle of water|9|Absolutely useless|0|1|0|0|
+#o:220|Bottle of Water|8|Absolutely useless|0|1|0|0|

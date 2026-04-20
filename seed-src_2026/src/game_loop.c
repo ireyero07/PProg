@@ -75,6 +75,19 @@ int main(int argc, char *argv[]) {
     log_active = 1;
   }
 
+  if (argc >= 5 && strcmp(argv[2], "-l") == 0 && strcmp(argv[4], "-d") == 0) {
+    log_file = fopen(argv[3], "w");
+    if (!log_file) {
+      fprintf(stderr, "Error opening log file.\n");
+      return 1;
+    }
+    log_active = 1;
+  }
+
+  if (argc >= 3 && strcmp(argv[2], "-d") == 0) {
+
+  }
+
   result = game_loop_init(&game, &gengine, argv[1]);
 
   if (result == 1) {
@@ -120,7 +133,7 @@ int main(int argc, char *argv[]) {
         sprintf(line, "%s", command_get_name(last_cmd));
       }
 
-      fprintf(log_file, "%s: %s\n", line, (game_get_last_action(game) == OK) ? "OK" : "ERROR");
+      fprintf(log_file, "%s: %s (Player %d)\n", line, (game_get_last_action(game) == OK) ? "OK" : "ERROR", game_get_turn(game) + 1);
     }
 
     if (game_is_any_player_death(game) == FALSE) {

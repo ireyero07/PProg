@@ -155,7 +155,15 @@ Status game_actions_update(Game *game, Command *command) {
 
     case ABANDON:
       game_actions_abandon(game, command);
-      break;    
+      break;
+
+    case USE:
+      game_actions_recruit(game, command);
+      break;
+
+    case OPEN:
+      game_actions_abandon(game, command);
+      break;   
 
     default:
       break;
@@ -504,6 +512,63 @@ void game_actions_abandon(Game *game, Command *cmd){
     game_set_last_action(game, ERROR);
     return;
   }
+  player_location = game_get_player_location(game);
+  chr_id = game_get_character_id_by_name(game,chr_name);
+  player = game_get_player(game);
+  chr = game_get_character_by_id(game,chr_id);
+
+  if(player != NULL && chr != NULL && chr_id != NO_ID && character_get_following(chr) == player_get_id(player)){
+    character_set_following(chr,NO_ID);
+    character_set_location(chr,player_location);
+    game_set_last_action(game, OK);
+  } else{
+    game_set_last_action(game, ERROR);
+  }
+  return;
+}
+
+
+
+void game_actions_use(Game *game, Command *cmd){
+  char *token=NULL;
+  char *c_argument=NULL;
+  char obj_name[WORD_SIZE+1]="";
+  char char_name[WORD_SIZE+1]="";
+  Id player_location = NO_ID;
+  int lenght;
+  if(!game || !cmd){
+    return;
+  }
+
+  c_argument = command_get_arg(cmd);
+  if(!c_argument) {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+  /*Splits the command argument to get the object name and the character name*/
+  token = strtok(c_argument, " ");
+  if(!token){
+    game_set_last_action(game, ERROR);
+    return;
+  }
+  lenght=strlen(token);
+  if(lenght>WORD_SIZE){
+    game_set_last_action(game, ERROR);
+    return;
+  }
+  strncpy(obj_name, token, WORD_SIZE);
+  obj_name[WORD_SIZE]='\0';
+  token = strtok(NULL, " ");
+  if(strcasecmp(token, "over")!=0||strcasecmp(token, "o")!=0){
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+/*AQUI ME QUEDO*/
+
+
+
   player_location = game_get_player_location(game);
   chr_id = game_get_character_id_by_name(game,chr_name);
   player = game_get_player(game);

@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2  /*!< Number of command type formats: short and long */
-#define N_CMD 11   /*!< Total number of commands available in the game */
+#define N_CMD 13   /*!< Total number of commands available in the game */
 
 /**
  * @brief Selects between the short or long name of a command
@@ -24,7 +24,7 @@ typedef enum { CMDS, CMDL } CommandType;
 /**
  * @brief Codes for each command available in the game
  */
-typedef enum { NO_CMD = -1, UNKNOWN, EXIT, TAKE, DROP, ATTACK, CHAT, MOVE, INSPECT, RECRUIT, ABANDON} CommandCode;
+typedef enum { NO_CMD = -1, UNKNOWN, EXIT, TAKE, DROP, ATTACK, CHAT, MOVE, INSPECT, RECRUIT, ABANDON, USE, OPEN} CommandCode;
 
 typedef struct _Command Command; /*!< Opaque type representing a game command */
 
