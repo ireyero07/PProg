@@ -88,12 +88,8 @@ run_cmd:
 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
 	valgrind --leak-check=full ./castle castle.dat -l game1.log < game1.cmd
 
-run_tests: $(TESTS)
-	@echo ">>>>>> Running all tests"
-	@for test in $(TESTS); do \
-		echo "Running $$test"; \
-		./$$test; \
-	done
+run_tests: 
+	./run_tests.sh 1
 
 #############################################################################
 
