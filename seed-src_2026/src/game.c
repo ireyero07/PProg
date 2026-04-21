@@ -716,6 +716,37 @@ Bool game_connection_is_open(Game *game, Id space_id, Direction dir)
   return FALSE;
 }
 
+Link *game_get_link_by_id(Game *game, Id link_id){
+  int i;
+
+  if (!game || link_id == NO_ID)
+  {
+    return NULL;
+  }
+
+  for (i = 0; i < game->n_links; i++)
+  {
+    if (link_get_id(game->links[i]) == link_id)
+      return game->links[i];
+  }
+
+  return NULL;
+}
+
+Id game_get_link_id_by_name(Game *game, const char *name){
+  int i;
+  if (!game || !name)
+    return NO_ID;
+
+  for (i = 0; i < game->n_links && i < MAX_LINKS; i++)
+  {
+    if (game->links[i] && strcasecmp(link_get_name(game->links[i]), name) == 0)
+    {
+      return link_get_id(game->links[i]);
+    }
+  }
+  return NO_ID;
+}
 
 /*-------------------LAST COMMAND-----------------------*/
 /**

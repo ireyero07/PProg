@@ -391,6 +391,26 @@ Id game_get_connection(Game *game, Id space_id, Direction direction);
 Bool game_connection_is_open(Game *game, Id space_id, Direction direction);
 
 /**
+ * @brief It gets a pointer to a link by its id
+ * @author Gonzalez Hijano Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param link_id Id of the link
+ * @return a pointer to the link or NULL if something fails
+ */
+Link *game_get_link_by_id(Game *game, Id link_id);
+
+/**
+ * @brief It gets a pointer to a link by its name
+ * @author Gonzalez Hijano Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param name A constant char with the name of the link
+ * @return The Id of the link or NO_ID if something fails
+ */
+Id game_get_link_id_by_name(Game *game, const char *name);
+
+/**
  * @brief It gets the last command
  * @author Ivan
  *
