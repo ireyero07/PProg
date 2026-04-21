@@ -25,8 +25,8 @@ struct _Object {
   char description[MAX_DESC];     /*!< Description of the object */
   int health;                     /*!< The amount of health that the object cures */
   Bool movable;                   /*!< If the object is movable or not */
-  Id *dependency;                 /*!< The Id of the object that is needed to pick this object */
-  Id *open;                       /*!< The Id of the link that can be opened with this object */
+  Id dependency;                  /*!< The Id of the object that is needed to pick this object */
+  Id open;                        /*!< The Id of the link that can be opened with this object */
 };
 
 
@@ -174,8 +174,8 @@ Bool object_get_health(Object* object){
 /*
 * @brief It sets the dependency of an object
 */
-Status object_set_dependency(Object *object, Id *dependency){
-  if(!object || !dependency){
+Status object_set_dependency(Object *object, Id dependency){
+  if(!object || dependency<0){
     return ERROR;
   }
 
@@ -187,7 +187,7 @@ Status object_set_dependency(Object *object, Id *dependency){
 /*
 * @brief It gets the dependency of an object
 */
-Id* object_get_dependency(Object* object){
+Id object_get_dependency(Object* object){
   if(!object){
     return NULL;
   }
@@ -197,8 +197,8 @@ Id* object_get_dependency(Object* object){
 /*
 * @brief It sets the Id that an object can open
 */
-Status object_set_dependency(Object *object, Id *open){
-  if(!object || !open){
+Status object_set_dependency(Object *object, Id open){
+  if(!object || open<0){
     return ERROR;
   }
 
@@ -210,7 +210,7 @@ Status object_set_dependency(Object *object, Id *open){
 /*
 * @brief It gets the Id that the object can open
 */
-Id* object_get_dependency(Object* object){
+Id object_get_dependency(Object* object){
   if(!object){
     return NULL;
   }

@@ -81,7 +81,81 @@ Status object_set_description(Object* object, char* description);
  * @return  a string with the description of the object
  */
 const char* object_get_description(Object* object);
+/**
+* @brief It sets the health of an object
+* @author Ivan Mijangos
+*
+* @param object a pointer to the object
+* @param health an integer that says how much health it cures
+* @return OK, if everything goes well or ERROR if there was some mistake
+*/
+Status object_set_health(Object* object, int health);
 
+/**
+* @brief It gets the health of an object
+* @author Ivan Mijangos
+*
+* @param object a pointer to the object
+* @return an integer that says how much health it cures
+*/
+int object_get_health(Object* object);
+
+/**
+* @brief It sets if an object is movable
+* @author Ivan Mijangos
+*
+* @param object a pointer to the object
+* @param movable bool that says if the object is movable or not
+* @return OK, if everything goes well or ERROR if there was some mistake
+*/
+Status object_set_movable(Object* object, Bool movable);
+
+/**
+* @brief It gets if an object is movable
+* @author Ivan Mijangos
+*
+* @param object a pointer to the object
+* @return bool that says if the object is movable or not
+*/
+Bool object_get_movable(Object* object);
+
+/**
+* @brief It sets the dependency of an object
+* @author Ivan Mijangos
+*
+* @param object a pointer to the object
+* @param dependency the Id of the object that is needed to take this object
+* @return OK, if everything goes well or ERROR if there was some mistake
+*/
+Status object_set_dependency(Object* object, Id dependency);
+
+/**
+* @brief It gets the dependency of an object
+* @author Ivan Mijangos
+*
+* @param object a pointer to the object
+* @return the Id of the object that is needed to take this object
+*/
+Id object_get_dependency(Object* object);
+
+/**
+* @brief It sets the Id that an object can open
+* @author Ivan Mijangos
+*
+* @param object a pointer to the object
+* @param open the Id of the object that this object can open
+* @return OK, if everything goes well or ERROR if there was some mistake
+*/
+Status object_set_open(Object* object, Id open);
+
+/**
+* @brief It gets the Id that an object can open
+* @author Ivan Mijangos
+*
+* @param object a pointer to the object
+* @return the Id of the object that this object can open
+*/
+Id object_get_open(Object* object);
 
 /**
  * @brief It prints the object information
