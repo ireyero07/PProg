@@ -197,7 +197,7 @@ Id object_get_dependency(Object* object){
 /*
 * @brief It sets the Id that an object can open
 */
-Status object_set_dependency(Object *object, Id open){
+Status object_set_open(Object *object, Id open){
   if(!object || open<0){
     return ERROR;
   }
@@ -210,7 +210,7 @@ Status object_set_dependency(Object *object, Id open){
 /*
 * @brief It gets the Id that the object can open
 */
-Id object_get_dependency(Object* object){
+Id object_get_open(Object* object){
   if(!object){
     return NULL;
   }

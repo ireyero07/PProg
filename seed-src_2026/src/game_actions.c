@@ -773,11 +773,14 @@ void game_actions_open(Game *game, Command *cmd)
     game_set_last_action(game, ERROR);
     return;
   }
-  if (inventory_has_object(player_get_backpack(player), object) != TRUE)
+
+  if ((inventory_has_object(player_get_backpack(player), object) != TRUE)||(object_get_))
   {
     game_set_last_action(game, ERROR);
     return;
   }
+
+
 
   link = game_get_link_by_id(game, game_get_link_id_by_name(game, link_name));
   if (link == NULL)
