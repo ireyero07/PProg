@@ -774,7 +774,7 @@ void game_actions_open(Game *game, Command *cmd)
     return;
   }
 
-  if ((inventory_has_object(player_get_backpack(player), object) != TRUE)||(object_get_))
+  if ((inventory_has_object(player_get_backpack(player), object) != TRUE))
   {
     game_set_last_action(game, ERROR);
     return;
@@ -794,6 +794,11 @@ void game_actions_open(Game *game, Command *cmd)
     return;
   }
 
+  if(link_get_id(link)!=(object_get_open(game_get_object(game, object)))){
+    game_set_last_action(game, ERROR);
+    return;
+  }
+  
   /*Use the object*/
   if (link_get_origin(link) != game_get_player_location(game))
   {
