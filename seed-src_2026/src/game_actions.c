@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 /**
    Private functions
@@ -615,7 +616,7 @@ void game_actions_abandon(Game *game, Command *cmd)
 void game_actions_use(Game *game, Command *cmd)
 {
   char *token = NULL;
-  char *c_argument = NULL;
+  char c_argument[WORD_SIZE] = "";
   char obj_name[WORD_SIZE + 1] = "";
   char char_name[WORD_SIZE + 1] = "";
   Bool over_something_else = FALSE;
@@ -628,12 +629,7 @@ void game_actions_use(Game *game, Command *cmd)
     return;
   }
 
-  c_argument = command_get_arg(cmd);
-  if (!c_argument)
-  {
-    game_set_last_action(game, ERROR);
-    return;
-  }
+  strncpy(c_argument, command_get_arg(cmd), WORD_SIZE);
 
   /*Splits the command argument to get the object name and the character name*/
   token = strtok(c_argument, " \n");
@@ -684,7 +680,7 @@ void game_actions_use(Game *game, Command *cmd)
   {
   case TRUE:
     character = game_get_character_by_id(game, game_get_character_id_by_name(game, char_name));
-    if (character == NULL || character_get_health(character)<=0)
+    if (character == NULL || character_get_health(character) <= 0)
     {
       game_set_last_action(game, ERROR);
       return;
@@ -722,7 +718,7 @@ void game_actions_use(Game *game, Command *cmd)
 void game_actions_open(Game *game, Command *cmd)
 {
   char *token = NULL;
-  char *c_argument = NULL;
+  char c_argument[WORD_SIZE] = "";
   char obj_name[WORD_SIZE + 1] = "";
   char link_name[WORD_SIZE + 1] = "";
   Player *player = NULL;
@@ -734,12 +730,7 @@ void game_actions_open(Game *game, Command *cmd)
     return;
   }
 
-  c_argument = command_get_arg(cmd);
-  if (!c_argument)
-  {
-    game_set_last_action(game, ERROR);
-    return;
-  }
+  strncpy(c_argument, command_get_arg(cmd), WORD_SIZE);
 
   /*Splits the command argument to get the object name and the character name*/
   token = strtok(c_argument, " \n");
@@ -777,7 +768,7 @@ void game_actions_open(Game *game, Command *cmd)
   }
 
   object = (game_get_object_id_by_name(game, obj_name));
-  if (object == NULL)
+  if (object == NO_ID)
   {
     game_set_last_action(game, ERROR);
     return;
@@ -794,7 +785,8 @@ void game_actions_open(Game *game, Command *cmd)
     game_set_last_action(game, ERROR);
     return;
   }
-  if (link_get_open(link)==TRUE){
+  if (link_get_open(link) == TRUE)
+  {
     game_set_last_action(game, ERROR);
     return;
   }
@@ -806,12 +798,13 @@ void game_actions_open(Game *game, Command *cmd)
     return;
   }
 
-  if(link_set_open(link, OPEN)==ERROR || player_del_object(player, object)==ERROR){
+  if (link_set_open(link, OPEN) == ERROR || player_del_object(player, object) == ERROR)
+  {
     game_set_last_action(game, ERROR);
     return;
   }
 
   game_set_last_action(game, OK);
 
-return;
+  return;
 }
