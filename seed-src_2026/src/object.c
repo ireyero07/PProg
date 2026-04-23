@@ -143,7 +143,7 @@ Status object_set_health(Object *object, int health){
 */
 int object_get_health(Object* object){
   if(!object){
-    return NULL;
+    return -1;
   }
   return object->health;
 }
@@ -164,9 +164,9 @@ Status object_set_movable(Object *object, Bool movable){
 /*
 * @brief It gets if an object is movable
 */
-Bool object_get_health(Object* object){
+Bool object_get_movable(Object* object){
   if(!object){
-    return NULL;
+    return FALSE;
   }
   return object->movable;
 }
@@ -189,7 +189,7 @@ Status object_set_dependency(Object *object, Id dependency){
 */
 Id object_get_dependency(Object* object){
   if(!object){
-    return NULL;
+    return NO_ID;
   }
   return object->dependency;
 }
@@ -212,7 +212,7 @@ Status object_set_open(Object *object, Id open){
 */
 Id object_get_open(Object* object){
   if(!object){
-    return NULL;
+    return NO_ID;
   }
   return object->open;
 }
