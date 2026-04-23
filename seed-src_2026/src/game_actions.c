@@ -282,8 +282,10 @@ void game_actions_attack(Game *game)
   Space *space = NULL;
   Id space_id = NO_ID;
   Player *player = NULL;
-  Character *enemy = NULL, *follower = NULL;
-  int roll, num_followers, attackers, random_attacker;
+  Set *chars_in_space = NULL;
+  Id *id_list = NULL;
+  Character *enemy = NULL, *follower = NULL, *aux=NULL;
+  int roll, num_followers, attackers, random_attacker, n_chars, i;
 
   if (!game)
   {
@@ -305,7 +307,19 @@ void game_actions_attack(Game *game)
     game_set_last_action(game, ERROR);
     return;
   }
-  enemy = game_get_character_by_space(game, space_id);
+  
+  chars_in_space = game_get_characters_by_space(game, space_id);
+  if (chars_in_space) {
+    id_list = set_get_list_ids(chars_in_space);
+    n_chars = set_get_n_ids(chars_in_space);
+    for (i = 0; i < n_chars; i++) {
+      aux = game_get_character_by_id(game, id_list[i]);
+      if (aux && !character_get_friendly(aux) && character_get_health(aux) > 0) {
+          enemy = aux;
+          break;
+      }
+    }
+  }
 
   if (!enemy || character_get_friendly(enemy) || character_get_health(enemy) <= 0)
   {
