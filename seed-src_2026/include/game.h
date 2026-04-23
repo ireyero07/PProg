@@ -85,6 +85,26 @@ int game_get_n_spaces(Game *game);
 Space *game_get_space(Game *game, Id id);
 
 /**
+ * @brief It says if an space have any characters or no
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param id the id of the space
+ * @return True or false
+ */
+Bool game_space_have_characters(Game *game, Id id);
+
+/**
+ * @brief It says if an space have any enemy characters or no
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param id the id of the space
+ * @return True or false
+ */
+Bool game_space_have_enemy_character(Game *game, Id space_id);
+
+/**
  * @brief Gets the number of objects in the game.
  * @author Jian Feng
  *
@@ -227,7 +247,7 @@ Character *game_get_character_by_position(Game *game, int pos);
  * @param space_id the id of the space
  * @return Pointer to the character if found, otherwise NULL
  */
-Character *game_get_character_by_space(Game *game, Id space_id);
+Set *game_get_characters_by_space(Game *game, Id space_id);
 
 /**
  * @brief Gets a character by its character id

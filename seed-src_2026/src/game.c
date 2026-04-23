@@ -208,6 +208,44 @@ Space *game_get_space(Game *game, Id id)
   return NULL;
 }
 
+Bool game_space_have_characters(Game *game, Id space_id){
+
+  if(game==NULL || space_id==NO_ID){
+    return FALSE;
+  }
+  if(set_get_n_ids(game_get_characters_by_space(game, space_id))>0){
+    return TRUE;
+  }
+  else{
+    return FALSE;
+  }
+}
+
+Bool game_space_have_enemy_character(Game *game, Id space_id){
+  int i;
+  Id *id_list=NULL;
+  Set *characters=NULL;
+  int n_ids;
+
+  if(game==NULL || space_id==NO_ID){
+    return FALSE;
+  }
+
+  if(characters=game_get_characters_by_space(game, space_id)==NULL){
+    return FALSE;
+  }
+
+  id_list=set_get_list_ids(characters);
+  n_ids=set_get_n_ids(characters);
+  for(i=0; i<n_ids; i++){
+    if(character_get_friendly(game_get_character_by_id(game, id_list[i]))==FALSE){
+      return TRUE;
+    }
+
+  }
+  return FALSE;
+}
+
 /*-------------------OBJECT-----------------------*/
 /**
  * @brief Gets the number of objects in the game.
@@ -451,20 +489,17 @@ Character *game_get_character_by_position(Game *game, int pos)
   return game->character[pos];
 }
 
-Character *game_get_character_by_space(Game *game, Id space_id)
+Set *game_get_characters_by_space(Game *game, Id space_id)
 {
   int i;
+  Space *space=NULL;
   if (!game || space_id == NO_ID)
     return NULL;
 
-  for (i = 0; i < game->n_characters; i++)
-  {
-    if (character_get_location(game->character[i]) == space_id)
-    {
-      return game->character[i];
-    }
+  if((space=game_get_space(game, space_id))==NULL){
+    return NULL;
   }
-  return NULL;
+  return space_get_character(space);
 }
 
 Character *game_get_character_by_id(Game *game, Id chr_id){

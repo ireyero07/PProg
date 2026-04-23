@@ -19,58 +19,99 @@
 PRIVATE FUNCTIONS
 ########################################################################################*/
 
-
 /*Declarations*/
 Bool game_rules_event_occurs(int percentage);
 int game_rules_random_number_in_range_generator(int min, int max);
-Status game_rules_random_enemy_attack(Game *game);
-
+Status game_rules_random_enemy_attack(Game *game, int probability);
+Status game_rules_random_ingredient_expires(Game *game, int probability);
 
 /*Implementations*/
 
-Bool game_rules_event_occurs(int percentage){
-    if (percentage<0 || percentage>100){
+Bool game_rules_event_occurs(int percentage)
+{
+    if (percentage < 0 || percentage > 100)
+    {
         return FALSE;
     }
-    int r=rand() % 100;
+    int r = rand() % 100;
 
-    if (r<percentage){
+    if (r < percentage)
+    {
         return TRUE;
     }
-    else{
+    else
+    {
         return FALSE;
     }
 }
 
-int game_rules_random_number_in_range_generator(int min, int max){
+int game_rules_random_number_in_range_generator(int min, int max)
+{
     int game_rules_random_number_in_range_generator(int min, int max);
 }
 
-Status game_rules_random_enemy_attack(Game *game){
-    Player *player=NULL;
-    Character *character=NULL;
+Status game_rules_random_enemy_attack(Game *game, int probability)
+{
+    Player *player = NULL;
+    Character *character = NULL;
     Id player_loc = NO_ID;
-    int probability = 30;
-    if(game == NULL){
+    if (game == NULL)
+    {
         return ERROR;
     }
 
-    player=game_get_player(game);
+    player = game_get_player(game);
 
-    if((player==NULL) || (player_get_location(player)==NO_ID)){
+    if ((player == NULL) || (player_loc = player_get_location(player)) == NO_ID)
+    {
         return ERROR;
     }
-
-   character = game_get_character_by_space(game, player_loc);
-   if(character==NULL){
-    return ERROR;
+    if(game_
+    character = game_get_character_by_space(game, player_loc);
+    if(character==NULL){
+        return ERROR;
    }
 
    if(character_get_friendly(character) == FALSE){
-    if(game_rules_event_occurs(probability)==TRUE){
-        player_set_health(player, player_get_health(player) - game_rules_random_number_in_range_generator(1, 5));
-    }/*HAY QUE VER LA VIDA QUE VAN A TENER LOS PLAYER PARA VER DE CUANTO PUEDE SER EL DAMAGE DE ESTE ATACK RANDOM*/
+        if (game_rules_event_occurs(probability) == TRUE)
+        {
+            player_set_health(player, player_get_health(player) - game_rules_random_number_in_range_generator(1, 30));
+        }
    }
+
+    return OK;
+}
+
+Status game_rules_random_ingredient_expires(Game *game, int probability)
+{
+    Player *player = NULL;
+    Character *character = NULL;
+    Id player_loc = NO_ID;
+    if (game == NULL)
+    {
+        return ERROR;
+    }
+
+    player = game_get_player(game);
+
+    if ((player == NULL) || (player_get_location(player) == NO_ID))
+    {
+        return ERROR;
+    }
+
+    character = game_get_character_by_space(game, player_loc);
+    if (character == NULL)
+    {
+        return ERROR;
+    }
+
+    if (character_get_friendly(character) == FALSE)
+    {
+        if (game_rules_event_occurs(probability) == TRUE)
+        {
+            player_set_health(player, player_get_health(player) - game_rules_random_number_in_range_generator(1, 30));
+        }
+    }
 
     return OK;
 }
