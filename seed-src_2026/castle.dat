@@ -1,8 +1,9 @@
 #p:11|Chef|C#]|31|100|10|
 #p:12|Waiter|\º\|31|100|10|
 
-#c:21|Lettuce|   |xx|5|0|I'm the one who puts the rest of the food together|
-#c:22|Tomato|   |xx|5|0|I'm the one who puts the rest of the food together|
+
+#c:21|Lettuce|   |xx|5|0|A little bit of green to trick the body|
+#c:22|Tomato|   |xx|5|0|Fresh, recently cut slices|
 #c:23|Bread|   |xx|5|0|I'm the one who puts the rest of the food together|
 #c:24|Cheese|   |xx|5|0|I'm better when I'm melted|
 #c:25|Bacon|   |xx|5|0|Bacon frito, bacon bacon frito, cojo el bacon y lo frio un poquito.|
@@ -26,22 +27,49 @@
 #c:219|Master Chef|4^*|xx|2|1|The main course will be you grilled to perfection|
 #c:220|Fat Michelin Chef|4M*|xx|3|1|You are so cooked for challenge me to a duel, I will crush you, literally|
 
-#l:31|Entry South|11|12|1|1|
-#l:32|Corridor North|12|11|0|1|
-#l:33|Corridor West|12|121|3|0|
-#l:34|Corridor South|12|13|1|1|
-#l:35|Dungeon South|121|16|1|1|
-#l:36|Living Room North|13|12|0|1|
-#l:37|Living Room South|13|14|1|1|
-#l:38|Living Room East|13|131|2|1|
-#l:39|Bedroom East|131|132|2|1|
-#l:310|Bedroom West|131|13|3|1|
-#l:311|Bathroom West|132|131|3|1|
-#l:312|Kitchen North|14|13|0|1|
-#l:314|Kitchen South|14|15|1|1|
-#l:315|Backyard North|15|14|0|1|
-#l:316|Backyard South|15|16|1|1|
-#l:317|Garden North|16|15|0|1|
+
+#l:31|Entry North|51|52|0|open|
+#l:32|Barrels South|52|51|1|open|
+
+#l:33|Barrels North|52|54|0|open|
+#l:34|Crates South|54|52|1|open|
+
+#l:35|Barrels East|52|53|2|open|
+#l:36|Pipes West|53|52|3|open|
+
+#l:37|Pipes North|53|55|0|open|
+#l:38|Cockroach King's Taqueria South|55|53|1|open|
+
+#l:39|Cockroach King's Taqueria Up|55|56|4|open|
+#l:310|Corridor Down|56|55|5|open|
+
+#l:311|Corridor North|56|57|0|open|
+#l:312|Kitchen South|57|56|1|open|
+
+#l:313|Kitchen West|57|58|3|open|
+#l:314|Fridge East|58|57|2|open|
+
+#l:315|Kitchen North|57|59|0|open|
+#l:316|Chef Bathroom South|59|57|1|open|
+
+#l:317|Chef Bathroom East|59|510|2|open|
+#l:318|Ratatouille King's Den West|510|59|3|open|
+
+#l:319|Ratatouille King's Den Up|510|511|4|open|
+#l:320|Dining Room Down|511|510|5|open|
+
+#l:321|Dining Room West|511|512|3|open|
+#l:322|Bathroom East|512|511|2|open|
+
+#l:323|Dining Room South|511|513|1|open|
+#l:324|Backyard North|513|511|0|open|
+
+#l:325|Backyard East|513|514|2|open|
+#l:326|Garden West|514|513|3|open|
+
+#l:327|Backyard South|513|515|1|open|
+#l:328|Michelin chef's Room North|515|513|0|open|
+
 
 #s:51|Entry|  _____  | /  !  \ | !  !  ! | ! 0!0 ! |_!__!__!_|
 #s:52|Barrels|  _   _  | / \ / \ | !1! !1! | \_/ \_/ |_!-!_!-!_|
@@ -64,6 +92,7 @@
 #s:516|Staircase-top|  ./T\.  |         |_________| !! !_.  | \/   !_ |
 #s:517|Staircase-mid| /\   ._!| !! ._!  |____!____| !! !_.  | \/   !_ |
 #s:518|Staircase-bot| /\   ._!| !! ._!  |____!____|         |         |
+#s:519|Auxiliar Space|         |         |         |         |         |
 
 
 #o:601|Golden Chef Chest|1|A heavy golden chest that cannot be moved|0|0|0|0|

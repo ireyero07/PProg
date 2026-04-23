@@ -89,7 +89,7 @@ run_cmd:
 	valgrind --leak-check=full ./castle castle.dat -l game1.log < game1.cmd
 
 run_tests: 
-	./run_tests.sh 1
+	./tests.sh 1
 
 #############################################################################
 
