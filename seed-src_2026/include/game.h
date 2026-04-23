@@ -95,14 +95,24 @@ Space *game_get_space(Game *game, Id id);
 Bool game_space_have_characters(Game *game, Id id);
 
 /**
- * @brief It says if an space have any enemy characters or no
+ * @brief It says if an space have any enemy characters or no and its number
  * @author Gonzalez Hijano, Ivan
  *
  * @param game a pointer to the game structure
  * @param id the id of the space
- * @return True or false
+ * @return Number of enemies in a space
  */
-Bool game_space_have_enemy_character(Game *game, Id space_id);
+int game_space_number_of_enemies(Game *game, Id space_id);
+
+/**
+ * @brief It gets the number of characters following a player
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param player a pointer to a player
+ * @return Number of followers
+ */
+int game_get_number_of_followers(Game *game, Player *player);
 
 /**
  * @brief Gets the number of objects in the game.
