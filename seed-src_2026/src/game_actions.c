@@ -331,12 +331,12 @@ void game_actions_attack(Game *game)
       random_attacker = rand() % attackers;
       if (random_attacker == 0)
       {
-        /* daño al jugador */
-        player_set_health(player, player_get_health(player) - 1);
+        /* Damage the player */
+        player_set_health(player, player_get_health(player) - 1*10); /*I add a x10 because of the increase of the p_health*/
       }
       else
       {
-        /* daño a follower */
+        /* Damage the follower */
         follower = game_get_nth_follower(game, player_get_id(player), random_attacker - 1);
         if (follower)
         {
