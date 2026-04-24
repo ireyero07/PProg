@@ -242,7 +242,7 @@ int game_space_number_of_enemies(Game *game, Id space_id)
     return 0;
   }
 
-  if (characters = game_get_characters_by_space(game, space_id) == NULL)
+  if ((characters = game_get_characters_by_space(game, space_id)) == NULL)
   {
     return 0;
   }
@@ -268,7 +268,7 @@ int game_get_number_of_followers(Game *game, Player *player)
     return -1;
   }
   player_id = player_get_id(player);
-  if (player_id = NO_ID)
+  if (player_id == NO_ID)
   {
     return -1;
   }
@@ -528,7 +528,6 @@ int game_get_number_of_followers(Game *game, Player *player)
 
   Set *game_get_characters_by_space(Game * game, Id space_id)
   {
-    int i;
     Space *space = NULL;
     if (!game || space_id == NO_ID)
       return NULL;
