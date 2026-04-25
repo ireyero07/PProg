@@ -18,6 +18,7 @@
 #include "game_reader.h"
 #include "game_actions.h"
 #include "graphic_engine.h"
+#include "game_rules.h"
 
 /**
  * @brief Initializes the game and the graphic engine.
@@ -87,20 +88,21 @@ int main(int argc, char *argv[]) {
     deterministic = 1;
   }
 
-  if (deterministic) {
-    game_set_deterministic(game, deterministic);
-  } else {
-    srand(time(NULL));
-  }
-
   result = game_loop_init(&game, &gengine, argv[1]);
 
+  
   if (result == 1) {
     fprintf(stderr, "Error while initializing game.\n");
     return 1;
   } else if (result == 2) {
     fprintf(stderr, "Error while initializing graphic engine.\n");
     return 1;
+  }
+
+  if (deterministic) {
+    game_set_deterministic(game, deterministic);
+  } else {
+    srand(time(NULL));
   }
 
   last_cmd = command_create();
@@ -139,6 +141,10 @@ int main(int argc, char *argv[]) {
       }
 
       fprintf(log_file, "%s: %s (Player %d)\n", line, (game_get_last_action(game) == OK) ? "OK" : "ERROR", game_get_turn(game) + 1);
+    }
+
+    if(game_get_deterministic(game)==FALSE){
+      game_rules_run_rules(game);
     }
 
     if (game_is_any_player_death(game) == FALSE) {
