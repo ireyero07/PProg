@@ -250,10 +250,10 @@ void graphic_engine_print_South_space (Graphic_engine *ge, Game *game, Id id_Sou
  * @param id_east Id of the east space
  */
 void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game, Id id_west, Id id_act, Id id_east) {
-  int i, j, col;
+  int i, j, col, n_followers;
   Space *spaces[3];
-  Id ids[3], obj_id = NO_ID, *objects = NULL;
-  Character *chars[3];
+  Id ids[3], obj_id = NO_ID, *objects = NULL, player_id = NO_ID;
+  Character *chars[3], *followers[MAX_CHARACTERS];
   char chr[3][MAX_CHR_GDESC + 1], ply[3][MAX_CHR_GDESC + 1], obj_line[3][WORD_SIZE], str[255];
   Object *obj = NULL;
   Player *player;
@@ -283,6 +283,7 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
   chars[0] = chars[1] = chars[2] = NULL;
 
   player = game_get_player(game);
+  player_id = player_get_id(player);
 
   strncpy(ply[1], player_get_gdesc(player), MAX_CHR_GDESC);
   ply[1][MAX_CHR_GDESC] = '\0';
@@ -307,6 +308,10 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
         chr[col][MAX_CHR_GDESC] = '\0';
       } else {
         chr[col][0] = '\0'; 
+      }
+      n_followers = game_count_followers(game,player_id);
+      for(i = 0; i < n_followers; i++){
+        followers[i] = game_get_nth_follower(game,player_id, i);
       }
       /* Objects */
       objects = space_get_objects_ids(spaces[col]);
@@ -346,100 +351,55 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
   /* Ahora pintamos fila por fila combinando las 3 habitaciones horizontalmente */
   for (i = 0; i < GDESC_LINES + 4; i++) { 
     str[0] = '\0';
-    for (col = 0; col < 3; col++) {
-      char line[64];
-      if(col == 0){
-        if(id_west == NO_ID){
-          strcat(str,"       ");
-        } else{
-          if (i == 0) { 
-            sprintf(line, "-----+ ");
-          } else if (i == 1){
-            sprintf(line, "     | ");
-          } else if (i == 2){
-            sprintf(line, "     | ");
-          } else if (i == 3){
-            sprintf(line, "     | ");
-          } else if (i == 4){
-            sprintf(line, "     | ");
-          } else if (i == 5){
-            sprintf(line, "     | ");
-          } else if (i == 6){
-            sprintf(line, "     | ");
-          } else if (i == 7){
-            sprintf(line, "     | ");
-          } else if (i == 8){
-            sprintf(line, "-----+ ");
-          }
-        }
-
-      } else if(col == 1){
-        if (i == 0) { 
-          sprintf(line, " +-------------------------------------+ ");
-        } else if (i == 1){
-            
-        } else if (i == 2){
-          sprintf(line, " |                %3.3s                  | ", ply[1]);
-        } else if (i == 3){
-          sprintf(line, " |                                     | ");
-        } else if (i == 4){
-            
-        } else if (i == 5){
-            
-        } else if (i == 6){
-            
-        } else if (i == 7){
-            
-        } else if (i == 8){
-          sprintf(line, " +-------------------------------------+ ");  
-        }
-
-
-
-        
-
-
-
-        if (col == 0 && spaces[0] != NULL && spaces[1] != NULL && i == (GDESC_LENGTH / 2)) {
-        if(game_connection_is_open(game,ids[1], W)) strcat(str, "<");
-        else strcat(str,"X");
-        } 
-        else if (col == 1 && spaces[1] != NULL && spaces[2] != NULL && i == (GDESC_LENGTH / 2)) {
-          if(game_connection_is_open(game,ids[1], E)) strcat(str, ">");
-          else strcat(str,"X");
-        } 
-        else {
-          strcat(str, " ");
-        }
-        screen_area_puts(ge->map, str);
-
-      } else if(col == 2){
-        if(id_west == NO_ID){
-          strcat(str,"       ");
-        } else{
-          if (i == 0) { 
-            sprintf(line, " +-----");
-          } else if (i == 1){
-            sprintf(line, " |     ");
-          } else if (i == 2){
-            sprintf(line, " |     ");
-          } else if (i == 3){
-            sprintf(line, " |     ");
-          } else if (i == 4){
-            sprintf(line, " |     ");
-          } else if (i == 5){
-            sprintf(line, " |     ");
-          } else if (i == 6){
-            sprintf(line, " |     ");
-          } else if (i == 7){
-            sprintf(line, " |     ");
-          } else if (i == 8){
-            sprintf(line, " +-----");
-          }
-        }
-
+    char line[64];
+      str[0] = '\0';
+    
+    if(id_west == NO_ID){
+      strcat(str, "       ");
+    } else {
+      if(i == 0 || i == 8) sprintf(line, "-----+ ");
+      else if (i == 4 && spaces[0] && spaces[1]){
+        if(game_connection_is_open(game,ids[i],W)) sprintf(line, "    <| ");
+        else sprintf(line, "    X| ");
+      } else {
+        sprintf(line, "     | ");
       }
+      strcat(str, line);
     }
+    
+    if(i == 0){
+      sprintf(line, " +-------------------------------------+ ");
+    } else if(i == 1){
+      
+    } else if(i == 2){
+      sprintf(line, " |           %3.3s                     | ", ply[1]);
+    } else if(i == 3){
+      sprintf(line, " |                                     | ");
+    } else if(i == 4){
+      
+    } else if(i == 5){
+      
+    } else if(i == 6){
+      
+    } else if(i == 7){
+      
+    } else{
+      sprintf(line, " +-------------------------------------+ ");
+    }
+
+    if(id_east == NO_ID){
+      strcat(str, "       ");
+    } else {
+      if(i == 0 || i == 8) sprintf(line, " +-----");
+      else if (i == 4 && spaces[1] && spaces[2]){
+        if(game_connection_is_open(game,ids[i],W)) sprintf(line, "    <| ");
+        else sprintf(line, "X|    ");
+      } else {
+        sprintf(line, " |     ");
+      }
+      strcat(str, line);
+    }
+    screen_area_puts(ge->map, str);
   }
 }
 
