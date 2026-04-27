@@ -94,7 +94,7 @@ Status game_reader_load(Game *game, const char *filename)
   char char_msg[WORD_SIZE];
   char obj_desc[MAX_DESC];
   char *toks = NULL;
-  Id idLink = NO_ID, idCharacter = NO_ID, idSpace = NO_ID, idFinal = NO_ID, idObject = NO_ID;
+  Id idLink = NO_ID, idCharacter = NO_ID, idSpace = NO_ID, idFinal = NO_ID, idObject = NO_ID, obj_dependency = NO_ID, obj_open = NO_ID;
   Id idPlayer = NO_ID;
   Space *space = NULL;
   Object *object = NULL;
@@ -102,8 +102,8 @@ Status game_reader_load(Game *game, const char *filename)
   Character *character = NULL;
   Link *link = NULL;
   Status status = OK;
-  int i, health, backpack_capacity, friendly, direction, open, numobjects = 0, numchr = 0, numlinks = 0, numplayers = 0, numspaces = 0;
-  Bool boss;
+  int i, health, backpack_capacity, friendly, direction, open, numobjects = 0, numchr = 0, numlinks = 0, numplayers = 0, numspaces = 0, obj_health;
+  Bool boss, obj_movable;
 
   /* Error control */
   if (!game || !filename)
@@ -209,6 +209,22 @@ Status game_reader_load(Game *game, const char *filename)
       obj_desc[MAX_DESC - 1] = '\0';
       numobjects++;
 
+      toks = strtok(NULL, "|");
+      obj_health = atol(toks);
+
+      toks = strtok(NULL, "|");
+      if(atol(toks) == 0){
+        obj_movable = FALSE;
+      } else {
+        obj_movable = TRUE;
+      }
+
+      toks = strtok(NULL, "|");
+      obj_dependency = atol(toks);
+
+      toks = strtok(NULL, "|");
+      obj_open = atol(toks);
+
 #ifdef DEBUG
       printf("Read: o:%ld|%s|%ld\n",
              idObject, name, idSpace);
@@ -229,6 +245,10 @@ Status game_reader_load(Game *game, const char *filename)
         {
           object_set_name(object, name);
           object_set_description(object, obj_desc);
+          object_set_health(object, obj_health);
+          object_set_movable(object, obj_movable);
+          object_set_dependency(object, obj_dependency);
+          object_set_open(object, obj_open);
           game_add_object(game, object);
           space = game_get_space(game, idSpace);
 
