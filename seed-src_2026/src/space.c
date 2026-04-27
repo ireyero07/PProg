@@ -152,7 +152,6 @@ long space_get_number_objects(Space *space){
 Status space_add_character(Space* space, Id character){
   if(!space || character == NO_ID)
     return ERROR;
-
   return set_add(space->characters, character);
 }
 

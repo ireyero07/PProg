@@ -283,6 +283,58 @@ int game_get_number_of_followers(Game *game, Player *player)
   return counter;
 }
 
+Character *game_space_with_boss(Game *game, Space *space) /*We have define that the max number of bosses in a space is 1*/
+{
+  Set *character_set = NULL;
+  Id *char_ids = NULL;
+  int i, n_characters = 0;
+
+  if (game == NULL || space == NULL)
+  {
+    return NULL;
+  }
+  character_set = space_get_character(space);
+  char_ids = set_get_list_ids(character_set);
+  n_characters = set_get_n_ids(character_set);
+  for (i = 0; i < n_characters; i++)
+  {
+    if (character_get_boss(game_get_character(game, char_ids[i])) == TRUE)
+    {
+      return game_get_character(game, char_ids[i]);
+    }
+  }
+  return NULL;
+}
+
+/*ACABAR*/
+int game_get_number_of_boss_in_space(Game *game, Space *space)
+{
+  Set *char_set = NULL;
+  Id *char_ids = NULL;
+  int i = 0, n_characters = 0, n_bosses = 0;
+  if (game == NULL || space == NULL)
+  {
+    return -1;
+  }
+
+  if (game_space_with_boss(game, space) == FALSE)
+  {
+    return 0;
+  }
+
+  char_set = space_get_character(space);
+  char_ids = set_get_list_ids(char_set);
+  n_characters = set_get_n_ids(char_set);
+  for (i = 0; i < n_characters; i++)
+  {
+    if (character_get_boss(game_get_character(game, char_ids[i])) == TRUE)
+    {
+      n_bosses++;
+    }
+  }
+  return n_bosses;
+}
+
 /*-------------------OBJECT-----------------------*/
 /**
  * @brief Gets the number of objects in the game.
@@ -853,13 +905,15 @@ Link *game_get_link(Game *game, Id origin, Id destination)
   return NULL;
 }
 
-Id game_get_link_destination(Game *game, Id origin, Direction dir){
+Id game_get_link_destination(Game *game, Id origin, Direction dir)
+{
   int i;
 
-  if(game==NULL || origin==NO_ID || dir==NO_DIRECTION){
+  if (game == NULL || origin == NO_ID || dir == NO_DIRECTION)
+  {
     return NO_ID;
   }
-  
+
   for (i = 0; i < game->n_links; i++)
   {
     if ((link_get_origin(game->links[i]) == origin) && (link_get_direction(game->links[i]) == dir))
@@ -867,7 +921,7 @@ Id game_get_link_destination(Game *game, Id origin, Direction dir){
       return link_get_destination(game->links[i]);
     }
   }
-  
+
   return NO_ID;
 }
 

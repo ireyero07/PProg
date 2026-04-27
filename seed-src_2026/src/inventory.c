@@ -63,7 +63,7 @@ int inventory_get_max_objs(Inventory* inventory) {
 
 
 Status inventory_set_max_objs(Inventory* inventory, int max_objs) {
-  if (!inventory || max_objs <= 0) {
+  if (!inventory || max_objs <= 0 || max_objs>MAX_IDS) {
     return ERROR;
   }
 

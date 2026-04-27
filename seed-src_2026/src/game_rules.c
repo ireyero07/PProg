@@ -61,13 +61,13 @@ Status game_rules_random_enemy_attack(Game *game, int probability);
 Status game_rules_random_ingredient_following_expires(Game *game, int probability);
 
 /**
- * @brief Opens all the close links in a space where all the enemies located in it dies
+ * @brief Opens all the close links in a space where the boss dies
  * @author Gonzalez Hijano Ivan
  *
  * @param game a pointer to the game structure
  * @return OK if all goes well or ERROR otherside
  */
-Status game_rules_open_door_when_enemy_dies(Game *game);
+Status game_rules_open_door_when_boss_dies(Game *game);
 
 /**
  * @brief Decreases the player an amount of health
@@ -99,10 +99,19 @@ Status game_rules_random_object_teleport(Game *game, int probability);
  */
 Status game_rules_heavy_backpack_damage(Game *game);
 
+/**
+ * @brief Close all the space links when the player enters in a space with a not death boss
+ * @author Gonzalez Hijano Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return OK if all goes well or ERROR otherside
+ */
+Status game_rules_close_door_when_boss(Game *game);
+
 /*Implementations*/
 
 Bool game_rules_event_occurs(int percentage)
-{   
+{
     int r;
     if (percentage < 0 || percentage > 100)
     {
@@ -223,9 +232,8 @@ Status game_rules_random_ingredient_following_expires(Game *game, int probabilit
     return OK;
 }
 
-Status game_rules_open_door_when_enemy_dies(Game *game)
+Status game_rules_open_doors_when_boss_dies(Game *game)
 {
-    Set *characters_in_space = NULL;
     int i, j, n_enemies = 0, n_characters = 0;
     Id player_loc = NO_ID;
     Id *list_char_ids = NULL;
@@ -240,47 +248,7 @@ Status game_rules_open_door_when_enemy_dies(Game *game)
         return ERROR;
     }
 
-    if ((n_enemies = (game_space_number_of_enemies(game, game_get_player_location(game)))) > 0)
-    {
-        if ((characters_in_space = game_get_characters_by_space(game, player_loc)) == NULL)
-        {
-            return ERROR;
-        }
-        n_characters = set_get_n_ids(characters_in_space);
-        list_char_ids = set_get_list_ids(characters_in_space);
-        if (list_char_ids == NULL)
-        {
-            return ERROR;
-        }
-        i = 0;
-        while (n_enemies != 0 && i < n_characters)
-        {
-            if (character_get_friendly(game_get_character_by_id(game, list_char_ids[i])) == FALSE)
-            {
-                n_enemies--;
-                if (character_get_health(game_get_character_by_id(game, list_char_ids[i])) > 0)
-                {
-                    are_enemies_alive = TRUE;
-                }
-                if (are_enemies_alive == TRUE)
-                {
-                    return OK;
-                }
-            }
-
-            i++;
-        }
-        if (are_enemies_alive == FALSE)
-        {
-            for (j = 0; j < 6; j++)
-            {
-                if (game_connection_is_open(game, player_loc, j) == FALSE)
-                {
-                    link_set_open(game_get_link(game, player_loc, game_get_link_destination(game, player_loc, j)), TRUE);
-                }
-            }
-        }
-    }
+    
     return OK;
 }
 
@@ -429,6 +397,10 @@ Status game_rules_heavy_backpack_damage(Game *game)
     return OK;
 }
 
+Status game_rules_close_door_when_boss(Game *game){
+
+}
+
 /*########################################################################################
 PUBLIC FUNCTIONS
 ########################################################################################*/
@@ -455,7 +427,7 @@ Status game_rules_run_rules(Game *game)
         return ERROR;
     }
 
-    if (game_rules_open_door_when_enemy_dies(game) == ERROR)
+    if (game_rules_open_doors_when_boss_die(game) == ERROR)
     {
         return ERROR;
     }
@@ -471,6 +443,11 @@ Status game_rules_run_rules(Game *game)
     }
 
     if (game_rules_heavy_backpack_damage(game) == ERROR)
+    {
+        return ERROR;
+    }
+
+    if (game_rules_close_door_when_boss(game) == ERROR)
     {
         return ERROR;
     }

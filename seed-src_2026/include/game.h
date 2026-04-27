@@ -12,8 +12,8 @@
 #define GAME_H
 
 #define MAX_SPACES 100     /*!< Maximum number of spaces allowed in the game */
-#define MAX_OBJECTS 10     /*!< Maximum number of objects allowed in the game */
-#define MAX_CHARACTERS 10  /*!< Maximum number of characters allowed in the game */
+#define MAX_OBJECTS 100     /*!< Maximum number of objects allowed in the game */
+#define MAX_CHARACTERS 100  /*!< Maximum number of characters allowed in the game */
 #define MAX_LINKS 100      /*!< Maximum number of links allowed in the game */
 #define MAX_PLAYERS 8      /*!< Maximum number of players allowed in the game */
 
@@ -113,6 +113,26 @@ int game_space_number_of_enemies(Game *game, Id space_id);
  * @return Number of followers
  */
 int game_get_number_of_followers(Game *game, Player *player);
+
+/**
+ * @brief It gets if there is a boss or not in a space
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param space a pointer to the space
+ * @return The boss or NULL if there is not boss or an error occurs
+ */
+Character *game_space_with_boss(Game *game, Space *space);;
+
+/**
+ * @brief It gets the number of bosses is a space
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param space a pointer to the space
+ * @return The number of bosses in the space or -1 if something goes wrong
+ */
+int game_get_number_of_boss_in_space(Game *game, Space *space);
 
 /**
  * @brief Gets the number of objects in the game.

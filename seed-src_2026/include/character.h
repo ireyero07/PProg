@@ -108,6 +108,15 @@ Id character_get_location(Character *character);
 Id character_get_following(Character *character);
 
 /**
+ * @brief It gets if the character is a boss
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param character a pointer to the character
+ * @return True or False
+ */
+Bool character_get_boss(Character *character)
+
+/**
  * @brief It sets the id of a character
  * @author Jian Feng Yin Chen
  *
@@ -186,6 +195,16 @@ Status character_set_location(Character *character, Id location);
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status character_set_following(Character *character, Id following);
+
+/**
+ * @brief It sets if a character is a boss
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param character a pointer to the character
+ * @param is_boss A bool that says if a character is a boss(TRUE) or not (FALSE)
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status character_set_boss(Character *character, Bool is_boss)
 
 /**
  * @brief It prints a character

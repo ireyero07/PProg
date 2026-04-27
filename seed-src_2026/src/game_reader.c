@@ -103,6 +103,7 @@ Status game_reader_load(Game *game, const char *filename)
   Link *link = NULL;
   Status status = OK;
   int i, health, backpack_capacity, friendly, direction, open, numobjects = 0, numchr = 0, numlinks = 0, numplayers = 0, numspaces = 0;
+  Bool boss;
 
   /* Error control */
   if (!game || !filename)
@@ -163,7 +164,8 @@ Status game_reader_load(Game *game, const char *filename)
         fclose(file);
         return ERROR;
       }
-      else {
+      else
+      {
         /* Create the space and add it to the game */
         space = space_create(idSpace);
         if (space != NULL)
@@ -180,7 +182,6 @@ Status game_reader_load(Game *game, const char *filename)
           game_add_space(game, space);
         }
       }
-      
     }
 
     /* Check if the line defines an object */
@@ -204,8 +205,8 @@ Status game_reader_load(Game *game, const char *filename)
       idSpace = atol(toks);
 
       toks = strtok(NULL, "|");
-      strncpy(obj_desc, toks, MAX_DESC-1);
-      obj_desc[MAX_DESC-1]='\0';
+      strncpy(obj_desc, toks, MAX_DESC - 1);
+      obj_desc[MAX_DESC - 1] = '\0';
       numobjects++;
 
 #ifdef DEBUG
@@ -282,7 +283,7 @@ Status game_reader_load(Game *game, const char *filename)
         return ERROR;
       }
       else
-        /* Create the player and add it to the game */
+      /* Create the player and add it to the game */
       {
         player = player_create(idPlayer, backpack_capacity);
         if (player != NULL)
@@ -291,7 +292,8 @@ Status game_reader_load(Game *game, const char *filename)
           player_set_gdesc(player, player_gdesc);
           player_set_location(player, idSpace);
           player_set_health(player, health);
-          if(game_add_player(game, player)==ERROR){
+          if (game_add_player(game, player) == ERROR)
+          {
             player_destroy(player);
           }
         }
@@ -330,11 +332,23 @@ Status game_reader_load(Game *game, const char *filename)
       toks = strtok(NULL, "|");
       strncpy(char_msg, toks, WORD_SIZE);
       char_msg[WORD_SIZE - 1] = '\0';
+
+      boss = FALSE;
+      toks = strtok(NULL, "|");
+      if (strncmp(toks, "F", 1) == 0)
+      {
+        boss = FALSE;
+      }
+      else if (strncmp(toks, "T", 1) == 0)
+      {
+        boss = TRUE;
+      }
+
       numchr++;
 
 #ifdef DEBUG
-      printf("Read: c:%ld|%s|%s|%ld|%d|%d|%s|\n",
-             idCharacter, name, character_gdesc, idSpace, health, friendly, char_msg);
+      printf("Read: c:%ld|%s|%s|%ld|%d|%d|%s|%s|\n",
+             idCharacter, name, character_gdesc, idSpace, health, friendly, char_msg, boss);
 #endif
 
       if (numchr > MAX_CHARACTERS)
@@ -344,7 +358,7 @@ Status game_reader_load(Game *game, const char *filename)
         fclose(file);
         return ERROR;
       }
-      else 
+      else
       {
         /* Create the character and add it to the game */
         character = character_create(idCharacter);
@@ -356,17 +370,25 @@ Status game_reader_load(Game *game, const char *filename)
           character_set_health(character, health);
           character_set_friendly(character, friendly);
           character_set_message(character, char_msg);
+
           space = game_get_space(game, idSpace);
           if (space != NULL)
           {
+
+            if (game_get_number_of_boss_in_space(game, space) < MAX_BOSS_SPACE)
+            {
+              character_set_boss(character, boss);
+            }
+            
             space_add_character(space, idCharacter);
           }
-          if(game_add_character(game, character)==ERROR){
+
+          if (game_add_character(game, character) == ERROR)
+          {
             character_destroy(character);
           }
         }
       }
-      
     }
 
     /*LOAD LINKS*/
@@ -411,7 +433,8 @@ Status game_reader_load(Game *game, const char *filename)
         fclose(file);
         return ERROR;
       }
-      else {
+      else
+      {
         /* Create the link and add it to the game */
         link = link_create(idLink);
         if (link != NULL)
@@ -421,7 +444,8 @@ Status game_reader_load(Game *game, const char *filename)
           link_set_destination(link, idFinal);
           link_set_direction(link, direction);
           link_set_open(link, open);
-          if(game_add_link(game, link)==ERROR){
+          if (game_add_link(game, link) == ERROR)
+          {
             link_destroy(link);
           }
         }
@@ -437,4 +461,24 @@ Status game_reader_load(Game *game, const char *filename)
 
   fclose(file);
   return status;
+}
+
+Status game_reader_set_player()
+{
+}
+
+Status game_reader_set_character()
+{
+}
+
+Status game_reader_set_link()
+{
+}
+
+Status game_reader_set_space()
+{
+}
+
+Status game_reader_set_object()
+{
 }
