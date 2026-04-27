@@ -8,6 +8,42 @@
  * @copyright GNU Public License
  */
 
+/**
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * ~ +------------------+---------------------+----------+
+ * ~ |   Mini Map       | Dining Room         | Floor: 2 |
+ * ~ +------------------+---------------------+----------+
+ * ~ |  [ ]--[ ]--[ ]   |  ./T\.              |    UP    |
+ * ~ |   |    |    |    |    *                |    ^     |
+ * ~ |  [ ]--[X]--[ ]   |!   Y   !            |          |
+ * ~ |   |    |    |    |!_=====_!            |    V     |
+ * ~ |  [ ]--[ ]--[ ]   |!!_!!!_!!            |  DOWN    |
+ * ~ +------------------+---------------------+----------+
+ * ~        |                                    |
+ * ~        |                                    |
+ * ~        |                                    |
+ * ~        |                                    |       
+ * ~        +------------------------------------+
+ * ~                          ^
+ * ~-----+  +------------------------------------+  +----- 
+ * ~     |  |  [Lettuce]  [Tomato]               |  |
+ * ~     |  |               Player               |  |
+ * ~     |  |                                    |  |
+ * ~     | <| Chef                               |> |
+ * ~     |  |                                    |  |
+ * ~     |  |                                    |  |
+ * ~     |  |  Crowbar    First Aid Kit          |  |
+ * ~-----+  +------------------------------------+  +-----
+ * ~                          V
+ * ~        +------------------------------------+
+ * ~        |                                    |
+ * ~        |                                    |
+ * ~        |                                    |
+ * ~        |                                    |
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+
+
 #include "graphic_engine.h"
 
 #include <string.h>
@@ -104,6 +140,44 @@ void graphic_engine_print_not_discovered_space(Area *map){
   screen_area_puts(map,"                   |               |");
   screen_area_puts(map,"                   +---------------+");
 }
+
+void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act){
+  Space *space_act = NULL;
+  Player *player = NULL;
+  Id id_up = NO_ID;
+  Id id_down = NO_ID;
+  char gdesc[GDESC_LINES][GDESC_LENGTH + 1];
+  char str[255];
+  int i;
+  space_act = game_get_space(game,id_act);
+  player = game_get_player(game);
+
+  for(i = 0; i< GDESC_LINES; i++){
+    strncpy(gdesc[i],space_get_gdesc(space_act,i), GDESC_LENGTH);
+    gdesc[i][GDESC_LENGTH] = '\0';
+  }
+
+  sprintf(str, "+------------------+---------------------+----------+");
+  screen_area_puts(ge->map, str);
+  sprintf(str, "|   Mini Map       | %-20s| Floor:%3d|", space_get_name(space_act), (int)(id_act / 100));
+    screen_area_puts(ge->map, str);
+
+  sprintf(str, "+------------------+---------------------+----------+");
+  screen_area_puts(ge->map, str);
+  sprintf(str, "|                  | %-20s| UP:       |", gdesc[0]);
+  screen_area_puts(ge->map, str);
+  sprintf(str, "|                  | %-20s| DOWN:     |", gdesc[1]);
+  screen_area_puts(ge->map, str);
+  sprintf(str, "|                  | %-20s|           |", gdesc[2]);
+  screen_area_puts(ge->map, str);
+  sprintf(str, "|                  | %-20s|           |", gdesc[3]);
+  screen_area_puts(ge->map, str);
+  sprintf(str, "|                  | %-20s|           |", gdesc[4]);
+  screen_area_puts(ge->map, str);
+  sprintf(str, "+------------------+---------------------+----------+");
+  screen_area_puts(ge->map, str);
+}
+
 
 /**
  * @brief Prints the north or south neighbouring space in the map area
