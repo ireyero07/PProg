@@ -97,6 +97,25 @@ void game_actions_inspect(Game *game, Command *cmd);
 void game_actions_recruit(Game *game, Command *cmd);
 
 /**
+ * @brief Command for using an object
+ * @author Jian Feng Yin Chen
+ *
+ * @param game Pointer to the game to be updated.
+ * @param command Pointer to the command that has been entered
+ */
+void game_actions_use(Game *game, Command *cmd);
+
+/**
+ * @brief Command for opening an object
+ * @author Jian Feng Yin Chen
+ *
+ * @param game Pointer to the game to be updated.
+ * @param command Pointer to the command that has been entered
+ */
+void game_actions_open(Game *game, Command *cmd);
+
+
+/**
  * @brief Command for abandoning a character
  * @author Jian Feng Yin Chen
  *
@@ -160,11 +179,11 @@ Status game_actions_update(Game *game, Command *command)
     break;
 
   case USE:
-    game_actions_recruit(game, command);
+    game_actions_use(game, command);
     break;
 
   case OPEN:
-    game_actions_abandon(game, command);
+    game_actions_open(game, command);
     break;
 
   default:

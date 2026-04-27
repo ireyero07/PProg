@@ -20,8 +20,8 @@
  * This struct stores all the information of a inventory.
  */
 struct _Inventory {
-    Set *objs;                                     /*!< Set of objects in the inventory*/
-    int max_objs;                                     /*!< Maximum number of objects in the inventory*/       
+    Set *objs;    /*!< Set of objects in the inventory*/
+    int max_objs; /*!< Maximum number of objects in the inventory*/       
 };
 
 Inventory* inventory_create(int max_objs) {

@@ -122,7 +122,7 @@ int game_get_number_of_followers(Game *game, Player *player);
  * @param space a pointer to the space
  * @return The boss or NULL if there is not boss or an error occurs
  */
-Character *game_space_with_boss(Game *game, Space *space);;
+Character *game_space_with_boss(Game *game, Space *space);
 
 /**
  * @brief It gets the number of bosses is a space

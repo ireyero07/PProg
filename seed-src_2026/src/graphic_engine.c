@@ -121,64 +121,115 @@ void graphic_engine_print_empty_NorthOrSouth_space(Area *map){
   screen_area_puts(map,"                                                       ");
 }
 
-void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act){
-  Space *space_act = NULL, *space = NULL;
-  Player *player = NULL;
-  Id id = NULL;
+void get_space_symbol(char *dest, Space *space, int is_player) {
+  if (!space || space_get_discovered(space) == FALSE) {
+    strcpy(dest, "   ");
+  } else if (is_player) {
+    strcpy(dest, "[X]");
+  } else {
+    strcpy(dest, "[ ]");
+  }
+}
+
+void get_vertical_arrow(char *dest, Game *game, Id from, Id to, Direction dir) {
+  if (to != NO_ID) {
+    if (game_connection_is_open(game, from, dir) == TRUE) {
+      strcpy(dest, "|");
+    } else {
+      strcpy(dest, "x");
+    }
+  } else {
+    strcpy(dest, " ");
+  }
+}
+
+void get_horizontal_arrow(char *dest, Game *game, Id from, Id to, Direction dir) {
+  if (to != NO_ID) {
+    if (game_connection_is_open(game, from, dir) == TRUE) {
+      strcpy(dest, "--");
+    } else {
+      strcpy(dest, "xx");
+    }
+  } else {
+    strcpy(dest, "  ");
+  }
+}
+
+void get_up_arrow(char *dest, Game *game, Id from, Id to) {
+  if (to != NO_ID) {
+    if (game_connection_is_open(game, from, UP) == TRUE) {
+      strcpy(dest, "^");
+    } else {
+      strcpy(dest, "x");
+    }
+  } else {
+    strcpy(dest, " ");
+  }
+}
+
+void get_down_arrow(char *dest, Game *game, Id from, Id to) {
+  if (to != NO_ID) {
+    if (game_connection_is_open(game, from, DOWN) == TRUE) {
+      strcpy(dest, "v");
+    } else {
+      strcpy(dest, "x");
+    }
+  } else {
+    strcpy(dest, " ");
+  }
+}
+
+void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act, Id id_north, Id id_south, Id id_west, Id id_east, Id id_up, Id id_down) {
+  Space *space_act = NULL, *space_north = NULL, *space_south = NULL, *space_west = NULL, *space_east = NULL;
   char gdesc[GDESC_LINES][GDESC_LENGTH + 1];
   char str[255];
-  char *minimap;
+  char act_symbol[4], north_symbol[4], south_symbol[4], west_symbol[4], east_symbol[4];
+  char north_arrow[2], south_arrow[2], west_arrow[3], east_arrow[3], up_arrow[2], down_arrow[2];
   int i;
-  space_act = game_get_space(game,id_act);
-  player = game_get_player(game);
+
+  space_act = game_get_space(game, id_act);
+  space_north = game_get_space(game, id_north);
+  space_south = game_get_space(game, id_south);
+  space_west = game_get_space(game, id_west);
+  space_east = game_get_space(game, id_east);
+
+  if (!space_act) return;
 
   for(i = 0; i< GDESC_LINES; i++){
     strncpy(gdesc[i],space_get_gdesc(space_act,i), GDESC_LENGTH);
     gdesc[i][GDESC_LENGTH] = '\0';
   }
 
+  get_space_symbol(act_symbol,   space_act,   1);
+  get_space_symbol(north_symbol, space_north, 0);
+  get_space_symbol(south_symbol, space_south, 0);
+  get_space_symbol(west_symbol,  space_west,  0);
+  get_space_symbol(east_symbol,  space_east,  0);
+
+  get_vertical_arrow(north_arrow, game, id_act, id_north, N);
+  get_vertical_arrow(south_arrow, game, id_act, id_south, S);
+
+  get_horizontal_arrow(west_arrow, game, id_act, id_west, W);
+  get_horizontal_arrow(east_arrow, game, id_act, id_east, E);
+
+  get_up_arrow(up_arrow, game, id_act, id_up);
+  get_down_arrow(down_arrow, game, id_act, id_down);
+
   sprintf(str, "+------------------+---------------------+----------+");
   screen_area_puts(ge->map, str);
   sprintf(str, "|   Mini Map       | %-20s| Floor:%3d|", space_get_name(space_act), (int)(id_act / 100));
   screen_area_puts(ge->map, str);
-
-  if (space_get_discovered(space) == FALSE) {
-    minimap = "   ";
-  } else {
-    if (id_act = id) {
-      
-    }
-  }
-
-  if (id_act >= 51 && id_act <= 55) {
-    sprintf(str, "+------------------+---------------------+----------+");
-    screen_area_puts(ge->map, str);
-    sprintf(str, "|       [%c]  [%c]   | %-20s| UP:       |", (id_act == 54) ? "X" : " ", (id_act == 53) ? "X" : " ", gdesc[0]);
-    screen_area_puts(ge->map, str);
-    sprintf(str, "|        |    |    | %-20s|           |", gdesc[1]);
-    screen_area_puts(ge->map, str);
-    sprintf(str, "|       [%c]--[%c]   | %-20s|           |", gdesc[2]);
-    screen_area_puts(ge->map, str);
-    sprintf(str, "|        |         | %-20s|           |", gdesc[3]);
-    screen_area_puts(ge->map, str);
-    sprintf(str, "|       [%c]        | %-20s| DOWN:     |", gdesc[4]);
-    screen_area_puts(ge->map, str);
-    sprintf(str, "+------------------+---------------------+----------+");
-    screen_area_puts(ge->map, str);
-  } 
-
-
   sprintf(str, "+------------------+---------------------+----------+");
   screen_area_puts(ge->map, str);
-  sprintf(str, "|                  | %-20s| UP:       |", gdesc[0]);
+  sprintf(str, "|       %s        | %-20s|    UP    |", north_symbol, gdesc[0]);
   screen_area_puts(ge->map, str);
-  sprintf(str, "|                  | %-20s|           |", gdesc[1]);
+  sprintf(str, "|        %s         | %-20s|    %s     |", north_arrow, gdesc[1], up_arrow);
   screen_area_puts(ge->map, str);
-  sprintf(str, "|                  | %-20s|           |", gdesc[2]);
+  sprintf(str, "|  %s%s%s%s%s  | %-20s|           |", west_symbol, west_arrow, act_symbol, east_arrow, east_symbol, gdesc[2]);
   screen_area_puts(ge->map, str);
-  sprintf(str, "|                  | %-20s|           |", gdesc[3]);
+  sprintf(str, "|        %s         | %-20s|    %s     |", south_arrow, gdesc[3], down_arrow);
   screen_area_puts(ge->map, str);
-  sprintf(str, "|                  | %-20s| DOWN:     |", gdesc[4]);
+  sprintf(str, "|       %s        | %-20s|  DOWN    |", south_symbol, gdesc[4]);
   screen_area_puts(ge->map, str);
   sprintf(str, "+------------------+---------------------+----------+");
   screen_area_puts(ge->map, str);
@@ -198,7 +249,7 @@ void graphic_engine_print_North_space (Graphic_engine *ge, Game *game, Id id_Nor
   space_North = game_get_space(game, id_North);
 
   if (id_North == NO_ID) {
-    graphic_engine_print_empty_NorthorSouth_space(ge->map);
+    graphic_engine_print_empty_NorthOrSouth_space(ge->map);
   } else {
     sprintf(str, "        |                                     |        ");
     screen_area_puts(ge->map, str);
@@ -302,7 +353,7 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
 
     if (spaces[col] != NULL) {
       /* Character */
-      chars[col] = game_get_character_by_space(game, ids[col]);
+      chars[col] = game_get_characters_by_space(game, ids[col]);
       if (chars[col] != NULL) {
         strncpy(chr[col], character_get_gdesc(chars[col]), MAX_CHR_GDESC);
         chr[col][MAX_CHR_GDESC] = '\0';
@@ -350,9 +401,8 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
   space_set_discovered(game_get_space(game,id_act),TRUE);
   /* Ahora pintamos fila por fila combinando las 3 habitaciones horizontalmente */
   for (i = 0; i < GDESC_LINES + 4; i++) { 
-    str[0] = '\0';
     char line[64];
-      str[0] = '\0';
+    str[0] = '\0';
     
     if(id_west == NO_ID){
       strcat(str, "       ");
@@ -404,12 +454,6 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
 }
 
 
-
-
-
-
-
-
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Player *player = NULL;
   Status result;
@@ -443,12 +487,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     /*-------------------------------------------------------*/
     /*                    INFO ROW                           */
     /*-------------------------------------------------------*/
-    graphic_engine_info_row(ge, game, id_act);
+    graphic_engine_info_row(ge, game, id_act ,id_north, id_south, id_west, id_east, id_up, id_down);
 
     /*-------------------------------------------------------*/
     /*                    NORTH SPACE                        */
     /*-------------------------------------------------------*/
-    graphic_engine_print_SouthOrNorth_space(ge, game, id_north);
+    graphic_engine_print_North_space(ge, game, id_north);
     if (id_north != NO_ID) {
       if(game_connection_is_open(game,id_act,N)) sprintf(str, "                          /\\      ");
       else sprintf(str, "                          ><");
@@ -470,7 +514,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       else sprintf(str, "                          ><");
       screen_area_puts(ge->map, str);
     }
-    graphic_engine_print_SouthOrNorth_space(ge, game, id_south);
+    graphic_engine_print_South_space(ge, game, id_south);
   }
 
   /* Paint in the description area */
@@ -543,7 +587,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   if (chat && strlen(chat) > 0) {
     if (command_get_code(game_get_last_command(game)) == CHAT) {
-      ch = game_get_character_by_space(game, space_get_id(space_act));
+      ch = game_get_characters_by_space(game, space_get_id(space_act));
       if (ch && character_get_friendly(ch)) {
         sprintf(str, " Character %s said: %s", character_get_gdesc(ch), chat);
         screen_area_puts(ge->descript, str);

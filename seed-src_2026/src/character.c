@@ -29,7 +29,7 @@ struct _Character
   char message[WORD_SIZE + 1];   /*!< The message of the character */
   Id location;                   /*!< Location of the character*/
   Id following;                  /*!< The Id of the player that the character is following*/
-  Bool Boss;                     /*!< The Id of the player that the character is following*/
+  Bool boss;                     /*!< The Id of the player that the character is following*/
 };
 
 /**
@@ -60,7 +60,7 @@ Character *character_create(Id id)
   newCharacter->message[0] = '\0';
   newCharacter->location = NO_ID;
   newCharacter->following = NO_ID;
-  newCharacter->Boss = FALSE;
+  newCharacter->boss = FALSE;
 
   return newCharacter;
 }
@@ -262,7 +262,7 @@ Status character_print(Character *character)
     fprintf(stdout, "---> Following no one\n");
   }
 
-  if (character->Boss == TRUE)
+  if (character->boss == TRUE)
   {
     fprintf(stdout, "Is a boss\n");
   }

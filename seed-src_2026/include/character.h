@@ -114,7 +114,7 @@ Id character_get_following(Character *character);
  * @param character a pointer to the character
  * @return True or False
  */
-Bool character_get_boss(Character *character)
+Bool character_get_boss(Character *character);
 
 /**
  * @brief It sets the id of a character
@@ -204,7 +204,7 @@ Status character_set_following(Character *character, Id following);
  * @param is_boss A bool that says if a character is a boss(TRUE) or not (FALSE)
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status character_set_boss(Character *character, Bool is_boss)
+Status character_set_boss(Character *character, Bool is_boss);
 
 /**
  * @brief It prints a character
