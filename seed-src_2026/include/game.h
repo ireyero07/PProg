@@ -441,6 +441,28 @@ Link *game_get_link_by_id(Game *game, Id link_id);
 Id game_get_link_id_by_name(Game *game, const char *name);
 
 /**
+ * @brief It gets a pointer to a link by its origin and destination
+ * @author Gonzalez Hijano Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param origin The Id of the origin space
+ * @param destination The Id of the destination space
+ * @return A pointer to the link or NULL if something fails or there is no link
+ */
+Link *game_get_link(Game *game, Id origin, Id destination);
+
+/**
+ * @brief It gets the Id of the destination from a link
+ * @author Gonzalez Hijano Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param origin The Id of the origin space
+ * @param dir The direction of the link
+ * @return The Id od the destination
+ */
+Id game_get_link_destination(Game *game, Id origin, Direction dir);
+
+/**
  * @brief It gets the last command
  * @author Ivan
  *

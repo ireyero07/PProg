@@ -134,7 +134,7 @@ Status link_set_open(Link* link, Bool open);
  * @author Ivan Reyero
  *
  * @param link a pointer to the link
- * @return TRUE if open, FALSE if not, FALSE if error
+ * @return TRUE if open, FALSE if not
  */
 Bool link_get_open(Link* link);
 

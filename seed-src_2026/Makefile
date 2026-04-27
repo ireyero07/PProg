@@ -13,7 +13,7 @@ OBJS = $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/game_loop.o \
        $(OBJDIR)/game_reader.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o \
        $(OBJDIR)/inventory.o $(OBJDIR)/object.o $(OBJDIR)/player.o \
        $(OBJDIR)/space.o $(OBJDIR)/set.o $(OBJDIR)/character.o \
-       $(OBJDIR)/link.o $(OBJDIR)/interface_data.o
+       $(OBJDIR)/link.o $(OBJDIR)/interface_data.o $(OBJDIR)/game_rules.o
 
 #############################################################################
 
@@ -89,7 +89,7 @@ run_cmd:
 	valgrind --leak-check=full ./castle castle.dat -l game1.log < game1.cmd
 
 run_tests: 
-	./run_tests.sh 1
+	./tests.sh 1
 
 #############################################################################
 

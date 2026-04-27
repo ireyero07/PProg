@@ -22,6 +22,6 @@
  * @param game a pointer to the game structure
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status game_rules_run_rules(Game **game);
+Status game_rules_run_rules(Game *game);
 
 #endif
