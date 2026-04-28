@@ -257,7 +257,7 @@ Status game_rules_open_doors_when_boss_dies(Game *game)
     {
         return ERROR;
     }
-    boss = game_space_with_boss(game, game_get_space(game, player_loc)) == NULL;
+    boss = game_space_with_boss(game, game_get_space(game, player_loc));
     if (boss == NULL)
     {
         return OK;
@@ -444,7 +444,7 @@ Status game_rules_close_door_when_boss(Game *game)
     {
         return ERROR;
     }
-    boss = game_space_with_boss(game, game_get_space(game, player_loc)) == NULL;
+    boss = game_space_with_boss(game, game_get_space(game, player_loc));
     if (boss == NULL)
     {
         return OK;
@@ -554,7 +554,7 @@ Status game_rules_run_rules(Game *game)
         return ERROR;
     }
 
-    if (game_rules_open_doors_when_boss_die(game) == ERROR)
+    if (game_rules_open_doors_when_boss_dies(game) == ERROR)
     {
         return ERROR;
     }
