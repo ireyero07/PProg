@@ -228,128 +228,273 @@ void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act, Id id_no
  * @brief Prints the west, current and east spaces side by side in the map area
  * @param ge Pointer to the graphic engine
  * @param game Pointer to the game
- * @param id_west Id of the west space
  * @param id_act Id of the current (actual) space
- * @param id_east Id of the east space
  */
 void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act) {
-  int i, j, n_followers;
-  Space *spaces;
-  Id ids[3], obj_id = NO_ID, *objects = NULL, player_id = NO_ID;
-  Character *chars[MAX_CHARACTERS], *followers[MAX_CHARACTERS];
-  char chr[3][MAX_CHR_GDESC + 1], ply[3][MAX_CHR_GDESC + 1], obj_line[3][WORD_SIZE], str[255];
+  int i, j, n_followers, n_chars, n_objs;
+  Space *space_act = NULL;;
+  Id ids[3], obj_id = NO_ID, *objects = NULL, player_id = NO_ID, id_west = NO_ID, id_east = NO_ID;
+  Character *chrs = NULL, *followers[MAX_CHARACTERS];
+  char chr_line1[WORD_SIZE], chr_line2[WORD_SIZE], obj_line1[WORD_SIZE], obj_line2[WORD_SIZE], ply[MAX_CHR_GDESC + 1], str[255], line[64];
   Object *obj = NULL;
-  Player *player;
+  Player *player = NULL;
   long n_objects;
+  char left_conn, right_conn;
 
+  if(!ge || !game || id_act == NO_ID) return;
 
-  /* Inicializar arrays de spaces, ids y player */
-
-
-  if (id_act != NO_ID) {
-    spaces = game_get_space(game, id_act);
-  } else {
-    spaces = NULL;
-  }
-
-  ids[1] = id_act;
-  chars[0] = chars[1] = chars[2] = NULL;
+  space_act = game_get_space(game, id_act);
+  if(!space_act) return;
 
   player = game_get_player(game);
   player_id = player_get_id(player);
+  id_west   = game_get_connection(game, id_act, W);
+  id_east   = game_get_connection(game, id_act, E);
 
-  strncpy(ply[1], player_get_gdesc(player), MAX_CHR_GDESC);
-  ply[1][MAX_CHR_GDESC] = '\0';
-  ply[0][0] = '\0';
-  ply[2][0] = '\0';
+  /* Obteniendo el player gdesc */
+  strncpy(ply, player_get_gdesc(player), MAX_CHR_GDESC);
+  ply[MAX_CHR_GDESC] = '\0';
 
-  
-
-  /* Inicializar arrays de gdesc, objects y characters */
-    for (j = 0; j < MAX_CHR_GDESC; j++) {
-      chr[j] = ' ';
+  /* Obteniendo followers*/
+  n_followers = game_count_followers(game, player_id);
+  if (n_followers > 6) {
+    n_followers = 6;
+  }
+  for (i = 0; i < n_followers; i++) {
+    followers[i] = game_get_nth_follower(game, player_id, i);
+  }
+    
+  /* Obteniendo personajes en el espacio*/
+  chr_line1[0] = '\0';
+  chr_line2[0] = '\0';
+  n_chars = 0;
+  for (i = 0; i < game_get_n_characters(game); i++) {
+    chrs = game_get_character_by_position(game, i);
+    if (chrs == NULL) continue;
+    if (character_get_location(chrs) != id_act) continue;
+    if (character_get_health(chrs) <= 0) continue;
+    n_chars++;
+    if (n_chars <= 4) {
+      if (strlen(chr_line1) > 0) {
+        strcat(chr_line1, " ");
+      }
+      strncat(chr_line1, character_get_gdesc(chrs), MAX_CHR_GDESC);
+    } else if (n_chars <= 7) {
+      if (strlen(chr_line2) > 0) {
+        strcat(chr_line2, " ");
+      }
+      strncat(chr_line2, character_get_gdesc(chrs), MAX_CHR_GDESC);
     }
-    chr[MAX_CHR_GDESC] = '\0';
-    obj_line[0] = '\0';
+  }
 
-    if (spaces != NULL) {
-      /* Character */
-      chars = game_get_characters_by_space(game, ids);
-      if (chars != NULL) {
-        strncpy(chr, character_get_gdesc(chars), MAX_CHR_GDESC);
-        chr[MAX_CHR_GDESC] = '\0';
-      } else {
-        chr[0] = '\0'; 
+  /* Obteniendo objetos en el espacio*/
+  obj_line1[0] = '\0';
+  obj_line2[0] = '\0';
+  objects = space_get_objects_ids(space_act);
+  n_objects = space_get_number_objects(space_act);
+  n_objs = 0;
+  for (i = 0, j = 0; i < n_objects; i++) {
+    while ((obj_id = objects[j]) == NO_ID) {
+      j++;
+    }
+    obj = game_get_object(game, obj_id);
+    j++;
+    if (obj == NULL) continue;
+    n_objs++;
+    if (n_objs <= 3) {
+      if (strlen(obj_line1) > 0) {
+        strcat(obj_line1, ", ");
       }
-      n_followers = game_count_followers(game,player_id);
-      for(i = 0; i < n_followers; i++){
-        followers[i] = game_get_nth_follower(game,player_id, i);
-      }
-      /* Objects */
-      objects = space_get_objects_ids(spaces);
-      n_objects = space_get_number_objects(spaces);
-      if (n_objects >= 3) {
-        for (i = 0, j = 0; i < n_objects; i++) {
-          while ((obj_id = objects[j]) == NO_ID) {
-            j++;
-          }
-          obj = game_get_object(game, obj_id);
-          j++;
-          if (obj != NULL) {
-            if (strlen(obj_line) > 0) {
-              strcat(obj_line, ", ");
-            }
-            strncat(obj_line, object_get_name(obj), 2);
-          }
-        }
+      if (n_objects > 3) {
+        strncat(obj_line1, object_get_name(obj), 2);
       } else {
-        for (i = 0, j = 0; i < n_objects; i++) {
-          while ((obj_id = objects[j]) == NO_ID) {
-            j++;
-          }
-          obj = game_get_object(game, obj_id);
-          j++;
-          if (obj != NULL) {
-            if (strlen(obj_line[col]) > 0) {
-              strcat(obj_line[col], ", ");
-            }
-            strcat(obj_line[col], object_get_name(obj));
-          }
-        }
+        strcat(obj_line1, object_get_name(obj));
+      }
+    } else {
+      if (strlen(obj_line2) > 0) {
+        strcat(obj_line2, ", ");
+      }
+      if (n_objects > 3) {
+        strncat(obj_line2, object_get_name(obj), 2);
+      } else {
+        strcat(obj_line2, object_get_name(obj));
       }
     }
+  }
 
+  /* miramos si hay conexiones abiertas a izquierda y derecha */
+  if (id_west == NO_ID) {
+    left_conn = ' ';
+  } else if (game_connection_is_open(game, id_act, W)) {
+    left_conn = '<';
+  } else {
+    left_conn = 'X';
+  }
+
+  if (id_east == NO_ID) {
+    right_conn = ' ';
+  } else if (game_connection_is_open(game, id_act, E)) {
+    right_conn = '>';
+  } else {
+    right_conn = 'X';
+  }
   space_set_discovered(game_get_space(game,id_act),TRUE);
   /* Ahora pintamos fila por fila combinando las 3 habitaciones horizontalmente */
   for (i = 0; i < GDESC_LINES + 4; i++) { 
-    char line[64];
     str[0] = '\0';
     
-    if(i == 0 || i == 8) sprintf(line, " +-------------------------------------+ ");
+    if(i == 0 || i == 10) sprintf(line, " +-------------------------------------+ ");
     else if(i == 1){
-      if(n_followers == 0) sprintf(line, " |                                     | ");
-      else if(n_followers == 1) sprintf(line, " | %3.3s                                 | ", followers[0]);
-      else if(n_followers == 2) sprintf(line, " | %3.3s %3.3s                             | ",followers[0], followers[1]);
-      else if(n_followers == 3) sprintf(line, " | %3.3s %3.3s %3.3s                         | ",followers[0], followers[1],followers[2]);
-      else if(n_followers == 4) sprintf(line, " | %3.3s %3.3s %3.3s %3.3s                     | ",followers[0], followers[1],followers[2], followers[3]);
-      else if(n_followers == 5) sprintf(line, " | %3.3s %3.3s %3.3s %3.3s %3.3s                 | ",followers[0], followers[1],followers[2], followers[3],followers[4]);
-      else if(n_followers == 6) sprintf(line, " | %3.3s %3.3s %3.3s %3.3s %3.3s %3.3s             | ",followers[0], followers[1],followers[2], followers[3],followers[4], followers[5]);
+      if(n_followers == 0) sprintf(line, "        |                                     |        ");
+      else if(n_followers == 1) sprintf(line, "        | %-3.3s                                 |        ", character_get_gdesc(followers[0]));
+      else if(n_followers == 2) sprintf(line, "        | %-3.3s %-3.3s                             |        ", character_get_gdesc(followers[0]), character_get_gdesc(followers[1]));
+      else if(n_followers == 3) sprintf(line, "        | %-3.3s %-3.3s %-3.3s                         |        ", character_get_gdesc(followers[0]), character_get_gdesc(followers[1]), character_get_gdesc(followers[2]));
+      else if(n_followers == 4) sprintf(line, "        | %-3.3s %-3.3s %-3.3s %-3.3s                     |        ", character_get_gdesc(followers[0]), character_get_gdesc(followers[1]), character_get_gdesc(followers[2]), character_get_gdesc(followers[3]));
+      else if(n_followers == 5) sprintf(line, "        | %-3.3s %-3.3s %-3.3s %-3.3s %-3.3s                 |        ", character_get_gdesc(followers[0]), character_get_gdesc(followers[1]), character_get_gdesc(followers[2]), character_get_gdesc(followers[3]), character_get_gdesc(followers[4]));
+      else sprintf(line, "        | %-3.3s %-3.3s %-3.3s %-3.3s %-3.3s %-3.3s             |        ", character_get_gdesc(followers[0]), character_get_gdesc(followers[1]), character_get_gdesc(followers[2]), character_get_gdesc(followers[3]), character_get_gdesc(followers[4]), character_get_gdesc(followers[5]));
     } 
-    else if(i == 2) sprintf(line, " |           %3.3s                     | ", ply[1]);
-    else if(i == 3) sprintf(line, " |                                     | ");
-    else if(i == 4){
+    else if(i == 2) sprintf(line, "        |                                     |        ");
+    else if(i == 3) sprintf(line, "        |              [%-3.3s]                 |        ", ply);
+    else if(i == 4) sprintf(line, "        |                                     |        ");
       
-    } else if(i == 5){
+    else if(i == 5){
+      if (left_conn == ' ' && right_conn == ' ') {
+        sprintf(line, "        | %-37s|        ", chr_line1);
+      } else if (left_conn != ' ' && right_conn == ' ') {
+        sprintf(line, "       %c| %-37s|        ", left_conn, chr_line1);
+      } else if (left_conn == ' ' && right_conn != ' ') {
+        sprintf(line, "        | %-37s|%c       ", chr_line1, right_conn);
+      } else {
+        sprintf(line, "       %c| %-37s|%c       ", left_conn, chr_line1, right_conn);
+      }
       
     } else if(i == 6){
-      
+      sprintf(line, "        | %-37s|        ", chr_line2);
     } else if(i == 7){
-
+      sprintf(line, "        |                                     |        ");
+    } else if (i == 8) {
+      if (strlen(obj_line1) == 0) {
+        sprintf(line, "        |                                     |        ");
+      } else {
+        sprintf(line, "        | %-37s|        ", obj_line1);
+      }
+    } else if (i == 9) {
+      if (strlen(obj_line2) == 0) {
+        sprintf(line, "        |                                     |        ");
+      } else {
+        sprintf(line, "        | %-37s|        ", obj_line2);
+      }
     }
+
+
+    strcat(str, line);
+    screen_area_puts(ge->map, str);
   }
 }
   
+/**
+ * @brief Prints the narrator map area
+ * @param ge Pointer to the graphic engine
+ * @param game Pointer to the game
+ */
+void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
+  char str[255];
+  CommandCode last_cmd;
+  char *chat = NULL, *desc = NULL;
+  Character *ch = NULL;
+  Id chr_id = NO_ID;
 
+  if(!ge || !game) return;
+
+  last_cmd = command_get_code(game_get_last_command(game));
+  chat = game_get_last_chat(game);
+  desc = game_get_last_obj_desc(game);
+
+  screen_area_puts(ge->map, "-------------------------------------------------------");
+
+  screen_area_puts(ge->map, " ");
+
+  if (last_cmd == CHAT) {
+    if (chat != NULL && strlen(chat) > 0) {
+      chr_id = game_get_character_id_by_name(game, command_get_arg(game_get_last_command(game)));
+      ch = game_get_character_by_id(game, chr_id);
+      sprintf(str, " %s said: %s", character_get_name(ch), chat);
+      screen_area_puts(ge->descript, str);
+    } else {
+      screen_area_puts(ge->map, "       No hay nadie con quien hablar");
+    }
+
+  } else if (last_cmd == INSPECT) {
+    if (desc != NULL && strlen(desc) > 0 && game_get_last_action(game) == OK) {
+      sprintf(str, " The description of %s is: %s", command_get_arg(game_get_last_command(game)), desc);
+      screen_area_puts(ge->descript, str);
+    } else {
+      screen_area_puts(ge->map, "       No puedes inspeccionar eso");
+    }
+
+  } else if (last_cmd == ATTACK) {
+    if (game_get_last_action(game) == OK) {
+      screen_area_puts(ge->map, "       Has atacado al enemigo");
+    } else {
+      screen_area_puts(ge->map, "       No hay enemigos aqui");
+    }
+
+  } else if (last_cmd == TAKE) {
+    if (game_get_last_action(game) == OK) {
+      screen_area_puts(ge->map, "       Has cogido el objeto");
+    } else {
+      screen_area_puts(ge->map, "       No puedes coger ese objeto");
+    }
+
+  } else if (last_cmd == DROP) {
+    if (game_get_last_action(game) == OK) {
+      screen_area_puts(ge->map, "       Has soltado el objeto");
+    } else {
+      screen_area_puts(ge->map, "       No puedes soltar ese objeto");
+    }
+
+  } else if (last_cmd == USE) {
+    if (game_get_last_action(game) == OK) {
+      screen_area_puts(ge->map, "       Has usado el objeto");
+    } else {
+      screen_area_puts(ge->map, "       No puedes usar ese objeto");
+    }
+
+  } else if (last_cmd == OPEN) {
+    if (game_get_last_action(game) == OK) {
+      screen_area_puts(ge->map, "       Has abierto el enlace");
+    } else {
+      screen_area_puts(ge->map, "       No puedes abrir eso");
+    }
+
+  } else if (last_cmd == RECRUIT) {
+    if (game_get_last_action(game) == OK) {
+      screen_area_puts(ge->map, "       El personaje ahora te sigue");
+    } else {
+      screen_area_puts(ge->map, "       No puedes reclutar a ese personaje");
+    }
+
+  } else if (last_cmd == ABANDON) {
+    if (game_get_last_action(game) == OK) {
+      screen_area_puts(ge->map, "       El personaje ya no te sigue");
+    } else {
+      screen_area_puts(ge->map, "       Ese personaje no te estaba siguiendo");
+    }
+
+  } else if (last_cmd == MOVE) {
+    if (game_get_last_action(game) == ERROR) {
+      screen_area_puts(ge->map, "       No puedes moverte en esa direccion");
+    } else {
+      screen_area_puts(ge->map, " ");
+    }
+
+  } else {
+    screen_area_puts(ge->map, " ");
+  }
+
+  screen_area_puts(ge->map, " ");
+  screen_area_puts(ge->map, " ");
+}
 
 
 
@@ -358,8 +503,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Player *player = NULL;
   Status result;
   const char *result_str;
-  char str[255], *chat;
-  char str_desc[255], *desc;
+  char str[255];
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
   int i;
@@ -369,14 +513,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Space *obj_space = NULL;
   Space *ch_space = NULL;
   Character *ch = NULL;
-  Space *space_act = NULL;
-  Id id_act = NO_ID, id_north = NO_ID, id_south = NO_ID, id_west = NO_ID, id_east = NO_ID, id_up = NO_ID, id_down = NO_ID;;
+  Id id_act = NO_ID, id_north = NO_ID, id_south = NO_ID, id_west = NO_ID, id_east = NO_ID, id_up = NO_ID, id_down = NO_ID;
 
   
   /* Paint the in the map area */
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID) {
-    space_act = game_get_space(game, id_act);
+
     id_north = game_get_connection(game, id_act, N);
     id_south = game_get_connection(game, id_act, S);
     id_west  = game_get_connection(game, id_act, W);
@@ -390,32 +533,29 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     graphic_engine_info_row(ge, game, id_act ,id_north, id_south, id_west, id_east, id_up, id_down);
 
     /*-------------------------------------------------------*/
-    /*                    NORTH SPACE                        */
+    /*                    ACTUAL SPACES                      */
     /*-------------------------------------------------------*/
-    graphic_engine_print_North_space(ge, game, id_north);
     if (id_north != NO_ID) {
       if(game_connection_is_open(game,id_act,N)) sprintf(str, "                          /\\      ");
       else sprintf(str, "                          ><");
       screen_area_puts(ge->map, str);
     }
-    
 
-    /*-------------------------------------------------------*/
-    /*               WEST/ACTUAL/EAST SPACES                 */
-    /*-------------------------------------------------------*/
+    graphic_engine_print_actual_space(ge, game, id_act);
 
-    graphic_engine_print_west_actual_east_space(ge, game, id_west, id_act, id_east);
-
-    /*-------------------------------------------------------*/
-    /*                    SOUTH SPACE                        */
-    /*-------------------------------------------------------*/
     if (id_south != NO_ID) {
       if(game_connection_is_open(game,id_act,S)) sprintf(str, "                          \\/      ");
       else sprintf(str, "                          ><");
       screen_area_puts(ge->map, str);
     }
-    graphic_engine_print_South_space(ge, game, id_south);
+
+    /*-------------------------------------------------------*/
+    /*                     NARRATOR                          */
+    /*-------------------------------------------------------*/
+    graphic_engine_print_narrator(ge, game);
+
   }
+
 
   /* Paint in the description area */
   screen_area_clear(ge->descript);
@@ -480,36 +620,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       }
     }
   }
-
-  /* ---------- CHAT ---------- */
-  screen_area_puts(ge->descript, "Chat:");
-  chat = game_get_last_chat(game);
-
-  if (chat && strlen(chat) > 0) {
-    if (command_get_code(game_get_last_command(game)) == CHAT) {
-      ch = game_get_characters_by_space(game, space_get_id(space_act));
-      if (ch && character_get_friendly(ch)) {
-        sprintf(str, " Character %s said: %s", character_get_gdesc(ch), chat);
-        screen_area_puts(ge->descript, str);
-      }
-    } else {
-      game_set_last_chat(game, "");
-    }
-  }
-
-  /* ---------- OBJECT DESCRIPTION (INSPECT) ---------- */
-  screen_area_puts(ge->descript, "Object description:");
-  desc = game_get_last_obj_desc(game);
-
-  if (desc && strlen(desc) > 0) {
-    if (command_get_code(game_get_last_command(game)) == INSPECT && game_get_last_action(game) == OK) {      
-      sprintf(str_desc, " The description of %s is: %s", command_get_arg(game_get_last_command(game)), desc);
-      screen_area_puts(ge->descript, str_desc);
-      } else {
-      game_set_last_chat(game, "");
-    } 
-  }
-
 
   /* Paint in the banner area */
   sprintf(str, " Player %d/%d ",game_get_turn(game)+1, game_get_n_players(game));
