@@ -28,47 +28,47 @@
 #c:220|Fat Michelin Chef|4M*|515|200|1|You are so cooked for challenge me to a duel, I will crush you, literally|TRUE|
 
 
-#l:31|Entry North|51|52|0|open|
-#l:32|Barrels South|52|51|1|open|
+#l:31|Entry North|51|52|0|1|
+#l:32|Barrels South|52|51|1|1|
 
-#l:33|Barrels North|52|54|0|open|
-#l:34|Crates South|54|52|1|open|
+#l:33|Barrels North|52|54|0|1|
+#l:34|Crates South|54|52|1|1|
 
-#l:35|Barrels East|52|53|2|open|
-#l:36|Pipes West|53|52|3|open|
+#l:35|Barrels East|52|53|2|1|
+#l:36|Pipes West|53|52|3|1|
 
-#l:37|Pipes North|53|55|0|open|
-#l:38|Cockroach King's Taqueria South|55|53|1|open|
+#l:37|Pipes North|53|55|0|0|
+#l:38|Cockroach King's Taqueria South|55|53|1|1|
 
-#l:39|Cockroach King's Taqueria Up|55|56|4|open|
-#l:310|Corridor Down|56|55|5|open|
+#l:39|Cockroach King's Taqueria Up|55|56|4|1|
+#l:310|Corridor Down|56|55|5|1|
 
-#l:311|Corridor North|56|57|0|open|
-#l:312|Kitchen South|57|56|1|open|
+#l:311|Corridor North|56|57|0|1|
+#l:312|Kitchen South|57|56|1|1|
 
-#l:313|Kitchen West|57|58|3|open|
-#l:314|Fridge East|58|57|2|open|
+#l:313|Kitchen West|57|58|3|1|
+#l:314|Fridge East|58|57|2|1|
 
-#l:315|Kitchen North|57|59|0|open|
-#l:316|Chef Bathroom South|59|57|1|open|
+#l:315|Kitchen North|57|59|0|1|
+#l:316|Chef Bathroom South|59|57|1|1|
 
-#l:317|Chef Bathroom East|59|510|2|open|
-#l:318|Ratatouille King's Den West|510|59|3|open|
+#l:317|Chef Bathroom East|59|510|2|0|
+#l:318|Ratatouille King's Den West|510|59|3|1|
 
-#l:319|Ratatouille King's Den Up|510|511|4|open|
-#l:320|Dining Room Down|511|510|5|open|
+#l:319|Ratatouille King's Den Up|510|511|4|1|
+#l:320|Dining Room Down|511|510|5|1|
 
-#l:321|Dining Room West|511|512|3|open|
-#l:322|Bathroom East|512|511|2|open|
+#l:321|Dining Room West|511|512|3|1|
+#l:322|Bathroom East|512|511|2|1|
 
-#l:323|Dining Room South|511|513|1|open|
-#l:324|Backyard North|513|511|0|open|
+#l:323|Dining Room South|511|513|1|1|
+#l:324|Backyard North|513|511|0|1|
 
-#l:325|Backyard East|513|514|2|open|
-#l:326|Garden West|514|513|3|open|
+#l:325|Backyard East|513|514|2|1|
+#l:326|Garden West|514|513|3|1|
 
-#l:327|Backyard South|513|515|1|open|
-#l:328|Michelin chef's Room North|515|513|0|open|
+#l:327|Backyard South|513|515|1|0|
+#l:328|Michelin chef's Room North|515|513|0|1|
 
 
 #s:51|Entry|  _____  | /  !  \ | !  !  ! | ! 0!0 ! |_!__!__!_|
@@ -95,26 +95,27 @@
 #s:519|Auxiliar Space|         |         |         |         |         |
 
 
-#o:601|Golden Chef Chest|1|A heavy golden chest that cannot be moved|0|0|0|0|
-#o:602|Iron Storage Chest|2|A sturdy iron chest fixed to the floor|0|0|0|0|
-#o:603|Frozen Chest|4|A massive chest bolted inside the freezer|0|0|214|0|
-#o:604|Old Wooden Chest|6|A rotten chest that stays in its place|0|0|0|0|
-#o:605|Master Chef Trunk|8|The ultimate secret chest|0|0|214|0|
-#o:606|Stone Spice Chest|10|A heavy chest carved out of solid rock|0|0|0|0|
+#o:601|Old Wooden Chest|52|A rotten chest that stays in its place|0|0|612|0|
+#o:602|Iron Storage Chest|55|A sturdy iron chest fixed to the floor|0|0|613|0|
+#o:603|Frozen Chest|57|A massive chest bolted inside the freezer|0|0|613|0|
+#o:604|Stone Spice Chest|59|A heavy chest carved out of solid rock|0|0|613|0|
+#o:605|Golden Chef Chest|514|A heavy golden chest that cannot be moved|0|0|614|0|
+#o:606|Master Chef Trunk|511|The ultimate secret chest|0|0|614|0|
 
-#o:607|First Aid Kit|2|Essential supplies to save your life|5|1|0|0|
-#o:608|Hot Chicken Soup|3|Delicious broth that restores your energy|2|1|0|0|
-#o:609|Sizzling Tray|5|A burning hot tray with food that requires oven protection to pick up|2|1|217|0|
-#o:610|Fresh Apple|7|A healthy fruit that heals a small amount|1|1|0|0|
-#o:611|Energy Drink|9|Sugar-filled drink for a quick health boost|3|1|0|0|
+#o:607|First Aid Kit|511|Essential supplies to save your life (inside the chest)|5|1|614|0|
+#o:608|Hot Chicken Soup|514|Delicious broth that restores your energy|2|1|0|0|
+#o:609|Sizzling Tray|57|A burning hot tray with food that requires oven protection to pick up|2|1|617|0|
+#o:610|Fresh Apple|52|A healthy fruit that heals a small amount|1|1|0|0|
+#o:611|Energy Drink|56|Sugar-filled drink for a quick health boost|3|1|0|0|
+#o:611|Energy Drink|59|Sugar-filled drink for a quick health boost|3|1|0|0|
 
-#o:612|Silver Key|3|A small silver key|0|1|0|0|
-#o:613|Rusty Key|6|An old key covered in oxidation|0|1|0|0|
-#o:614|Master Access Card|7|Electronic card|0|1|0|0|
+#o:612|Silver Key|52|A small silver key|0|1|0|0|
+#o:613|Rusty Key|57|An old key covered in oxidation|0|1|0|0|
+#o:614|Master Key|59|A key to open the most difficult chests (inside the chest)|0|1|0|0|
 
-#o:615|Kitchen Knife|1|A sharp tool for chopping ingredients|0|1|0|0|
-#o:616|Crowbar|4|Used to force open stuck doors or cabinets|0|1|0|0|
-#o:617|Oven protection|5|Protective gear needed to handle hot items|0|1|0|0|
-#o:618|Small Screwdriver|10|A tool used to open delicate containers|0|1|0|0|
-#o:619|Bottle of water|9|Absolutely useless|0|1|0|0|
-#o:620|Bottle of Water|8|Absolutely useless|0|1|0|0|
+#o:615|Hammer|55|A tool for taking down doors or windows|0|1|613|317|
+#o:616|Crowbar|52|Used to force open stuck doors or cabinets (inside the chest)|0|1|612|37|
+#o:617|Oven protection|56|Protective gear needed to handle hot items|0|1|0|0|
+#o:618|Small Screwdriver|514|A tool that you can use to force the lock of a door (inside the chest)|0|1|614|327|
+#o:619|Bottle of water|53|Absolutely useless|0|1|0|0|
+#o:620|Bottle of Water|511|Absolutely useless|0|1|0|0|
