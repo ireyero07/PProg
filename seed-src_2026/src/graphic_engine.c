@@ -19,27 +19,27 @@
  * ~ |   |    |    |    |!_=====_!            |    V     | ~
  * ~ |  [ ]--[ ]--[ ]   |!!_!!!_!!            |  DOWN    | ~
  * ~ +------------------+---------------------+----------+ ~
- * ~        |                                     |        ~
- * ~        |                                     |        ~
- * ~        |                                     |        ~
- * ~        |                                     |        ~
- * ~        +-------------------------------------+        ~
+ * ~                                                       ~
  * ~                          /\                           ~
- * ~-----+  +-------------------------------------+  +-----~ 
- * ~     |  |  [Lettuce]  [Tomato]                |  |     ~
- * ~     |  |                aaa                  |  |     ~
- * ~     |  |                                     |  |     ~
- * ~     | <| Chef                                |> |     ~
- * ~     |  |                                     |  |     ~
- * ~     |  |      efasf             safsaf       |  |     ~
- * ~     |  |  Crowbar    First Aid Kit  dsgdsg   |  |     ~
- * ~-----+  +-------------------------------------+  +-----~
- * ~                          \/                           ~
  * ~        +-------------------------------------+        ~
+ * ~        | CHR CHR CHR CHR CHR CHR CHR CHR CHR |        ~
  * ~        |                                     |        ~
+ * ~        |                PLY                  |        ~
  * ~        |                                     |        ~
+ * ~       <| CHR CHR CHR CHR CHR CHR CHR CHR CHE |>       ~ 
+ * ~        | CHR CHR CHR CHR CHR CHR CHR CHR CHE |        ~
  * ~        |                                     |        ~
- * ~        |                                     |        ~
+ * ~        | OBJ                                 |        ~
+ * ~        | OBJ                                 |        ~
+ * ~        +-------------------------------------+        ~
+ * ~                          \/                           ~
+ * ~                                                       ~
+ * ~-------------------------------------------------------~
+ * ~  CHAT/INSPECT/COSA QUE HA PASADO                      ~
+ * ~                                                       ~
+ * ~       Ha muerto pepito                                ~
+ * ~                                                       ~
+ * ~                                                       ~
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
@@ -107,18 +107,6 @@ void graphic_engine_destroy(Graphic_engine *ge) {
 
   screen_destroy();
   free(ge);
-}
-
-/**
- * @brief Prints an empty (blank) space section for north or south neighbouring space in the map area
- * @param map Pointer to the map screen area
- */
-void graphic_engine_print_empty_NorthOrSouth_space(Area *map){
-  screen_area_puts(map,"                                                       ");
-  screen_area_puts(map,"                                                       ");
-  screen_area_puts(map,"                                                       ");
-  screen_area_puts(map,"                                                       ");
-  screen_area_puts(map,"                                                       ");
 }
 
 void get_space_symbol(char *dest, Space *space, int is_player) {
@@ -237,62 +225,6 @@ void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act, Id id_no
 
 
 /**
- * @brief Prints the north neighbouring space in the map area
- * @param ge Pointer to the graphic engine
- * @param game Pointer to the game
- * @param id_North Id of the north space to print
- */
-void graphic_engine_print_North_space (Graphic_engine *ge, Game *game, Id id_North) {
-  Space *space_North = NULL;
-  char str[255];
-
-  space_North = game_get_space(game, id_North);
-
-  if (id_North == NO_ID) {
-    graphic_engine_print_empty_NorthOrSouth_space(ge->map);
-  } else {
-    sprintf(str, "        |                                     |        ");
-    screen_area_puts(ge->map, str);
-    sprintf(str, "        |                                     |        ");
-    screen_area_puts(ge->map, str);
-    sprintf(str, "        |                                     |        ");
-    screen_area_puts(ge->map, str);
-    sprintf(str, "        |                                     |        ");
-    screen_area_puts(ge->map, str);
-    sprintf(str, "        +-------------------------------------+        ");
-    screen_area_puts(ge->map, str);
-  }
-}
-
-/**
- * @brief Prints the south neighbouring space in the map area
- * @param ge Pointer to the graphic engine
- * @param game Pointer to the game
- * @param id_South Id of the south space to print
- */
-void graphic_engine_print_South_space (Graphic_engine *ge, Game *game, Id id_South) {
-  Space *space_South = NULL;
-  char str[255];
-
-  space_South = game_get_space(game, id_South);
-
-  if (id_South == NO_ID) {
-    graphic_engine_print_empty_NorthOrSouth_space(ge->map);
-  } else {
-    sprintf(str, "        +-------------------------------------+        ");
-    screen_area_puts(ge->map, str);
-    sprintf(str, "        |                                     |        ");
-    screen_area_puts(ge->map, str);
-    sprintf(str, "        |                                     |        ");
-    screen_area_puts(ge->map, str);
-    sprintf(str, "        |                                     |        ");
-    screen_area_puts(ge->map, str);
-    sprintf(str, "        |                                     |        ");
-    screen_area_puts(ge->map, str);
-  }
-}
-
-/**
  * @brief Prints the west, current and east spaces side by side in the map area
  * @param ge Pointer to the graphic engine
  * @param game Pointer to the game
@@ -300,11 +232,11 @@ void graphic_engine_print_South_space (Graphic_engine *ge, Game *game, Id id_Sou
  * @param id_act Id of the current (actual) space
  * @param id_east Id of the east space
  */
-void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game, Id id_west, Id id_act, Id id_east) {
-  int i, j, col, n_followers;
-  Space *spaces[3];
+void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act) {
+  int i, j, n_followers;
+  Space *spaces;
   Id ids[3], obj_id = NO_ID, *objects = NULL, player_id = NO_ID;
-  Character *chars[3], *followers[MAX_CHARACTERS];
+  Character *chars[MAX_CHARACTERS], *followers[MAX_CHARACTERS];
   char chr[3][MAX_CHR_GDESC + 1], ply[3][MAX_CHR_GDESC + 1], obj_line[3][WORD_SIZE], str[255];
   Object *obj = NULL;
   Player *player;
@@ -312,25 +244,15 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
 
 
   /* Inicializar arrays de spaces, ids y player */
-  if (id_west != NO_ID) {
-    spaces[0] = game_get_space(game, id_west);
-  } else {
-    spaces[0] = NULL;
-  }
+
 
   if (id_act != NO_ID) {
-    spaces[1] = game_get_space(game, id_act);
+    spaces = game_get_space(game, id_act);
   } else {
-    spaces[1] = NULL;
+    spaces = NULL;
   }
 
-  if (id_east != NO_ID) {
-    spaces[2] = game_get_space(game, id_east);
-  } else {
-    spaces[2] = NULL;
-  }
-
-  ids[0] = id_west; ids[1] = id_act; ids[2] = id_east;
+  ids[1] = id_act;
   chars[0] = chars[1] = chars[2] = NULL;
 
   player = game_get_player(game);
@@ -344,29 +266,28 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
   
 
   /* Inicializar arrays de gdesc, objects y characters */
-  for (col = 0; col < 3; col++) {
     for (j = 0; j < MAX_CHR_GDESC; j++) {
-      chr[col][j] = ' ';
+      chr[j] = ' ';
     }
-    chr[col][MAX_CHR_GDESC] = '\0';
-    obj_line[col][0] = '\0';
+    chr[MAX_CHR_GDESC] = '\0';
+    obj_line[0] = '\0';
 
-    if (spaces[col] != NULL) {
+    if (spaces != NULL) {
       /* Character */
-      chars[col] = game_get_characters_by_space(game, ids[col]);
-      if (chars[col] != NULL) {
-        strncpy(chr[col], character_get_gdesc(chars[col]), MAX_CHR_GDESC);
-        chr[col][MAX_CHR_GDESC] = '\0';
+      chars = game_get_characters_by_space(game, ids);
+      if (chars != NULL) {
+        strncpy(chr, character_get_gdesc(chars), MAX_CHR_GDESC);
+        chr[MAX_CHR_GDESC] = '\0';
       } else {
-        chr[col][0] = '\0'; 
+        chr[0] = '\0'; 
       }
       n_followers = game_count_followers(game,player_id);
       for(i = 0; i < n_followers; i++){
         followers[i] = game_get_nth_follower(game,player_id, i);
       }
       /* Objects */
-      objects = space_get_objects_ids(spaces[col]);
-      n_objects = space_get_number_objects(spaces[col]);
+      objects = space_get_objects_ids(spaces);
+      n_objects = space_get_number_objects(spaces);
       if (n_objects >= 3) {
         for (i = 0, j = 0; i < n_objects; i++) {
           while ((obj_id = objects[j]) == NO_ID) {
@@ -375,10 +296,10 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
           obj = game_get_object(game, obj_id);
           j++;
           if (obj != NULL) {
-            if (strlen(obj_line[col]) > 0) {
-              strcat(obj_line[col], ", ");
+            if (strlen(obj_line) > 0) {
+              strcat(obj_line, ", ");
             }
-            strncat(obj_line[col], object_get_name(obj), 2);
+            strncat(obj_line, object_get_name(obj), 2);
           }
         }
       } else {
@@ -397,61 +318,40 @@ void graphic_engine_print_west_actual_east_space(Graphic_engine *ge, Game *game,
         }
       }
     }
-  }
+
   space_set_discovered(game_get_space(game,id_act),TRUE);
   /* Ahora pintamos fila por fila combinando las 3 habitaciones horizontalmente */
   for (i = 0; i < GDESC_LINES + 4; i++) { 
     char line[64];
     str[0] = '\0';
     
-    if(id_west == NO_ID){
-      strcat(str, "       ");
-    } else {
-      if(i == 0 || i == 8) sprintf(line, "-----+ ");
-      else if (i == 4 && spaces[0] && spaces[1]){
-        if(game_connection_is_open(game,ids[i],W)) sprintf(line, "    <| ");
-        else sprintf(line, "    X| ");
-      } else {
-        sprintf(line, "     | ");
-      }
-      strcat(str, line);
-    }
-    
-    if(i == 0){
-      sprintf(line, " +-------------------------------------+ ");
-    } else if(i == 1){
-      
-    } else if(i == 2){
-      sprintf(line, " |           %3.3s                     | ", ply[1]);
-    } else if(i == 3){
-      sprintf(line, " |                                     | ");
-    } else if(i == 4){
+    if(i == 0 || i == 8) sprintf(line, " +-------------------------------------+ ");
+    else if(i == 1){
+      if(n_followers == 0) sprintf(line, " |                                     | ");
+      else if(n_followers == 1) sprintf(line, " | %3.3s                                 | ", followers[0]);
+      else if(n_followers == 2) sprintf(line, " | %3.3s %3.3s                             | ",followers[0], followers[1]);
+      else if(n_followers == 3) sprintf(line, " | %3.3s %3.3s %3.3s                         | ",followers[0], followers[1],followers[2]);
+      else if(n_followers == 4) sprintf(line, " | %3.3s %3.3s %3.3s %3.3s                     | ",followers[0], followers[1],followers[2], followers[3]);
+      else if(n_followers == 5) sprintf(line, " | %3.3s %3.3s %3.3s %3.3s %3.3s                 | ",followers[0], followers[1],followers[2], followers[3],followers[4]);
+      else if(n_followers == 6) sprintf(line, " | %3.3s %3.3s %3.3s %3.3s %3.3s %3.3s             | ",followers[0], followers[1],followers[2], followers[3],followers[4], followers[5]);
+    } 
+    else if(i == 2) sprintf(line, " |           %3.3s                     | ", ply[1]);
+    else if(i == 3) sprintf(line, " |                                     | ");
+    else if(i == 4){
       
     } else if(i == 5){
       
     } else if(i == 6){
       
     } else if(i == 7){
-      
-    } else{
-      sprintf(line, " +-------------------------------------+ ");
-    }
 
-    if(id_east == NO_ID){
-      strcat(str, "       ");
-    } else {
-      if(i == 0 || i == 8) sprintf(line, " +-----");
-      else if (i == 4 && spaces[1] && spaces[2]){
-        if(game_connection_is_open(game,ids[i],W)) sprintf(line, "    <| ");
-        else sprintf(line, "X|    ");
-      } else {
-        sprintf(line, " |     ");
-      }
-      strcat(str, line);
     }
-    screen_area_puts(ge->map, str);
   }
 }
+  
+
+
+
 
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {

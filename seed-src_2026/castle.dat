@@ -1,31 +1,31 @@
 #p:11|Chef|C#]|31|100|10|
-#p:12|Waiter|\º\|31|100|10|
+#p:12|Grandma|\º\|31|100|10|
 
 
-#c:21|Lettuce|   |xx|5|0|A little bit of green to trick the body|FALSE|
-#c:22|Tomato|   |xx|5|0|Fresh, recently cut slices|FALSE|
-#c:23|Bread|   |xx|5|0|I'm the one who puts the rest of the food together|FALSE|
-#c:24|Cheese|   |xx|5|0|I'm better when I'm melted|FALSE|FALSE|
-#c:25|Bacon|   |xx|5|0|Bacon frito, bacon bacon frito, cojo el bacon y lo frio un poquito|FALSE|
-#c:26|Ham|   |xx|5|0|I am an Iberian ham, a truly Iberian ham|FALSE|
+#c:21|Lettuce|\M/|54|60|0|A little bit of green to trick the body|FALSE|
+#c:22|Tomato|(^)|58|60|0|Fresh, recently cut slices|FALSE|
+#c:23|Bread|(=)|51|50|0|I'm the one who puts the rest of the food together|FALSE|
+#c:24|Cheese|(:)|57|70|0|I'm better when I'm melted|FALSE|
+#c:25|Bacon|/=/|511|70|0|Bacon frito, bacon bacon frito, cojo el bacon y lo frio un poquito|FALSE|
+#c:26|Ham|(>3|514|90|0|I am an Iberian ham, a truly Iberian ham|FALSE|
 
-#c:27|Chest|!-!|xx|5|0|Take some objects that will help you on your adventure|FALSE|
-#c:28|Trap Chest|!-!|xx|5|1|Your greed will be your downfall|FALSE|
+#c:27|Chest|[-]|xx|5|0|Take some objects that will help you on your adventure|FALSE|
+#c:28|Trap Chest|[-]|xx|5|1|Your greed will be your downfall|FALSE|
 
-#c:29|Ant|0oo|xx|1|1|Stop right there, intruder!|FALSE|
-#c:210|Spider|-oO|xx|2|1|You'll be a wonderful meal for my babies|FALSE|
-#c:211|Cockroach|-T-|xx|3|1|La cucaracha, la cucarcha... No mames wey, I didn't learn the whole song|FALSE|
-#c:212|Cockroach King|-M-|xx|5|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|FALSE|
+#c:29|Ant|0oo|519|20|1|Stop right there, intruder!|FALSE|
+#c:210|Spider|-oO|53|40|1|You'll be a wonderful meal for my babies|FALSE|
+#c:211|Cockroach|-T-|52|3|1|La cucaracha, la cucarcha... No mames wey, I didn't learn the whole song|FALSE|
+#c:212|Cockroach King|-M-|55|70|1|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|TRUE|
 
-#c:213|Ratatta|.=-|xx|1|1|Ratatta|FALSE|
-#c:214|Raticate|*=-|xx|2|1|Raticate|FALSE|
-#c:215|Ratatouille|*^-|xx|3|1|My brothers don't have enough brain cells to say anything other than their name|FALSE|
-#c:216|Ratatouille King| M |xx|5|1|Give me your cheese or you will suffer from my ratatouille wrath|FALSE|
+#c:213|Ratatta|.=-|56|40|1|Ratatta|FALSE|
+#c:214|Raticate|*=-|59|50|1|Raticate|FALSE|
+#c:215|Ratatouille|*^-|519|3|1|My brothers don't have enough brain cells to say anything other than their name|FALSE|
+#c:216|Ratatouille King| M |60|90|1|Give me your cheese or you will suffer from my ratatouille wrath|TRUE|
 
-#c:217|Dishwasher|1o.|xx|5|1|Stop right there you dirty punk, I'll drown you in soapy water|FALSE|
-#c:218|Chef|4o.|xx|1|1||Surrender or I'll cut you into small pieces|FALSE|
-#c:219|Master Chef|4^*|xx|2|1|The main course will be you grilled to perfection|FALSE|
-#c:220|Fat Michelin Chef|4M*|xx|3|1|You are so cooked for challenge me to a duel, I will crush you, literally|FALSE|
+#c:217|Dishwasher|1o.|512|60|1|Stop right there you dirty punk, I'll drown you in soapy water|FALSE|
+#c:218|Chef|4o.|519|1|1||Surrender or I'll cut you into small pieces|FALSE|
+#c:219|Master Chef|4^*|513|70|1|The main course will be you grilled to perfection|FALSE|
+#c:220|Fat Michelin Chef|4M*|515|200|1|You are so cooked for challenge me to a duel, I will crush you, literally|TRUE|
 
 
 #l:31|Entry North|51|52|0|open|
