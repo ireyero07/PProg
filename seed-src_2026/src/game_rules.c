@@ -108,6 +108,15 @@ Status game_rules_heavy_backpack_damage(Game *game);
  */
 Status game_rules_close_door_when_boss(Game *game);
 
+/**
+ * @brief In the final boss fight the player and the character gets some constant damage each round
+ * @author Gonzalez Hijano Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return OK if all goes well or ERROR otherside
+ */
+Status game_rules_final_boss_fire(Game *game, int damage_players, int damage_followers, Id final_boss_pos);
+
 /*Implementations*/
 
 Bool game_rules_event_occurs(int percentage)
@@ -234,10 +243,11 @@ Status game_rules_random_ingredient_following_expires(Game *game, int probabilit
 
 Status game_rules_open_doors_when_boss_dies(Game *game)
 {
-    int i, j, n_enemies = 0, n_characters = 0;
-    Id player_loc = NO_ID;
-    Id *list_char_ids = NULL;
-    Bool are_enemies_alive = FALSE;
+    Character *boss = NULL;
+    Id player_loc = NO_ID, destination = NO_ID;
+    Link *link = NULL;
+    int i = 0;
+
     if (game == NULL)
     {
         return ERROR;
@@ -247,8 +257,28 @@ Status game_rules_open_doors_when_boss_dies(Game *game)
     {
         return ERROR;
     }
+    boss = game_space_with_boss(game, game_get_space(game, player_loc)) == NULL;
+    if (boss == NULL)
+    {
+        return OK;
+    }
+    if (character_get_health(boss) <= 0)
+    {
+        for (i = 0; i < N_DIRECTIONS; i++)
+        {
+            destination = game_get_link_destination(game, player_loc, i);
+            link = game_get_link(game, player_loc, destination);
+            if (link == NULL)
+            {
+                return ERROR;
+            }
+            if (link_set_open(link, TRUE) == ERROR)
+            {
+                return ERROR;
+            }
+        }
+    }
 
-    
     return OK;
 }
 
@@ -397,8 +427,102 @@ Status game_rules_heavy_backpack_damage(Game *game)
     return OK;
 }
 
-Status game_rules_close_door_when_boss(Game *game){
+Status game_rules_close_door_when_boss(Game *game)
+{
 
+    Character *boss = NULL;
+    Id player_loc = NO_ID, destination = NO_ID;
+    Link *link = NULL;
+    int i = 0;
+
+    if (game == NULL)
+    {
+        return ERROR;
+    }
+    player_loc = game_get_player_location(game);
+    if (player_loc == NO_ID)
+    {
+        return ERROR;
+    }
+    boss = game_space_with_boss(game, game_get_space(game, player_loc)) == NULL;
+    if (boss == NULL)
+    {
+        return OK;
+    }
+    if (character_get_health(boss) > 0)
+    {
+        for (i = 0; i < N_DIRECTIONS; i++)
+        {
+            destination = game_get_link_destination(game, player_loc, i);
+            link = game_get_link(game, player_loc, destination);
+            if (link == NULL)
+            {
+                return ERROR;
+            }
+            if (link_get_open(link) == FALSE)
+            {
+                continue;
+            }
+            else
+            {
+                if (link_set_open(link, FALSE) == ERROR)
+                {
+                    return ERROR;
+                }
+            }
+        }
+    }
+
+    return OK;
+}
+
+Status game_rules_final_boss_fire(Game *game, int damage_players, int damage_followers, Id final_boss_pos)
+{
+    Player *player = NULL;
+    Id player_id = NO_ID, player_loc = NO_ID;
+    int i, n_followers = 0;
+    Character *follower = NULL;
+    if (game == NULL || damage_followers < 0 || damage_players < 0 || final_boss_pos == NO_ID)
+    {
+        return ERROR;
+    }
+
+    player = game_get_player(game);
+    if (player == NULL)
+    {
+        return ERROR;
+    }
+
+    player_loc = player_get_location(player);
+    if (player_loc == NO_ID)
+    {
+        return ERROR;
+    }
+
+    player_id = player_get_id(player);
+    if (player_id == NO_ID)
+    {
+        return ERROR;
+    }
+
+    if (final_boss_pos == player_loc)
+    {
+        n_followers = game_count_followers(game, player_id);
+        for (i = 0; i < n_followers; i++)
+        {
+            follower = game_get_nth_follower(game, player_id, i);
+            if (character_set_health(follower, character_get_health(follower) - damage_followers) == ERROR)
+            {
+                return ERROR;
+            }
+        }
+
+        if (player_set_health(player, player_get_health(player) - damage_players) == ERROR)
+        {
+            return ERROR;
+        }
+    }
+    return OK;
 }
 
 /*########################################################################################
@@ -411,6 +535,9 @@ Status game_rules_run_rules(Game *game)
     int probability_random_ingredient_following_expires = 10;
     int probability_negative_review = 5;
     int probability_random_object_teleport = 15;
+    int fire_damage_to_player = 7;
+    int fire_damage_to_followers = 4;
+    Id final_boss_pos = 515;
 
     if (game == NULL)
     {
@@ -448,6 +575,11 @@ Status game_rules_run_rules(Game *game)
     }
 
     if (game_rules_close_door_when_boss(game) == ERROR)
+    {
+        return ERROR;
+    }
+
+    if (game_rules_final_boss_fire(game, fire_damage_to_player, fire_damage_to_followers, final_boss_pos) == ERROR)
     {
         return ERROR;
     }
