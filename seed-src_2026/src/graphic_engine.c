@@ -232,10 +232,10 @@ void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act, Id id_no
  */
 void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act) {
   int i, j, n_followers, n_chars, n_objs;
-  Space *space_act = NULL;;
-  Id ids[3], obj_id = NO_ID, *objects = NULL, player_id = NO_ID, id_west = NO_ID, id_east = NO_ID;
+  Space *space_act = NULL;
+  Id obj_id = NO_ID, *objects = NULL, player_id = NO_ID, id_west = NO_ID, id_east = NO_ID;
   Character *chrs = NULL, *followers[MAX_CHARACTERS];
-  char chr_line1[WORD_SIZE], chr_line2[WORD_SIZE], obj_line1[WORD_SIZE], obj_line2[WORD_SIZE], ply[MAX_CHR_GDESC + 1], str[255], line[64];
+  char chr_line1[WORD_SIZE], chr_line2[WORD_SIZE], obj_line1[WORD_SIZE], obj_line2[WORD_SIZE], ply[MAX_CHR_GDESC + 1], str[255], line[128];
   Object *obj = NULL;
   Player *player = NULL;
   long n_objects;
@@ -359,30 +359,30 @@ void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act
       
     else if(i == 5){
       if (left_conn == ' ' && right_conn == ' ') {
-        sprintf(line, "        | %-37s|        ", chr_line1);
+        sprintf(line, "        | %-37.37s|        ", chr_line1);
       } else if (left_conn != ' ' && right_conn == ' ') {
-        sprintf(line, "       %c| %-37s|        ", left_conn, chr_line1);
+        sprintf(line, "       %c| %-37.37s|        ", left_conn, chr_line1);
       } else if (left_conn == ' ' && right_conn != ' ') {
-        sprintf(line, "        | %-37s|%c       ", chr_line1, right_conn);
+        sprintf(line, "        | %-37.37s|%c       ", chr_line1, right_conn);
       } else {
-        sprintf(line, "       %c| %-37s|%c       ", left_conn, chr_line1, right_conn);
+        sprintf(line, "       %c| %-37.37s|%c       ", left_conn, chr_line1, right_conn);
       }
       
     } else if(i == 6){
-      sprintf(line, "        | %-37s|        ", chr_line2);
+      sprintf(line, "        | %-37.37s|        ", chr_line2);
     } else if(i == 7){
       sprintf(line, "        |                                     |        ");
     } else if (i == 8) {
       if (strlen(obj_line1) == 0) {
         sprintf(line, "        |                                     |        ");
       } else {
-        sprintf(line, "        | %-37s|        ", obj_line1);
+        sprintf(line, "        | %-37.37s|        ", obj_line1);
       }
     } else if (i == 9) {
       if (strlen(obj_line2) == 0) {
         sprintf(line, "        |                                     |        ");
       } else {
-        sprintf(line, "        | %-37s|        ", obj_line2);
+        sprintf(line, "        | %-37.37s|        ", obj_line2);
       }
     }
 
