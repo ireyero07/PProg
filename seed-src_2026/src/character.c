@@ -204,7 +204,7 @@ Status character_set_message(Character *character, char *message)
 
 Status character_set_location(Character *character, Id location)
 {
-  if (!character || location == NO_ID)
+  if (!character)
     return ERROR;
 
   character->location = location;
@@ -226,7 +226,7 @@ Status character_set_boss(Character *character, Bool is_boss)
 {
   if (!character)
     return ERROR;
-  if ((character->friendly = TRUE) && (is_boss == TRUE))
+  if ((character->friendly == TRUE) && (is_boss == TRUE))
   {
     return ERROR;
   }

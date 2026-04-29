@@ -270,7 +270,7 @@ Status game_rules_open_doors_when_boss_dies(Game *game)
             link = game_get_link(game, player_loc, destination);
             if (link == NULL)
             {
-                return ERROR;
+                continue;
             }
             if (link_set_open(link, TRUE) == ERROR)
             {
@@ -457,7 +457,7 @@ Status game_rules_close_door_when_boss(Game *game)
             link = game_get_link(game, player_loc, destination);
             if (link == NULL)
             {
-                return ERROR;
+                continue;
             }
             if (link_get_open(link) == FALSE)
             {

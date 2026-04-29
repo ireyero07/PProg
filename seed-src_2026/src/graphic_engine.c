@@ -273,6 +273,7 @@ void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act
     if (chrs == NULL) continue;
     if (character_get_location(chrs) != id_act) continue;
     if (character_get_health(chrs) <= 0) continue;
+    if (character_get_following(chrs) == player_id) continue;
     n_chars++;
     if (n_chars <= 4) {
       if (strlen(chr_line1) > 0) {
