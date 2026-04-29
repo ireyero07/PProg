@@ -15,7 +15,7 @@
 #include <string.h>
 #include <strings.h>
 
-#define CMD_LENGHT 30 /*!< Maximum length of a command string read from input */
+#define CMD_LENGHT 256 /*!< Maximum length of a command string read from input */
 
 /** @brief Table mapping command codes to their short and long string representations */
 char *cmd_to_str[N_CMD][N_CMDT] = {
