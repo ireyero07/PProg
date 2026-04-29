@@ -231,6 +231,7 @@ int game_space_number_of_enemies(Game *game, Id space_id)
   Id *id_list = NULL;
   Set *characters = NULL;
   int n_ids, counter = 0;
+  Character *ch = NULL;
 
   if (game == NULL || space_id == NO_ID)
   {
@@ -244,16 +245,20 @@ int game_space_number_of_enemies(Game *game, Id space_id)
 
   if ((characters = game_get_characters_by_space(game, space_id)) == NULL)
   {
-    return 0;
+    return -1;
   }
 
   id_list = set_get_list_ids(characters);
   n_ids = set_get_n_ids(characters);
   for (i = 0; i < n_ids; i++)
   {
-    if (character_get_friendly(game_get_character_by_id(game, id_list[i])) == FALSE)
+    ch = game_get_character_by_id(game, id_list[i]);
+    if (character_get_health(ch) > 0)
     {
-      counter++;
+      if (character_get_friendly(ch) == FALSE)
+      {
+          counter++;
+      }
     }
   }
   return counter;
