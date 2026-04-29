@@ -118,6 +118,14 @@ Status game_rules_close_doors_when_boss(Game *game);
  */
 int game_rules_final_boss_fire(Game *game, int damage_players, int damage_followers, Id final_boss_pos);
 
+/**
+ * @brief If one player start a fight wtih a boss all the rest players get teleported to that space
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @return -1 in case of ERROR, 0 in case all OK and 1 in case all OK and the action occurs
+ */
+int game_rules_if_player_fight_boss_tp_all_players(Game *game);
 /*Implementations*/
 
 Bool game_rules_event_occurs(int percentage)
@@ -153,7 +161,7 @@ int game_rules_random_enemy_attack(Game *game, int probability)
     Player *player = NULL;
     Id player_loc = NO_ID;
     int t_damage = 0;
-    int n_enemies=0;
+    int n_enemies = 0;
     if (game == NULL || probability < 0)
     {
         return -1;
@@ -170,7 +178,7 @@ int game_rules_random_enemy_attack(Game *game, int probability)
         {
             return -1;
         }
-        n_enemies=game_space_number_of_enemies(game, player_loc);
+        n_enemies = game_space_number_of_enemies(game, player_loc);
         if (n_enemies == -1)
         {
             return -1;
@@ -528,6 +536,51 @@ int game_rules_final_boss_fire(Game *game, int damage_players, int damage_follow
     return 0;
 }
 
+int game_rules_if_player_fight_boss_tp_all_players(Game *game)
+{
+    Player *act_player = NULL;
+    Player *aux_player = NULL;
+    Id player_pos = NO_ID;
+    Id list_p_ids[MAX_PLAYERS];
+    int i, n_players = 0;
+    if (game == NULL)
+    {
+        return -1;
+    }
+    act_player = game_get_player(game);
+    if (act_player == NULL)
+    {
+        return -1;
+    }
+    player_pos = player_get_location(act_player);
+    if (game_space_with_boss(game, game_get_space(game, player_pos)) != NULL)
+    {
+        n_players = game_get_n_players(game);
+        if (n_players != game_get_list_of_player_ids(game, list_p_ids, MAX_PLAYERS))
+        {
+            return -1;
+        }
+        for (i = 0; i < n_players; i++)
+        {
+            aux_player = game_get_player_from_id(game, list_p_ids[i]);
+            if (aux_player == NULL)
+            {
+                return ERROR;
+            }
+            if (player_get_location(aux_player) != player_pos)
+            {
+                if (player_set_location(aux_player, player_pos) == ERROR)
+                {
+                    return ERROR;
+                }
+            }
+        }
+
+        return 1;
+    }
+    return 0;
+}
+
 /*########################################################################################
 PUBLIC FUNCTIONS
 ########################################################################################*/
@@ -551,6 +604,8 @@ Status game_rules_run_rules(Game *game)
     int fire_damage_to_followers = 4;
     Id final_boss_pos = 515;
 
+    int r7;
+
     if (game == NULL)
     {
         return ERROR;
@@ -565,7 +620,7 @@ Status game_rules_run_rules(Game *game)
     /*char_r2 == game_rules_random_ingredient_following_expires(game, probability_random_ingredient_following_expires);
     if (char_r2 != NULL)
     {
-        
+
     }
     */
     if (game_rules_open_doors_when_boss_dies(game) == ERROR)
@@ -598,6 +653,12 @@ Status game_rules_run_rules(Game *game)
 
     r6 = game_rules_final_boss_fire(game, fire_damage_to_player, fire_damage_to_followers, final_boss_pos);
     if (r6 == -1)
+    {
+        return ERROR;
+    }
+
+    r7 = game_rules_if_player_fight_boss_tp_all_players(game);
+    if (r7 == -1)
     {
         return ERROR;
     }

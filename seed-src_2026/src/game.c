@@ -293,7 +293,7 @@ Character *game_space_with_boss(Game *game, Space *space) /*We have define that 
   Set *character_set = NULL;
   Id *char_ids = NULL;
   int i, n_characters = 0;
-  char *ch = NULL;
+  Character *ch = NULL;
 
   if (game == NULL || space == NULL)
   {
@@ -811,6 +811,17 @@ int game_count_followers(Game *game, Id player_id)
     }
   }
   return count;
+}
+
+int game_get_list_of_player_ids(Game *game, Id *player_ids, int array_size){
+  int i=0;
+  if(game==NULL || player_ids==NULL || array_size<0){
+    return -1;
+  }
+  for(i=0; (i<game->n_players)&&(i<array_size); i++){
+     player_ids[i]=player_get_id(game->players[i]);
+  }
+  return i;
 }
 
 /*----------------------LINK--------------------------*/
