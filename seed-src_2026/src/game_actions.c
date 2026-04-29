@@ -661,42 +661,39 @@ void game_actions_use(Game *game, Command *cmd)
   }
 
   strncpy(c_argument, command_get_arg(cmd), WORD_SIZE);
+  c_argument[WORD_SIZE - 1] = '\0';
 
-  /*Splits the command argument to get the object name and the character name*/
   token = strtok(c_argument, " \n");
   if (!token)
   {
     game_set_last_action(game, ERROR);
     return;
   }
-
   strncpy(obj_name, token, WORD_SIZE);
   obj_name[WORD_SIZE] = '\0';
   token = strtok(NULL, " \n");
   if (token == NULL)
   {
-    game_set_last_action(game, ERROR);
-    return;
+    over_something_else = FALSE;
   }
-
-  if (strcasecmp(token, "over") != 0 && strcasecmp(token, "o") != 0)
+  else if (strcasecmp(token, "over") == 0 || strcasecmp(token, "o") == 0)
   {
     token = strtok(NULL, " \n");
-    if (token == NULL)
-    {
-      over_something_else = FALSE; /*In case of command use over _ it asumes that is over the actual player and dont give error*/
-    }
-    else
+    if (token != NULL)
     {
       strncpy(char_name, token, WORD_SIZE);
       char_name[WORD_SIZE] = '\0';
-      token = strtok(NULL, " \n");
       over_something_else = TRUE;
+    }
+    else
+    {
+      over_something_else = FALSE;
     }
   }
   else
   {
-    over_something_else = FALSE;
+    game_set_last_action(game, ERROR);
+    return;
   }
 
   player = game_get_player(game);
@@ -849,7 +846,7 @@ void game_actions_open(Game *game, Command *cmd)
     return;
   }
 
-  if (link_set_open(link, OPEN) == ERROR || player_del_object(player, object) == ERROR)
+  if (link_set_open(link, TRUE) == ERROR || player_del_object(player, object) == ERROR)
   {
     game_set_last_action(game, ERROR);
     return;
