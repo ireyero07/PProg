@@ -399,110 +399,179 @@ void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act
  * @param game Pointer to the game
  */
 void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
-  char str[255];
+  char str[WORD_SIZE + 100];
   CommandCode last_cmd;
   char *chat = NULL, *desc = NULL;
   Character *ch = NULL;
   Id chr_id = NO_ID;
+  Player *player = NULL;
+  Id player_loc = NO_ID;
+  int n_enemies = 0, n_followers = 0, player_hp = 0;
+  const char *arg = NULL;
 
   if(!ge || !game) return;
 
   last_cmd = command_get_code(game_get_last_command(game));
   chat = game_get_last_chat(game);
   desc = game_get_last_obj_desc(game);
+  arg = command_get_arg(game_get_last_command(game));
+  player = game_get_player(game);
+  if (player) {
+    player_loc = player_get_location(player);
+    player_hp = player_get_health(player);
+    n_followers = game_count_followers(game, player_get_id(player));
+  }
+  n_enemies = game_space_number_of_enemies(game, player_loc);
 
   screen_area_puts(ge->map, "---------------------------------------------------------");
+  screen_area_puts(ge->map, " Accion:");
 
-  screen_area_puts(ge->map, " ");
-
+  /* ---- Mensaje de la accion del jugador ---- */
   if (last_cmd == CHAT) {
-    if (chat != NULL && strlen(chat) > 0) {
-      chr_id = game_get_character_id_by_name(game, command_get_arg(game_get_last_command(game)));
+    /* El jugador intenta hablar con un personaje amigo de la sala */
+    if (game_get_last_action(game) == OK && chat != NULL && strlen(chat) > 0) {
+      chr_id = game_get_character_id_by_name(game, arg);
       ch = game_get_character_by_id(game, chr_id);
       if (ch != NULL) {
-        sprintf(str, " %s said: %s", character_get_name(ch), chat);
+        sprintf(str, "  %s dice: \"%s\"", character_get_name(ch), chat);
         screen_area_puts(ge->map, str);
       }
-    } else {
-      screen_area_puts(ge->map, "       No hay nadie con quien hablar");
+    } else if (game_get_last_action(game) == ERROR) {
+      /* Posibles causas: personaje no existe, no es amigo, no esta en la sala */
+      sprintf(str, "  No puedes hablar con '%s': no esta aqui o no es un aliado.", arg ? arg : "?");
+      screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == INSPECT) {
-    if (desc != NULL && strlen(desc) > 0 && game_get_last_action(game) == OK) {
-      sprintf(str, " The description of %s is: %s", command_get_arg(game_get_last_command(game)), desc);
+    /* El jugador inspecciona un objeto de la sala o de su inventario */
+    if (game_get_last_action(game) == OK && desc != NULL && strlen(desc) > 0) {
+      sprintf(str, "  [%s]: %s", arg ? arg : "objeto", desc);
       screen_area_puts(ge->map, str);
     } else {
-      screen_area_puts(ge->map, "       No puedes inspeccionar eso");
+      /* El objeto no existe, no esta en la sala ni en el inventario */
+      sprintf(str, "  No puedes inspeccionar '%s': no lo tienes ni esta aqui.", arg ? arg : "?");
+      screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == ATTACK) {
+    /* El jugador ataca a un personaje enemigo de la sala */
     if (game_get_last_action(game) == OK) {
-      screen_area_puts(ge->map, "       Has atacado al enemigo");
+      chr_id = game_get_character_id_by_name(game, arg);
+      ch = game_get_character_by_id(game, chr_id);
+      if (ch != NULL && character_get_health(ch) <= 0) {
+        sprintf(str, "  Has eliminado a %s!", arg ? arg : "el enemigo");
+        screen_area_puts(ge->map, str);
+      } else {
+        sprintf(str, "  Has atacado a %s. Sigue en pie.", arg ? arg : "el enemigo");
+        screen_area_puts(ge->map, str);
+      }
     } else {
-      screen_area_puts(ge->map, "       No hay enemigos aqui");
+      /* Posibles causas: no existe, es amigo, ya esta muerto, no esta en la sala */
+      sprintf(str, "  No puedes atacar a '%s': no esta aqui, ya murio, o es un aliado.", arg ? arg : "?");
+      screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == TAKE) {
+    /* El jugador coge un objeto de la sala actual */
     if (game_get_last_action(game) == OK) {
-      screen_area_puts(ge->map, "       Has cogido el objeto");
+      sprintf(str, "  Has cogido '%s' y lo llevas en el inventario.", arg ? arg : "el objeto");
+      screen_area_puts(ge->map, str);
     } else {
-      screen_area_puts(ge->map, "       No puedes coger ese objeto");
+      /* Posibles causas: no existe en la sala, inventario lleno, objeto no movible */
+      sprintf(str, "  No puedes coger '%s': no esta aqui o el inventario esta lleno.", arg ? arg : "?");
+      screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == DROP) {
+    /* El jugador suelta un objeto de su inventario en la sala actual */
     if (game_get_last_action(game) == OK) {
-      screen_area_puts(ge->map, "       Has soltado el objeto");
+      sprintf(str, "  Has soltado '%s' en el suelo.", arg ? arg : "el objeto");
+      screen_area_puts(ge->map, str);
     } else {
-      screen_area_puts(ge->map, "       No puedes soltar ese objeto");
+      /* El jugador no lleva ese objeto */
+      sprintf(str, "  No puedes soltar '%s': no lo llevas encima.", arg ? arg : "?");
+      screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == USE) {
+    /* El jugador usa un objeto del inventario (sobre si mismo o sobre un personaje) */
     if (game_get_last_action(game) == OK) {
-      screen_area_puts(ge->map, "       Has usado el objeto");
+      sprintf(str, "  Has usado '%s'. Efecto aplicado.", arg ? arg : "el objeto");
+      screen_area_puts(ge->map, str);
     } else {
-      screen_area_puts(ge->map, "       No puedes usar ese objeto");
+      /* Posibles causas: no lo lleva, el objetivo no esta en la sala, sintaxis erronea */
+      sprintf(str, "  No puedes usar '%s': no lo tienes, el objetivo no esta aqui o sintaxis incorrecta.", arg ? arg : "?");
+      screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == OPEN) {
+    /* El jugador abre un enlace cerrado usando un objeto del inventario */
     if (game_get_last_action(game) == OK) {
-      screen_area_puts(ge->map, "       Has abierto el enlace");
+      screen_area_puts(ge->map, "  Has abierto el camino. Ya puedes pasar.");
     } else {
-      screen_area_puts(ge->map, "       No puedes abrir eso");
+      /* Posibles causas: enlace ya abierto, objeto incorrecto, no lo llevas, no pertenece a esta sala */
+      sprintf(str, "  No puedes abrir ese enlace: objeto incorrecto, ya esta abierto o no lo llevas.");
+      screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == RECRUIT) {
+    /* El jugador recluta un personaje amigo de la sala para que le siga */
     if (game_get_last_action(game) == OK) {
-      screen_area_puts(ge->map, "       El personaje ahora te sigue");
+      sprintf(str, "  %s ahora te sigue. (%d aliado(s) contigo)", arg ? arg : "El personaje", n_followers);
+      screen_area_puts(ge->map, str);
     } else {
-      screen_area_puts(ge->map, "       No puedes reclutar a ese personaje");
+      /* Posibles causas: no es amigo, no esta en la sala, ya sigue a alguien, no existe */
+      sprintf(str, "  No puedes reclutar a '%s': no esta aqui, ya te sigue o no es un aliado.", arg ? arg : "?");
+      screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == ABANDON) {
+    /* El jugador abandona a uno de sus seguidores */
     if (game_get_last_action(game) == OK) {
-      screen_area_puts(ge->map, "       El personaje ya no te sigue");
+      sprintf(str, "  %s ya no te sigue. Lo has dejado atras.", arg ? arg : "El personaje");
+      screen_area_puts(ge->map, str);
     } else {
-      screen_area_puts(ge->map, "       Ese personaje no te estaba siguiendo");
+      /* El personaje indicado no estaba siguiendo al jugador */
+      sprintf(str, "  '%s' no te estaba siguiendo.", arg ? arg : "?");
+      screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == MOVE) {
     if (game_get_last_action(game) == ERROR) {
-      screen_area_puts(ge->map, "       No puedes moverte en esa direccion");
+      /* La direccion esta bloqueada, no existe o es invalida */
+      sprintf(str, "  No puedes moverte hacia '%s': camino bloqueado o no existe.", arg ? arg : "esa direccion");
+      screen_area_puts(ge->map, str);
     } else {
-      int n_enemies = game_space_number_of_enemies(game, game_get_player_location(game));
-      if (n_enemies > 0) {
-        sprintf(str, "       !Hay %d enemigo(s) en esta habitacion!", n_enemies);
-        screen_area_puts(ge->map, str);
-      } else {
-        screen_area_puts(ge->map, "       Te has movido correctamente");
-      }
+      screen_area_puts(ge->map, "  Te has movido correctamente.");
     }
 
   } else {
     screen_area_puts(ge->map, " ");
   }
 
+  /* ---- Seccion de Game Rules: estado del entorno tras la accion ---- */
   screen_area_puts(ge->map, " ");
-  screen_area_puts(ge->map, " ");
+  screen_area_puts(ge->map, " Entorno:");
+
+  if (n_enemies > 0) {
+    /* Hay enemigos en la sala: pueden atacar aleatoriamente cada turno */
+    sprintf(str, "  [!] %d enemigo(s) en la sala. Pueden atacarte cada turno.", n_enemies);
+    screen_area_puts(ge->map, str);
+  } else {
+    screen_area_puts(ge->map, "  Sin enemigos en esta sala.");
+  }
+
+  if (player_hp > 0 && player_hp <= 30) {
+    /* Salud critica: el jugador deberia usar un objeto curativo o huir */
+    sprintf(str, "  [!!] Salud critica: %d HP. Usa un objeto curativo o huye.", player_hp);
+    screen_area_puts(ge->map, str);
+  }
+
+  if (n_followers > 0) {
+    /* Los seguidores acompañan al jugador y ayudan en el combate */
+    sprintf(str, "  %d aliado(s) contigo. Atacan junto a ti y pueden ser heridos.", n_followers);
+    screen_area_puts(ge->map, str);
+  }
 }
 
 
