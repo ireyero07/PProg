@@ -503,6 +503,13 @@ void game_actions_move(Game *game, Command *cmd)
       return;
     }
 
+    if (strcmp(arg, "up") == 0 || strcmp(arg, "u") == 0) {
+      player_set_floor(player, player_get_floor(player) + 1);
+    }
+    else if (strcmp(arg, "down") == 0 || strcmp(arg, "d") == 0) {
+      player_set_floor(player, player_get_floor(player) - 1);
+    }
+
     game_set_player_location(game, current_id, player_get_id(player));
     space_set_discovered(game_get_space(game, current_id), TRUE);
 

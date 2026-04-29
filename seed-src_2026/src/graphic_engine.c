@@ -26,7 +26,7 @@
  * ~        |                                     |        ~
  * ~        |                PLY                  |        ~
  * ~        |                                     |        ~
- * ~       <| CHR CHR CHR CHR CHR CHR CHR CHR CHE |>       ~ 
+ * ~       <| CHR CHR CHR CHR CHR CHR CHR CHR CHE |>       ~
  * ~        | CHR CHR CHR CHR CHR CHR CHR CHR CHE |        ~
  * ~        |                                     |        ~
  * ~        | OBJ                                 |        ~
@@ -60,7 +60,7 @@
 #define WIDTH_MAP 57  /*!< Width of the map area in characters */
 #define WIDTH_DES 59  /*!< Width of the description area in characters */
 #define WIDTH_BAN 12  /*!< Width of the banner area in characters */
-#define HEIGHT_MAP 38 /*!< Height of the map area in lines */
+#define HEIGHT_MAP 34 /*!< Height of the map area in lines */
 #define HEIGHT_BAN 1  /*!< Height of the banner area in lines */
 #define HEIGHT_HLP 3  /*!< Height of the help area in lines */
 #define HEIGHT_FDB 3  /*!< Height of the feedback area in lines */
@@ -109,7 +109,7 @@ void graphic_engine_destroy(Graphic_engine *ge) {
   free(ge);
 }
 
-void get_space_symbol(char *dest, Space *space, int is_player) {
+void graphic_engine_get_space_symbol(char *dest, Space *space, int is_player) {
   if (!space || space_get_discovered(space) == FALSE) {
     strcpy(dest, "   ");
   } else if (is_player) {
@@ -119,7 +119,7 @@ void get_space_symbol(char *dest, Space *space, int is_player) {
   }
 }
 
-void get_vertical_arrow(char *dest, Game *game, Id from, Id to, Direction dir) {
+void graphic_engine_get_vertical_arrow(char *dest, Game *game, Id from, Id to, Direction dir) {
   if (to != NO_ID) {
     if (game_connection_is_open(game, from, dir) == TRUE) {
       strcpy(dest, "|");
@@ -131,7 +131,7 @@ void get_vertical_arrow(char *dest, Game *game, Id from, Id to, Direction dir) {
   }
 }
 
-void get_horizontal_arrow(char *dest, Game *game, Id from, Id to, Direction dir) {
+void graphic_engine_get_horizontal_arrow(char *dest, Game *game, Id from, Id to, Direction dir) {
   if (to != NO_ID) {
     if (game_connection_is_open(game, from, dir) == TRUE) {
       strcpy(dest, "--");
@@ -143,7 +143,7 @@ void get_horizontal_arrow(char *dest, Game *game, Id from, Id to, Direction dir)
   }
 }
 
-void get_up_arrow(char *dest, Game *game, Id from, Id to) {
+void graphic_engine_get_up_arrow(char *dest, Game *game, Id from, Id to) {
   if (to != NO_ID) {
     if (game_connection_is_open(game, from, UP) == TRUE) {
       strcpy(dest, "^");
@@ -155,7 +155,7 @@ void get_up_arrow(char *dest, Game *game, Id from, Id to) {
   }
 }
 
-void get_down_arrow(char *dest, Game *game, Id from, Id to) {
+void graphic_engine_get_down_arrow(char *dest, Game *game, Id from, Id to) {
   if (to != NO_ID) {
     if (game_connection_is_open(game, from, DOWN) == TRUE) {
       strcpy(dest, "v");
@@ -188,24 +188,24 @@ void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act, Id id_no
     gdesc[i][GDESC_LENGTH] = '\0';
   }
 
-  get_space_symbol(act_symbol,   space_act,   1);
-  get_space_symbol(north_symbol, space_north, 0);
-  get_space_symbol(south_symbol, space_south, 0);
-  get_space_symbol(west_symbol,  space_west,  0);
-  get_space_symbol(east_symbol,  space_east,  0);
+  graphic_engine_get_space_symbol(act_symbol,   space_act,   1);
+  graphic_engine_get_space_symbol(north_symbol, space_north, 0);
+  graphic_engine_get_space_symbol(south_symbol, space_south, 0);
+  graphic_engine_get_space_symbol(west_symbol,  space_west,  0);
+  graphic_engine_get_space_symbol(east_symbol,  space_east,  0);
 
-  get_vertical_arrow(north_arrow, game, id_act, id_north, N);
-  get_vertical_arrow(south_arrow, game, id_act, id_south, S);
+  graphic_engine_get_vertical_arrow(north_arrow, game, id_act, id_north, N);
+  graphic_engine_get_vertical_arrow(south_arrow, game, id_act, id_south, S);
 
-  get_horizontal_arrow(west_arrow, game, id_act, id_west, W);
-  get_horizontal_arrow(east_arrow, game, id_act, id_east, E);
+  graphic_engine_get_horizontal_arrow(west_arrow, game, id_act, id_west, W);
+  graphic_engine_get_horizontal_arrow(east_arrow, game, id_act, id_east, E);
 
-  get_up_arrow(up_arrow, game, id_act, id_up);
-  get_down_arrow(down_arrow, game, id_act, id_down);
+  graphic_engine_get_up_arrow(up_arrow, game, id_act, id_up);
+  graphic_engine_get_down_arrow(down_arrow, game, id_act, id_down);
 
   sprintf(str, "  +------------------+---------------------+----------+");
   screen_area_puts(ge->map, str);
-  sprintf(str, "  |   Mini Map       | %-20s| Floor:%3d|", space_get_name(space_act), (int)(id_act / 100));
+  sprintf(str, "  |   Mini Map       | %-20s| Floor:%3d|", space_get_name(space_act), player_get_floor(game_get_player(game)));
   screen_area_puts(ge->map, str);
   sprintf(str, "  +------------------+---------------------+----------+");
   screen_area_puts(ge->map, str);
@@ -213,7 +213,7 @@ void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act, Id id_no
   screen_area_puts(ge->map, str);
   sprintf(str, "  |        %s         | %-20s|    %s     |", north_arrow, gdesc[1], up_arrow);
   screen_area_puts(ge->map, str);
-  sprintf(str, "  |  %s%s%s%s%s  | %-20s|           |", west_symbol, west_arrow, act_symbol, east_arrow, east_symbol, gdesc[2]);
+  sprintf(str, "  |  %s%s%s%s%s   | %-20s|          |", west_symbol, west_arrow, act_symbol, east_arrow, east_symbol, gdesc[2]);
   screen_area_puts(ge->map, str);
   sprintf(str, "  |        %s         | %-20s|    %s     |", south_arrow, gdesc[3], down_arrow);
   screen_area_puts(ge->map, str);
@@ -438,18 +438,18 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
       }
     } else if (game_get_last_action(game) == ERROR) {
       /* Posibles causas: personaje no existe, no es amigo, no esta en la sala */
-      sprintf(str, "  No puedes hablar con '%s': no esta aqui o no es un aliado.", arg ? arg : "?");
+      sprintf(str, "  No puedes hablar con '%s': no esta aqui o no es un aliado.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == INSPECT) {
     /* El jugador inspecciona un objeto de la sala o de su inventario */
     if (game_get_last_action(game) == OK && desc != NULL && strlen(desc) > 0) {
-      sprintf(str, "  [%s]: %s", arg ? arg : "objeto", desc);
+      sprintf(str, "  [%s]: %s", arg, desc);
       screen_area_puts(ge->map, str);
     } else {
       /* El objeto no existe, no esta en la sala ni en el inventario */
-      sprintf(str, "  No puedes inspeccionar '%s': no lo tienes ni esta aqui.", arg ? arg : "?");
+      sprintf(str, "  No puedes inspeccionar '%s': no lo tienes ni esta aqui.", arg);
       screen_area_puts(ge->map, str);
     }
 
@@ -459,48 +459,48 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
       chr_id = game_get_character_id_by_name(game, arg);
       ch = game_get_character_by_id(game, chr_id);
       if (ch != NULL && character_get_health(ch) <= 0) {
-        sprintf(str, "  Has eliminado a %s!", arg ? arg : "el enemigo");
+        sprintf(str, "  Has eliminado a %s!", arg);
         screen_area_puts(ge->map, str);
       } else {
-        sprintf(str, "  Has atacado a %s. Sigue en pie.", arg ? arg : "el enemigo");
+        sprintf(str, "  Has atacado a %s. Sigue en pie.", arg);
         screen_area_puts(ge->map, str);
       }
     } else {
       /* Posibles causas: no existe, es amigo, ya esta muerto, no esta en la sala */
-      sprintf(str, "  No puedes atacar a '%s': no esta aqui, ya murio, o es un aliado.", arg ? arg : "?");
+      sprintf(str, "  No puedes atacar a '%s': no esta aqui, ya murio, o es un aliado.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == TAKE) {
     /* El jugador coge un objeto de la sala actual */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  Has cogido '%s' y lo llevas en el inventario.", arg ? arg : "el objeto");
+      sprintf(str, "  Has cogido '%s' y lo llevas en el inventario.", arg);
       screen_area_puts(ge->map, str);
     } else {
       /* Posibles causas: no existe en la sala, inventario lleno, objeto no movible */
-      sprintf(str, "  No puedes coger '%s': no esta aqui o el inventario esta lleno.", arg ? arg : "?");
+      sprintf(str, "  No puedes coger '%s': no esta aqui o el inventario esta lleno.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == DROP) {
     /* El jugador suelta un objeto de su inventario en la sala actual */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  Has soltado '%s' en el suelo.", arg ? arg : "el objeto");
+      sprintf(str, "  Has soltado '%s' en el suelo.", arg);
       screen_area_puts(ge->map, str);
     } else {
       /* El jugador no lleva ese objeto */
-      sprintf(str, "  No puedes soltar '%s': no lo llevas encima.", arg ? arg : "?");
+      sprintf(str, "  No puedes soltar '%s': no lo llevas encima.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == USE) {
     /* El jugador usa un objeto del inventario (sobre si mismo o sobre un personaje) */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  Has usado '%s'. Efecto aplicado.", arg ? arg : "el objeto");
+      sprintf(str, "  Has usado '%s'. Efecto aplicado.", arg);
       screen_area_puts(ge->map, str);
     } else {
       /* Posibles causas: no lo lleva, el objetivo no esta en la sala, sintaxis erronea */
-      sprintf(str, "  No puedes usar '%s': no lo tienes, el objetivo no esta aqui o sintaxis incorrecta.", arg ? arg : "?");
+      sprintf(str, "  No puedes usar '%s': no lo tienes, el objetivo no esta aqui o sintaxis incorrecta.", arg);
       screen_area_puts(ge->map, str);
     }
 
@@ -517,29 +517,29 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
   } else if (last_cmd == RECRUIT) {
     /* El jugador recluta un personaje amigo de la sala para que le siga */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  %s ahora te sigue. (%d aliado(s) contigo)", arg ? arg : "El personaje", n_followers);
+      sprintf(str, "  %s ahora te sigue. (%d aliado(s) contigo)", arg, n_followers);
       screen_area_puts(ge->map, str);
     } else {
       /* Posibles causas: no es amigo, no esta en la sala, ya sigue a alguien, no existe */
-      sprintf(str, "  No puedes reclutar a '%s': no esta aqui, ya te sigue o no es un aliado.", arg ? arg : "?");
+      sprintf(str, "  No puedes reclutar a '%s': no esta aqui, ya te sigue o no es un aliado.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == ABANDON) {
     /* El jugador abandona a uno de sus seguidores */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  %s ya no te sigue. Lo has dejado atras.", arg ? arg : "El personaje");
+      sprintf(str, "  %s ya no te sigue. Lo has dejado atras.", arg);
       screen_area_puts(ge->map, str);
     } else {
       /* El personaje indicado no estaba siguiendo al jugador */
-      sprintf(str, "  '%s' no te estaba siguiendo.", arg ? arg : "?");
+      sprintf(str, "  '%s' no te estaba siguiendo.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == MOVE) {
     if (game_get_last_action(game) == ERROR) {
       /* La direccion esta bloqueada, no existe o es invalida */
-      sprintf(str, "  No puedes moverte hacia '%s': camino bloqueado o no existe.", arg ? arg : "esa direccion");
+      sprintf(str, "  No puedes moverte hacia '%s': camino bloqueado o no existe.", arg);
       screen_area_puts(ge->map, str);
     } else {
       screen_area_puts(ge->map, "  Te has movido correctamente.");
@@ -724,8 +724,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   /* Paint in the help area */
   screen_area_clear(ge->help);
   screen_area_puts(ge->help, " Comandos disponibles:");
-  screen_area_puts(ge->help, "  move/m <n|s|e|w|u|d>  take/t <obj>  drop/d <obj>  attack/a <chr>  chat/c <chr>  inspect/i <obj>");
-  screen_area_puts(ge->help, "  recruit/r <chr>  abandon/ab <chr>  use/u <obj> [over <chr>]  open/o <lnk> with <obj>  exit/e");
+  screen_area_puts(ge->help, "  move/m <n|s|e|w|u|d> | take/t <obj> | drop/d <obj> | attack/a <chr> | chat/c <chr> | inspect/i <obj> ");
+  screen_area_puts(ge->help, "  recruit/r <chr> | abandon/ab <chr> | use/u <obj> [over <chr>] | open/o <lnk> with <obj> | exit/e");
 
   /* Paint in the feedback area */
   screen_area_clear(ge->feedback);
