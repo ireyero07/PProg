@@ -351,7 +351,7 @@ void game_actions_attack(Game *game, Command *cmd)
   if (game_get_deterministic(game))
   {
     /* siempre hacer daño al enemigo */
-    character_set_health(enemy, character_get_health(enemy) - attackers);
+    character_set_health(enemy, character_get_health(enemy) - attackers * 10);
   }
   else
   {
@@ -363,7 +363,7 @@ void game_actions_attack(Game *game, Command *cmd)
       if (random_attacker == 0)
       {
         /* Damage the player */
-        player_set_health(player, player_get_health(player) - 1*10); /*I add a x10 because of the increase of the p_health*/
+        player_set_health(player, player_get_health(player) - 1 * 10);
       }
       else
       {
@@ -371,7 +371,7 @@ void game_actions_attack(Game *game, Command *cmd)
         follower = game_get_nth_follower(game, player_get_id(player), random_attacker - 1);
         if (follower)
         {
-          character_set_health(follower, character_get_health(follower) - 1);
+          character_set_health(follower, character_get_health(follower) - 1 * 10);
 
           if (character_get_health(follower) <= 0)
           {
@@ -384,7 +384,7 @@ void game_actions_attack(Game *game, Command *cmd)
     else
     {
       /* daño al enemigo */
-      character_set_health(enemy, character_get_health(enemy) - attackers);
+      character_set_health(enemy, character_get_health(enemy) - attackers * 10);
     }
   }
 

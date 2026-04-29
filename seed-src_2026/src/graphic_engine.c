@@ -60,9 +60,9 @@
 #define WIDTH_MAP 57  /*!< Width of the map area in characters */
 #define WIDTH_DES 59  /*!< Width of the description area in characters */
 #define WIDTH_BAN 12  /*!< Width of the banner area in characters */
-#define HEIGHT_MAP 30 /*!< Height of the map area in lines */
+#define HEIGHT_MAP 38 /*!< Height of the map area in lines */
 #define HEIGHT_BAN 1  /*!< Height of the banner area in lines */
-#define HEIGHT_HLP 2  /*!< Height of the help area in lines */
+#define HEIGHT_HLP 3  /*!< Height of the help area in lines */
 #define HEIGHT_FDB 3  /*!< Height of the feedback area in lines */
 
 /** @brief Graphic engine structure containing all screen areas */
@@ -723,7 +723,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   /* Paint in the help area */
   screen_area_clear(ge->help);
-  screen_area_puts(ge->help, " Comandos: move/m (n,s,e,w,u,d) | take/t | drop/d | attack/a | chat/c | inspect/i | recruit/r | abandon/ab | use/u <obj> [over <chr>] | open/o <lnk> with <obj> | exit/e");
+  screen_area_puts(ge->help, " Comandos disponibles:");
+  screen_area_puts(ge->help, "  move/m <n|s|e|w|u|d>  take/t <obj>  drop/d <obj>  attack/a <chr>  chat/c <chr>  inspect/i <obj>");
+  screen_area_puts(ge->help, "  recruit/r <chr>  abandon/ab <chr>  use/u <obj> [over <chr>]  open/o <lnk> with <obj>  exit/e");
 
   /* Paint in the feedback area */
   screen_area_clear(ge->feedback);
