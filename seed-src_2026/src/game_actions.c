@@ -10,6 +10,7 @@
 
 #include "game_actions.h"
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -646,51 +647,53 @@ void game_actions_abandon(Game *game, Command *cmd)
 /*USE*/
 void game_actions_use(Game *game, Command *cmd)
 {
-  char *token = NULL;
   char c_argument[WORD_SIZE] = "";
+  char lower_arg[WORD_SIZE] = "";
   char obj_name[WORD_SIZE + 1] = "";
   char char_name[WORD_SIZE + 1] = "";
   Bool over_something_else = FALSE;
   Player *player = NULL;
   Character *character = NULL;
   Id object = NO_ID;
+  char *sep = NULL;
+  int i, obj_len;
 
   if (!game || !cmd)
   {
     return;
   }
 
-  strncpy(c_argument, command_get_arg(cmd), WORD_SIZE);
+  strncpy(c_argument, command_get_arg(cmd), WORD_SIZE - 1);
   c_argument[WORD_SIZE - 1] = '\0';
 
-  token = strtok(c_argument, " \n");
-  if (!token)
+  if (c_argument[0] == '\0')
   {
     game_set_last_action(game, ERROR);
     return;
   }
-  strncpy(obj_name, token, WORD_SIZE);
-  obj_name[WORD_SIZE] = '\0';
-  token = strtok(NULL, " \n");
-  if (token == NULL)
+
+  for (i = 0; c_argument[i]; i++)
+    lower_arg[i] = tolower((unsigned char)c_argument[i]);
+  lower_arg[i] = '\0';
+
+  sep = strstr(lower_arg, " over ");
+  if (sep)
   {
-    over_something_else = FALSE;
-  }
-  else if (strcasecmp(token, "over") == 0 || strcasecmp(token, "o") == 0)
-  {
-    token = strtok(NULL, " \n");
-    if (token != NULL)
-    {
-      strncpy(char_name, token, WORD_SIZE);
-      char_name[WORD_SIZE] = '\0';
-      over_something_else = TRUE;
-    }
-    else
-    {
-      over_something_else = FALSE;
-    }
+    obj_len = sep - lower_arg;
+    strncpy(obj_name, c_argument, obj_len);
+    obj_name[obj_len] = '\0';
+    strncpy(char_name, c_argument + obj_len + 6, WORD_SIZE);
+    char_name[WORD_SIZE] = '\0';
+    over_something_else = TRUE;
   }
   else
+  {
+    strncpy(obj_name, c_argument, WORD_SIZE);
+    obj_name[WORD_SIZE] = '\0';
+    over_something_else = FALSE;
+  }
+
+  if (obj_name[0] == '\0')
   {
     game_set_last_action(game, ERROR);
     return;
@@ -751,54 +754,48 @@ void game_actions_use(Game *game, Command *cmd)
 /*OPEN*/
 void game_actions_open(Game *game, Command *cmd)
 {
-  char *token = NULL;
   char c_argument[WORD_SIZE] = "";
+  char lower_arg[WORD_SIZE] = "";
   char obj_name[WORD_SIZE + 1] = "";
   char link_name[WORD_SIZE + 1] = "";
   Player *player = NULL;
   Link *link = NULL;
   Id object = NO_ID;
+  char *sep = NULL;
+  int i, link_len;
 
   if (!game || !cmd)
   {
     return;
   }
 
-  strncpy(c_argument, command_get_arg(cmd), WORD_SIZE);
+  strncpy(c_argument, command_get_arg(cmd), WORD_SIZE - 1);
+  c_argument[WORD_SIZE - 1] = '\0';
 
-  /*Splits the command argument to get the object name and the character name*/
-  token = strtok(c_argument, " \n");
-  if (!token)
+  for (i = 0; c_argument[i]; i++)
+    lower_arg[i] = tolower((unsigned char)c_argument[i]);
+  lower_arg[i] = '\0';
+
+  sep = strstr(lower_arg, " with ");
+  if (sep)
+  {
+    link_len = sep - lower_arg;
+    strncpy(link_name, c_argument, link_len);
+    link_name[link_len] = '\0';
+    strncpy(obj_name, c_argument + link_len + 6, WORD_SIZE);
+    obj_name[WORD_SIZE] = '\0';
+  }
+  else
   {
     game_set_last_action(game, ERROR);
     return;
   }
 
-  strncpy(link_name, token, WORD_SIZE);
-  link_name[WORD_SIZE] = '\0';
-
-  token = strtok(NULL, " \n");
-  if (token == NULL)
+  if (link_name[0] == '\0' || obj_name[0] == '\0')
   {
     game_set_last_action(game, ERROR);
     return;
   }
-
-  if (strcasecmp(token, "with") != 0 && strcasecmp(token, "w") != 0)
-  {
-    game_set_last_action(game, ERROR);
-    return;
-  }
-
-  token = strtok(NULL, " \n");
-  if (token == NULL)
-  {
-    game_set_last_action(game, ERROR);
-    return;
-  }
-  strncpy(obj_name, token, WORD_SIZE);
-  obj_name[WORD_SIZE] = '\0';
-  token = strtok(NULL, " \n");
 
   player = game_get_player(game);
   if (player == NULL)
