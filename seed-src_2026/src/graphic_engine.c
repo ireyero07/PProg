@@ -555,7 +555,7 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
 
   if (n_enemies > 0) {
     /* Hay enemigos en la sala: pueden atacar aleatoriamente cada turno */
-    sprintf(str, "  [!] %d enemigo(s) en la sala. Pueden atacarte cada turno.", n_enemies);
+    sprintf(str, "  [!] %d enemigo(s) en la sala. Pueden atacarte \ncada turno.", n_enemies);
     screen_area_puts(ge->map, str);
   } else {
     screen_area_puts(ge->map, "  Sin enemigos en esta sala.");
@@ -563,13 +563,13 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
 
   if (player_hp > 0 && player_hp <= 30) {
     /* Salud critica: el jugador deberia usar un objeto curativo o huir */
-    sprintf(str, "  [!!] Salud critica: %d HP. Usa un objeto curativo o huye.", player_hp);
+    sprintf(str, "  [!!] Salud critica: %d HP. Usa un objeto curativo \no huye.", player_hp);
     screen_area_puts(ge->map, str);
   }
 
   if (n_followers > 0) {
     /* Los seguidores acompañan al jugador y ayudan en el combate */
-    sprintf(str, "  %d aliado(s) contigo. Atacan junto a ti y pueden ser heridos.", n_followers);
+    sprintf(str, "  %d aliado(s) contigo. Atacan junto a ti y pueden ser \nheridos.", n_followers);
     screen_area_puts(ge->map, str);
   }
 }
