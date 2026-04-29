@@ -257,7 +257,7 @@ int game_space_number_of_enemies(Game *game, Id space_id)
     {
       if (character_get_friendly(ch) == FALSE)
       {
-          counter++;
+        counter++;
       }
     }
   }
@@ -293,6 +293,7 @@ Character *game_space_with_boss(Game *game, Space *space) /*We have define that 
   Set *character_set = NULL;
   Id *char_ids = NULL;
   int i, n_characters = 0;
+  char *ch = NULL;
 
   if (game == NULL || space == NULL)
   {
@@ -303,9 +304,13 @@ Character *game_space_with_boss(Game *game, Space *space) /*We have define that 
   n_characters = set_get_n_ids(character_set);
   for (i = 0; i < n_characters; i++)
   {
-    if (character_get_boss(game_get_character(game, char_ids[i])) == TRUE)
+    ch = game_get_character(game, char_ids[i]);
+    if (character_get_boss(ch) == TRUE)
     {
-      return game_get_character(game, char_ids[i]);
+      if (character_get_health(ch) > 0)
+      {
+        return ch;
+      }
     }
   }
   return NULL;
