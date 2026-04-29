@@ -420,7 +420,7 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
       chr_id = game_get_character_id_by_name(game, command_get_arg(game_get_last_command(game)));
       ch = game_get_character_by_id(game, chr_id);
       sprintf(str, " %s said: %s", character_get_name(ch), chat);
-      screen_area_puts(ge->descript, str);
+      screen_area_puts(ge->map, str);
     } else {
       screen_area_puts(ge->map, "       No hay nadie con quien hablar");
     }
@@ -428,7 +428,7 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
   } else if (last_cmd == INSPECT) {
     if (desc != NULL && strlen(desc) > 0 && game_get_last_action(game) == OK) {
       sprintf(str, " The description of %s is: %s", command_get_arg(game_get_last_command(game)), desc);
-      screen_area_puts(ge->descript, str);
+      screen_area_puts(ge->map, str);
     } else {
       screen_area_puts(ge->map, "       No puedes inspeccionar eso");
     }
