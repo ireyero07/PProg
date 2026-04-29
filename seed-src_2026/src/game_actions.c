@@ -57,8 +57,9 @@ void game_actions_drop(Game *game, Command *cmd);
  * @author Jian Feng Yin Chen
  *
  * @param game Pointer to the game to be updated.
+ * @param cmd Pointer to the command that has been entered
  */
-void game_actions_attack(Game *game);
+void game_actions_attack(Game *game, Command *cmd);
 
 /**
  * @brief The player chats with the character if the player is with a character
@@ -155,7 +156,7 @@ Status game_actions_update(Game *game, Command *command)
     break;
 
   case ATTACK:
-    game_actions_attack(game);
+    game_actions_attack(game, command);
     break;
 
   case CHAT:
@@ -295,19 +296,26 @@ void game_actions_drop(Game *game, Command *cmd)
 }
 
 /*ATTACK*/
-void game_actions_attack(Game *game)
+void game_actions_attack(Game *game, Command *cmd)
 {
   Id player_loc = NO_ID;
   Space *space = NULL;
   Id space_id = NO_ID;
   Player *player = NULL;
-  Set *chars_in_space = NULL;
-  Id *id_list = NULL;
-  Character *enemy = NULL, *follower = NULL, *aux=NULL;
-  int roll, num_followers, attackers, random_attacker, n_chars, i;
+  Character *enemy = NULL, *follower = NULL;
+  int roll, num_followers, attackers, random_attacker;
+  const char *enemy_name;
+  Id enemy_id;
 
-  if (!game)
+  if (!game || !cmd)
   {
+    return;
+  }
+
+  enemy_name = command_get_arg(cmd);
+  if (!enemy_name || enemy_name[0] == '\0')
+  {
+    game_set_last_action(game, ERROR);
     return;
   }
 
@@ -327,20 +335,10 @@ void game_actions_attack(Game *game)
     return;
   }
   
-  chars_in_space = game_get_characters_by_space(game, space_id);
-  if (chars_in_space) {
-    id_list = set_get_list_ids(chars_in_space);
-    n_chars = set_get_n_ids(chars_in_space);
-    for (i = 0; i < n_chars; i++) {
-      aux = game_get_character_by_id(game, id_list[i]);
-      if (aux && !character_get_friendly(aux) && character_get_health(aux) > 0) {
-          enemy = aux;
-          break;
-      }
-    }
-  }
+  enemy_id = game_get_character_id_by_name(game, enemy_name);
+  enemy = game_get_character_by_id(game, enemy_id);
 
-  if (!enemy || character_get_friendly(enemy) || character_get_health(enemy) <= 0)
+  if (!enemy || character_get_friendly(enemy) || character_get_health(enemy) <= 0 || character_get_location(enemy) != player_loc)
   {
     game_set_last_action(game, ERROR);
     return;
@@ -675,7 +673,13 @@ void game_actions_use(Game *game, Command *cmd)
   strncpy(obj_name, token, WORD_SIZE);
   obj_name[WORD_SIZE] = '\0';
   token = strtok(NULL, " \n");
-  if (strcasecmp(token, "over") != 0 || strcasecmp(token, "o") != 0)
+  if (token == NULL)
+  {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+  if (strcasecmp(token, "over") != 0 && strcasecmp(token, "o") != 0)
   {
     token = strtok(NULL, " \n");
     if (token == NULL)
@@ -777,7 +781,13 @@ void game_actions_open(Game *game, Command *cmd)
   link_name[WORD_SIZE] = '\0';
 
   token = strtok(NULL, " \n");
-  if (strcasecmp(token, "with") != 0 || strcasecmp(token, "w") != 0)
+  if (token == NULL)
+  {
+    game_set_last_action(game, ERROR);
+    return;
+  }
+
+  if (strcasecmp(token, "with") != 0 && strcasecmp(token, "w") != 0)
   {
     game_set_last_action(game, ERROR);
     return;
