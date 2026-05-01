@@ -541,7 +541,7 @@ int game_rules_if_player_fight_boss_tp_all_players(Game *game)
     Player *aux_player = NULL;
     Id player_pos = NO_ID;
     Id list_p_ids[MAX_PLAYERS];
-    int i, n_players = 0;
+    int i, n_players = 0, teleported = 0;
     if (game == NULL)
     {
         return -1;
@@ -572,10 +572,11 @@ int game_rules_if_player_fight_boss_tp_all_players(Game *game)
                 {
                     return -1;
                 }
+                teleported++;
             }
         }
 
-        return 1;
+        return teleported > 0 ? 1 : 0;
     }
     return 0;
 }
@@ -619,9 +620,6 @@ Status game_rules_run_rules(Game *game)
         int n_chars_r1 = 0, j = 0;
         Character *ch_r1 = NULL;
 
-        sprintf(tmp, "[!] Ataque enemigo (-%d HP) por:", r1);
-        strncat(narrator, tmp, WORD_SIZE - strlen(narrator) - 1);
-
         enemies_set = game_get_characters_by_space(game, game_get_player_location(game));
         if (enemies_set != NULL)
         {
@@ -632,12 +630,14 @@ Status game_rules_run_rules(Game *game)
                 ch_r1 = game_get_character_by_id(game, enemies_ids[j]);
                 if (ch_r1 && character_get_friendly(ch_r1) == FALSE && character_get_health(ch_r1) > 0)
                 {
-                    sprintf(tmp, " %s", character_get_name(ch_r1));
+                    sprintf(tmp, "[!] %s ataca a %s: -%d HP. ",
+                            character_get_name(ch_r1),
+                            player_get_name(game_get_player(game)),
+                            r1);
                     strncat(narrator, tmp, WORD_SIZE - strlen(narrator) - 1);
                 }
             }
         }
-        strncat(narrator, ". ", WORD_SIZE - strlen(narrator) - 1);
     }
 
     char_r2 = game_rules_random_ingredient_following_expires(game, probability_random_ingredient_following_expires);
