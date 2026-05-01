@@ -572,6 +572,17 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
     sprintf(str, "  %d aliado(s) contigo. Atacan junto a ti y pueden ser heridos.", n_followers);
     screen_area_puts(ge->map, str);
   }
+
+  /* ---- Sucesos de game_rules ---- */
+  {
+    char *events = game_get_narrator_msg(game);
+    if (events != NULL && strlen(events) > 0) {
+      screen_area_puts(ge->map, " ");
+      screen_area_puts(ge->map, " Sucesos:");
+      sprintf(str, "  %s", events);
+      screen_area_puts(ge->map, str);
+    }
+  }
 }
 
 

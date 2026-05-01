@@ -37,6 +37,7 @@ struct _Game
   int n_links;                          /*!< Number of links currently in the game */
   Bool finished;                        /*!< Flag that indicates if the game has finished */
   Bool deterministic;                   /*!< Flag that indicates if the game is deterministic */
+  char narrator_msg[WORD_SIZE];         /*!< Message set by game_rules each turn for the narrator */
 };
 
 /**
@@ -89,6 +90,7 @@ Game *game_create()
   game->n_links = 0;
   game->finished = FALSE;
   game->deterministic = FALSE;
+  game->narrator_msg[0] = '\0';
 
   /* ---------------- GAME STATE ---------------- */
 
@@ -1082,6 +1084,23 @@ Bool game_get_deterministic(Game *game)
     return FALSE;
 
   return game->deterministic;
+}
+
+/*-------------------NARRATOR-----------------------*/
+char *game_get_narrator_msg(Game *game)
+{
+  if (!game)
+    return NULL;
+  return game->narrator_msg;
+}
+
+Status game_set_narrator_msg(Game *game, const char *msg)
+{
+  if (!game || !msg)
+    return ERROR;
+  strncpy(game->narrator_msg, msg, WORD_SIZE - 1);
+  game->narrator_msg[WORD_SIZE - 1] = '\0';
+  return OK;
 }
 
 /*-------------------PRINT-----------------------*/
