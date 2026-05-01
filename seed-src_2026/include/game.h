@@ -409,6 +409,16 @@ Bool game_is_any_player_death (Game *game);
 int game_count_followers(Game *game, Id player_id);
 
 /**
+ * @brief It edits an array and ads all the id of the player in the game
+ * @author Gonzalez Hijano, Ivan
+ *
+ * @param game a pointer to the game structure
+ * @param player_ids the array of ids
+ * @return the number of players included in the array
+ */
+int game_get_list_of_player_ids(Game *game, Id *player_ids, int array_size);
+
+/**
  * @brief Adds a link to the game
  * @author Ivan Reyero
  *

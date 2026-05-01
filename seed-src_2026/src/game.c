@@ -233,6 +233,7 @@ int game_space_number_of_enemies(Game *game, Id space_id)
   Id *id_list = NULL;
   Set *characters = NULL;
   int n_ids, counter = 0;
+  Character *ch = NULL;
 
   if (game == NULL || space_id == NO_ID)
   {
@@ -246,16 +247,20 @@ int game_space_number_of_enemies(Game *game, Id space_id)
 
   if ((characters = game_get_characters_by_space(game, space_id)) == NULL)
   {
-    return 0;
+    return -1;
   }
 
   id_list = set_get_list_ids(characters);
   n_ids = set_get_n_ids(characters);
   for (i = 0; i < n_ids; i++)
   {
-    if (character_get_friendly(game_get_character_by_id(game, id_list[i])) == FALSE)
+    ch = game_get_character_by_id(game, id_list[i]);
+    if (character_get_health(ch) > 0)
     {
-      counter++;
+      if (character_get_friendly(ch) == FALSE)
+      {
+        counter++;
+      }
     }
   }
   return counter;
@@ -290,6 +295,7 @@ Character *game_space_with_boss(Game *game, Space *space) /*We have define that 
   Set *character_set = NULL;
   Id *char_ids = NULL;
   int i, n_characters = 0;
+  Character *ch = NULL;
 
   if (game == NULL || space == NULL)
   {
@@ -300,9 +306,13 @@ Character *game_space_with_boss(Game *game, Space *space) /*We have define that 
   n_characters = set_get_n_ids(character_set);
   for (i = 0; i < n_characters; i++)
   {
-    if (character_get_boss(game_get_character(game, char_ids[i])) == TRUE)
+    ch = game_get_character(game, char_ids[i]);
+    if (character_get_boss(ch) == TRUE)
     {
-      return game_get_character(game, char_ids[i]);
+      if (character_get_health(ch) > 0)
+      {
+        return ch;
+      }
     }
   }
   return NULL;
@@ -803,6 +813,17 @@ int game_count_followers(Game *game, Id player_id)
     }
   }
   return count;
+}
+
+int game_get_list_of_player_ids(Game *game, Id *player_ids, int array_size){
+  int i=0;
+  if(game==NULL || player_ids==NULL || array_size<0){
+    return -1;
+  }
+  for(i=0; (i<game->n_players)&&(i<array_size); i++){
+     player_ids[i]=player_get_id(game->players[i]);
+  }
+  return i;
 }
 
 /*----------------------LINK--------------------------*/

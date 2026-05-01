@@ -27,6 +27,7 @@ struct _Player
   char name[WORD_SIZE + 1];         /*!< Name of the player */
   Id location;                      /*!< Space where the player is located */
   Inventory *backpack;              /*!< Inventory of the player */
+  int floor;                        /*!< Floor where the player is located */
 };
 
 /**
@@ -58,7 +59,7 @@ Player *player_create(Id id, int max_objs)
     free(newPlayer);
     return NULL;
   }
-
+  newPlayer->floor = 1;
   return newPlayer;
 }
 
@@ -205,6 +206,17 @@ Status player_set_gdesc(Player *player, char *gdesc)
   return OK;
 }
 
+int player_get_floor(Player *player) {
+  if (!player) return -1;
+  return player->floor;
+}
+
+Status player_set_floor(Player *player, int floor) {
+  if (!player) return ERROR;
+  player->floor = floor;
+  return OK;
+}
+
 /**
  * @brief It prints the player information
  */
@@ -228,6 +240,8 @@ Status player_print(Player *player)
   fprintf(stdout, "---> Health: %d\n", player->health);
 
   fprintf(stdout, "---> gdesc: %s\n", player->gdesc);
+
+  fprintf(stdout, "---> Floor: %d\n", player->floor);
 
   return OK;
 }

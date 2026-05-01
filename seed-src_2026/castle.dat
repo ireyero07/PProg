@@ -1,32 +1,5 @@
 #p:11|Chef|C#]|51|100|10|
 
-
-#c:21|Lettuce|\M/|54|60|1|A little bit of green to trick the body|FALSE|
-#c:22|Tomato|(^)|58|60|1|Fresh, recently cut slices|FALSE|
-#c:23|Bread|(=)|51|50|1|I'm the one who puts the rest of the food together|FALSE|
-#c:24|Cheese|(:)|57|70|1|I'm better when I'm melted|FALSE|
-#c:25|Bacon|/=/|511|70|1|Bacon frito, bacon bacon frito, cojo el bacon y lo frio un poquito|FALSE|
-#c:26|Ham|(>3|514|90|1|I am an Iberian ham, a truly Iberian ham|FALSE|
-
-#c:27|Chest|[-]|519|5|1|Take some objects that will help you on your adventure|FALSE|
-#c:28|Trap Chest|[-]|519|5|0|Your greed will be your downfall|FALSE|
-
-#c:29|Ant|0oo|519|20|0|Stop right there, intruder!|FALSE|
-#c:210|Spider|-oO|53|40|0|You'll be a wonderful meal for my babies|FALSE|
-#c:211|Cockroach|-T-|52|20|0|La cucaracha, la cucarcha... No mames wey, I didn't learn the whole song|FALSE|
-#c:212|Cockroach King|-M-|55|70|0|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|TRUE|
-
-#c:213|Ratatta|.=-|56|40|0|Ratatta|FALSE|
-#c:214|Raticate|*=-|59|50|0|Raticate|FALSE|
-#c:215|Ratatouille|*^-|519|3|0|My brothers don't have enough brain cells to say anything other than their name|FALSE|
-#c:216|Ratatouille King| M |60|90|0|Give me your cheese or you will suffer from my ratatouille wrath|TRUE|
-
-#c:217|Dishwasher|1o.|512|60|0|Stop right there you dirty punk, I'll drown you in soapy water|FALSE|
-#c:218|Chef|4o.|519|1|0||Surrender or I'll cut you into small pieces|FALSE|
-#c:219|Master Chef|4^*|513|70|0|The main course will be you grilled to perfection|FALSE|
-#c:220|Fat Michelin Chef|4M*|515|200|0|You are so cooked for challenge me to a duel, I will crush you, literally|TRUE|
-
-
 #l:31|Entry North|51|52|0|1|
 #l:32|Barrels South|52|51|1|1|
 
@@ -92,6 +65,32 @@
 #s:517|Staircase-mid| /\   ._!| !! ._!  |____!____| !! !_.  | \/   !_ |
 #s:518|Staircase-bot| /\   ._!| !! ._!  |____!____|         |         |
 #s:519|Auxiliar Space|         |         |         |         |         |
+
+
+#c:21|Lettuce|\M/|54|60|1|A little bit of green to trick the body|FALSE|
+#c:22|Tomato|(^)|58|60|1|Fresh, recently cut slices|FALSE|
+#c:23|Bread|(=)|51|50|1|I'm the one who puts the rest of the food together|FALSE|
+#c:24|Cheese|(:)|57|70|1|I'm better when I'm melted|FALSE|
+#c:25|Bacon|/=/|511|70|1|Bacon frito, bacon bacon frito, cojo el bacon y lo frio un poquito|FALSE|
+#c:26|Ham|(>3|514|90|1|I am an Iberian ham, a truly Iberian ham|FALSE|
+
+#c:27|Chest|[-]|519|5|1|Take some objects that will help you on your adventure|FALSE|
+#c:28|Trap Chest|[-]|519|5|0|Your greed will be your downfall|FALSE|
+
+#c:29|Ant|0oo|519|20|0|Stop right there, intruder!|FALSE|
+#c:210|Spider|-oO|53|40|0|You'll be a wonderful meal for my babies|FALSE|
+#c:211|Cockroach|-T-|52|20|0|La cucaracha, la cucarcha... No mames wey, I didn't learn the whole song|FALSE|
+#c:212|Cockroach King|-M-|55|70|0|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|TRUE|
+
+#c:213|Ratatta|.=-|56|40|0|Ratatta|FALSE|
+#c:214|Raticate|*=-|59|50|0|Raticate|FALSE|
+#c:215|Ratatouille|*^-|519|3|0|My brothers don't have enough brain cells to say anything other than their name|FALSE|
+#c:216|Ratatouille King| M |60|90|0|Give me your cheese or you will suffer from my ratatouille wrath|TRUE|
+
+#c:217|Dishwasher|1o.|512|60|0|Stop right there you dirty punk, I'll drown you in soapy water|FALSE|
+#c:218|Chef|4o.|519|1|0||Surrender or I'll cut you into small pieces|FALSE|
+#c:219|Master Chef|4^*|513|70|0|The main course will be you grilled to perfection|FALSE|
+#c:220|Fat Michelin Chef|4M*|515|200|0|You are so cooked for challenge me to a duel, I will crush you, literally|TRUE|
 
 
 #o:601|Old Wooden Chest|52|A rotten chest that stays in its place|0|0|612|0|

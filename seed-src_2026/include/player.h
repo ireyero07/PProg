@@ -171,6 +171,25 @@ const char* player_get_gdesc(Player* player);
 Status player_set_gdesc(Player* player, char* gdesc);
 
 /**
+ * @brief It gets the floor where the player is located
+ * @author Ivan Reyero
+ *
+ * @param player a pointer to the player
+ * @return the floor where the player is located
+ */
+int player_get_floor(Player *player);
+
+/**
+ * @brief It sets the floor where the player is located
+ * @author Ivan Reyero
+ *
+ * @param player a pointer to the player
+ * @param floor the floor where the player is located
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status player_set_floor(Player *player, int floor);
+
+/**
  * @brief It prints the player information
  * @author Jian Feng Yin Chen
  *
