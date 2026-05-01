@@ -271,6 +271,7 @@ Status game_rules_open_doors_when_boss_dies(Game *game)
     {
         return OK;
     }
+    /*como los tepeamos a un id aux los bosses cuando mueren nunca se ejecuta el if (cambiarlo)*/
     if (character_get_health(boss) <= 0)
     {
         for (i = 0; i < N_DIRECTIONS; i++)
