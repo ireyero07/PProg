@@ -680,7 +680,7 @@ Status game_rules_run_rules(Game *game)
     }
     if (r5 > 0)
     {
-        sprintf(tmp, "[!] Mochila llena: el peso te cuesta %d HP. ", r5);
+        sprintf(tmp, "[!] Mochila llena: daño cervical %d HP. ", r5);
         strncat(narrator, tmp, WORD_SIZE - strlen(narrator) - 1);
     }
 
