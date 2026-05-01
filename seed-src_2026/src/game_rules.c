@@ -728,7 +728,7 @@ Status game_rules_run_rules(Game *game)
     }
     if (r7 == 1)
     {
-        strncat(narrator, "[!] Todos los jugadores son teletransportados a tu posicion. ", WORD_SIZE - strlen(narrator) - 1);
+        strncat(narrator, "[!] Todos los jugadores son teletransportados a tu       posicion. ", WORD_SIZE - strlen(narrator) - 1);
     }
 
     game_set_narrator_msg(game, narrator);
