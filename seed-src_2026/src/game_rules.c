@@ -252,10 +252,13 @@ Character *game_rules_random_ingredient_following_expires(Game *game, int probab
 
 Status game_rules_open_doors_when_boss_dies(Game *game)
 {
-    Character *boss = NULL;
+    Character *ch = NULL;
     Id player_loc = NO_ID, destination = NO_ID;
+    Id *char_ids = NULL;
     Link *link = NULL;
-    int i = 0;
+    Set *character_set = NULL;
+    int i = 0, n_characters = 0;
+    Bool boss_dead = FALSE;
 
     if (game == NULL)
     {
@@ -266,26 +269,36 @@ Status game_rules_open_doors_when_boss_dies(Game *game)
     {
         return ERROR;
     }
-    boss = game_space_with_boss(game, game_get_space(game, player_loc));
-    if (boss == NULL)
+
+    character_set = space_get_character(game_get_space(game, player_loc));
+    char_ids = set_get_list_ids(character_set);
+    n_characters = set_get_n_ids(character_set);
+    for (i = 0; i < n_characters; i++)
+    {
+        ch = game_get_character(game, char_ids[i]);
+        if (ch != NULL && character_get_boss(ch) == TRUE && character_get_health(ch) <= 0)
+        {
+            boss_dead = TRUE;
+            break;
+        }
+    }
+
+    if (!boss_dead)
     {
         return OK;
     }
-    /*como los tepeamos a un id aux los bosses cuando mueren nunca se ejecuta el if (cambiarlo)*/
-    if (character_get_health(boss) <= 0)
+
+    for (i = 0; i < N_DIRECTIONS; i++)
     {
-        for (i = 0; i < N_DIRECTIONS; i++)
+        destination = game_get_link_destination(game, player_loc, i);
+        link = game_get_link(game, player_loc, destination);
+        if (link == NULL)
         {
-            destination = game_get_link_destination(game, player_loc, i);
-            link = game_get_link(game, player_loc, destination);
-            if (link == NULL)
-            {
-                continue;
-            }
-            if (link_set_open(link, TRUE) == ERROR)
-            {
-                return ERROR;
-            }
+            continue;
+        }
+        if (link_set_open(link, TRUE) == ERROR)
+        {
+            return ERROR;
         }
     }
 
