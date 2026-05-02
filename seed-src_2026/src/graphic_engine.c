@@ -669,7 +669,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     obj_loc = game_get_object_location(game, object_get_id(obj));
     obj_space = game_get_space(game, obj_loc);
     if (obj_space && space_get_discovered(obj_space) == TRUE) {
-      sprintf(str, " %s (loc:%ld)", object_get_name(obj), obj_loc);
+      sprintf(str, "Location: %s | %s", space_get_name(obj_space), object_get_name(obj));
       screen_area_puts(ge->descript, str);
     }
   }
@@ -685,7 +685,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     ch_space = game_get_space(game, character_get_location(ch));
     if (ch_space && space_get_discovered(ch_space) == TRUE) {
       const char *type = character_get_friendly(ch) == TRUE ? "[Aliado]" : "[Enemigo]";
-      sprintf(str, " %s %s %s (loc:%ld hp:%d)", type, character_get_gdesc(ch), character_get_name(ch), character_get_location(ch), character_get_health(ch));
+      sprintf(str, "Location: %s | [%s] [%dhp] %s %s",space_get_name(game_get_space(game,game_get_character_location(game,ch))) , type, character_get_health(ch),character_get_name(ch),character_get_gdesc(ch));
       screen_area_puts(ge->descript, str);
     }
   }
@@ -697,7 +697,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     for (i = 0; i < n_followers_dsc; i++) {
       fol = game_get_nth_follower(game, (Id)player_id_dsc, i);
       if (!fol) continue;
-      sprintf(str, " %s %s (hp:%d)", character_get_gdesc(fol), character_get_name(fol), character_get_health(fol));
+      sprintf(str, " [%dhp] %s %s", character_get_health(fol), character_get_name(fol), character_get_gdesc(fol));
       screen_area_puts(ge->descript, str);
     }
   }
@@ -706,7 +706,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_puts(ge->descript, "Player:");
 
   if (player) {
-    sprintf(str, "  (loc: %ld, hp:%d)", player_get_location(player), player_get_health(player));
+    sprintf(str, "  Location: %s | [%dhp]", space_get_name(game_get_space(game, game_get_player_location(game))), player_get_health(player));
     screen_area_puts(ge->descript, str);
 
     if (player_get_backpack(player) != NULL) {
@@ -734,9 +734,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   /* Paint in the help area */
   screen_area_clear(ge->help);
-  screen_area_puts(ge->help, " Comandos disponibles:");
-  screen_area_puts(ge->help, "  move/m <n|s|e|w|u|d> | take/t <obj> | drop/d <obj> | attack/a <chr> | chat/c <chr> | inspect/i <obj> ");
-  screen_area_puts(ge->help, "  recruit/r <chr> | abandon/ab <chr> | use/u <obj> [over <chr>] | open/o <lnk> with <obj> | exit/e");
+  screen_area_puts(ge->help, " Comandos disponibles: | Use/u <obj> over <chr> | open/o <lnk> with <obj> |");
+  screen_area_puts(ge->help, "|   Move/m      | Take/t | Drop/d | Attack/a | Chat/c | Inspect/i | Recruit/r | Abandon/ab | exit/e | ");
+  screen_area_puts(ge->help, "| <n|s|e|w|u|d> | <obj>  | <obj>  |  <chr>   | <chr>  |   <obj>   |   <chr>   |   <chr>    |        | ");
 
   /* Paint in the feedback area */
   screen_area_clear(ge->feedback);
