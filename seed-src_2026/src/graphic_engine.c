@@ -478,7 +478,7 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
       screen_area_puts(ge->map, str);
     } else {
       /* Posibles causas: no existe en la sala, inventario lleno, objeto no movible */
-      sprintf(str, "  No puedes coger '%s': no esta aqui o el inventario esta lleno.", arg);
+      sprintf(str, "  No puedes coger '%s': no esta aqui, el inventario esta lleno o el objeto esta dentro de un cofre.", arg);
       screen_area_puts(ge->map, str);
     }
 

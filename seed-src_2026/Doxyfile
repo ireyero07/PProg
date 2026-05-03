@@ -1,4 +1,4 @@
-PROJECT_NAME = "Proyecto de Programacion, I3"
+PROJECT_NAME = "Proyecto de Programacion, I4"
 OUTPUT_DIRECTORY = ./doc
 OPTIMIZE_OUTPUT_FOR_C = YES
 RECURSIVE=NO

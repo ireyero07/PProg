@@ -100,12 +100,12 @@
 #o:605|Golden Chef Chest|514|A heavy golden chest that cannot be moved|0|0|614|0|
 #o:606|Master Chef Trunk|511|The ultimate secret chest|0|0|614|0|
 
-#o:607|First Aid Kit|511|Essential supplies to save your life (inside the chest)|5|1|614|0|
-#o:608|Hot Chicken Soup|514|Delicious broth that restores your energy|2|1|0|0|
-#o:609|Sizzling Tray|57|A burning hot tray with food that requires oven protection to pick up|2|1|617|0|
-#o:610|Fresh Apple|52|A healthy fruit that heals a small amount|1|1|0|0|
-#o:611|Energy Drink|56|Sugar-filled drink for a quick health boost|3|1|0|0|
-#o:611|Energy Drink|59|Sugar-filled drink for a quick health boost|3|1|0|0|
+#o:607|First Aid Kit|511|Essential supplies to save your life (inside the chest)|100|1|614|0|
+#o:608|Hot Chicken Soup|514|Delicious broth that restores your energy|20|1|0|0|
+#o:609|Sizzling Tray|57|A burning hot tray with food that requires oven protection to pick up|20|1|617|0|
+#o:610|Fresh Apple|52|A healthy fruit that heals a small amount|10|1|0|0|
+#o:611|Energy Drink|56|Sugar-filled drink for a quick health boost|30|1|0|0|
+#o:611|Energy Drink|59|Sugar-filled drink for a quick health boost|30|1|0|0|
 
 #o:612|Silver Key|52|A small silver key|0|1|0|0|
 #o:613|Rusty Key|57|An old key covered in oxidation|0|1|0|0|

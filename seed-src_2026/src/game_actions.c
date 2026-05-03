@@ -209,6 +209,7 @@ void game_actions_take(Game *game, Command *cmd)
   Inventory *backpack = NULL;
   Id player_location = NO_ID;
   Id obj_id = NO_ID;
+  Object *object;
   Space *space = NULL;
   const char *object_name;
 
@@ -232,8 +233,9 @@ void game_actions_take(Game *game, Command *cmd)
     return;
   }
   obj_id = game_get_object_id_by_name(game, object_name);
+  object = game_get_object(game, obj_id);
 
-  if (obj_id != NO_ID && space_has_object(space, obj_id) == TRUE)
+  if (obj_id != NO_ID && space_has_object(space, obj_id) == TRUE && (player_has_object(game_get_player(game), object_get_dependency(object))==TRUE || object_get_dependency(object) == NO_ID) && object_get_movable(object) == TRUE)
   {
     backpack = player_get_backpack(game_get_player(game));
     if (inventory_get_number_objects(backpack) >= inventory_get_max_objs(backpack))

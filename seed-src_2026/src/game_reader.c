@@ -206,7 +206,11 @@ Status game_reader_load(Game *game, const char *filename)
       }
 
       toks = strtok(NULL, "|");
-      obj_dependency = atol(toks);
+      if(atol(toks) == 0){
+        obj_dependency = NO_ID;
+      }else{
+        obj_dependency = atol(toks);
+      }
 
       toks = strtok(NULL, "|");
       obj_open = atol(toks);
