@@ -669,12 +669,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     obj_loc = game_get_object_location(game, object_get_id(obj));
     obj_space = game_get_space(game, obj_loc);
     if (obj_space && space_get_discovered(obj_space) == TRUE) {
-      sprintf(str, "Location: %s | %s", space_get_name(obj_space), object_get_name(obj));
+      sprintf(str, "  Location: %s | %s", space_get_name(obj_space), object_get_name(obj));
       screen_area_puts(ge->descript, str);
     }
   }
 
   /* ---------- CHARACTERS ---------- */
+  screen_area_puts(ge->descript, " ");
   screen_area_puts(ge->descript, "Characters:");
 
   for (i = 0; i < game_get_n_characters(game); i++) {
@@ -684,8 +685,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     if (character_get_following(ch) == (Id)player_id_dsc) continue;
     ch_space = game_get_space(game, character_get_location(ch));
     if (ch_space && space_get_discovered(ch_space) == TRUE) {
-      const char *type = character_get_friendly(ch) == TRUE ? "[Aliado]" : "[Enemigo]";
-      sprintf(str, "Location: %s | [%s] [%dhp] %s %s",space_get_name(game_get_space(game,game_get_character_location(game,ch))) , type, character_get_health(ch),character_get_name(ch),character_get_gdesc(ch));
+      const char *type = character_get_friendly(ch) == TRUE ? "Aliado" : "Enemigo";
+      sprintf(str, "  Location: %s | [%s] [%dhp] %s %s",space_get_name(game_get_space(game,game_get_character_location(game,character_get_id(ch)))) , type, character_get_health(ch),character_get_name(ch),character_get_gdesc(ch));
       screen_area_puts(ge->descript, str);
     }
   }
@@ -693,16 +694,18 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   /* ---------- SIGUIENDO ---------- */
   n_followers_dsc = player ? game_count_followers(game, (Id)player_id_dsc) : 0;
   if (n_followers_dsc > 0) {
+    screen_area_puts(ge->descript, " ");
     screen_area_puts(ge->descript, "Siguiendo:");
     for (i = 0; i < n_followers_dsc; i++) {
       fol = game_get_nth_follower(game, (Id)player_id_dsc, i);
       if (!fol) continue;
-      sprintf(str, " [%dhp] %s %s", character_get_health(fol), character_get_name(fol), character_get_gdesc(fol));
+      sprintf(str, "  [%dhp] %s %s", character_get_health(fol), character_get_name(fol), character_get_gdesc(fol));
       screen_area_puts(ge->descript, str);
     }
   }
 
   /* ---------- PLAYER ---------- */
+  screen_area_puts(ge->descript, " ");
   screen_area_puts(ge->descript, "Player:");
 
   if (player) {
@@ -713,12 +716,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       objs = player_get_objects(player);
       n_objs = inventory_get_number_objects(player_get_backpack(player));
       if (n_objs == 0) {
-        screen_area_puts(ge->descript, " No llevas objetos");
+        screen_area_puts(ge->descript, " ");
+        screen_area_puts(ge->descript, "No llevas objetos");
       } else {
         if (n_objs >= inventory_get_max_objs(player_get_backpack(player))) {
-          screen_area_puts(ge->descript, " Inventario: (LLENO)");
+          screen_area_puts(ge->descript, " ");
+          screen_area_puts(ge->descript, "Inventario: (LLENO)");
         } else {
-          screen_area_puts(ge->descript, " Inventario:");
+          screen_area_puts(ge->descript, " ");
+          screen_area_puts(ge->descript, "Inventario:");
         }
         for (i = 0; i < n_objs; i++) {
           sprintf(str, "  %s", object_get_name(game_get_object(game, objs[i])));
