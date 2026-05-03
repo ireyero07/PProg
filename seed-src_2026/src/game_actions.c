@@ -722,44 +722,46 @@ void game_actions_use(Game *game, Command *cmd)
     return;
   }
   /*Use the object*/
-  switch (over_something_else)
-  {
-  case TRUE:
-    character = game_get_character_by_id(game, game_get_character_id_by_name(game, char_name));
-    if (character == NULL || character_get_health(character) <= 0)
+  if(object_get_health(game_get_object(game, object))!=0){
+    switch (over_something_else)
     {
-      game_set_last_action(game, ERROR);
-      return;
-    }
-    if (character_get_location(character) != game_get_player_location(game))
-    {
-      game_set_last_action(game, ERROR);
-      return;
-    }
-    if (character_set_health(character, character_get_health(character) + object_get_health(game_get_object(game, object))) != OK)
-    {
-      game_set_last_action(game, ERROR);
-      return;
-    }
-    player_del_object(player, object);
-    break;
+    case TRUE:
+      character = game_get_character_by_id(game, game_get_character_id_by_name(game, char_name));
+      if (character == NULL || character_get_health(character) <= 0)
+      {
+        game_set_last_action(game, ERROR);
+        return;
+      }
+      if (character_get_location(character) != game_get_player_location(game))
+      {
+        game_set_last_action(game, ERROR);
+        return;
+      }
+      if (character_set_health(character, character_get_health(character) + object_get_health(game_get_object(game, object))) != OK)
+      {
+        game_set_last_action(game, ERROR);
+        return;
+      }
+      player_del_object(player, object);
+      break;
 
-  case FALSE:
+    case FALSE:
 
-    if (player_set_health(player, player_get_health(player) + object_get_health(game_get_object(game, object))) != OK)
-    {
-      game_set_last_action(game, ERROR);
-      return;
+      if (player_set_health(player, player_get_health(player) + object_get_health(game_get_object(game, object))) != OK)
+      {
+        game_set_last_action(game, ERROR);
+        return;
+      }
+      player_del_object(player, object);
+      break;
     }
-    player_del_object(player, object);
-    break;
+
+    game_set_last_action(game, OK);
+  }else {
+    game_set_last_action(game, ERROR);
   }
-
-  game_set_last_action(game, OK);
-
-  return;
+  return; 
 }
-
 /*OPEN*/
 void game_actions_open(Game *game, Command *cmd)
 {
