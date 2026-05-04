@@ -603,7 +603,7 @@ Status game_rules_run_rules(Game *game)
 {
     int r1, probability_random_enemy_attack = 10;
     Character *char_r2 = NULL;
-    int probability_random_ingredient_following_expires = 10;
+    int probability_random_ingredient_following_expires = 5;
     int r3, probability_negative_review = 5;
     int r4, probability_random_object_teleport = 10;
     int r5;
@@ -644,7 +644,7 @@ Status game_rules_run_rules(Game *game)
                 ch_r1 = game_get_character_by_id(game, enemies_ids[j]);
                 if (ch_r1 && character_get_friendly(ch_r1) == FALSE && character_get_health(ch_r1) > 0)
                 {
-                    sprintf(tmp, "[!] %s ataca a %s: -%d HP. ",
+                    sprintf(tmp, "[!] %s attacks %s: -%d HP. ",
                             character_get_name(ch_r1),
                             player_get_name(game_get_player(game)),
                             r1);
@@ -657,7 +657,7 @@ Status game_rules_run_rules(Game *game)
     char_r2 = game_rules_random_ingredient_following_expires(game, probability_random_ingredient_following_expires);
     if (char_r2 != NULL)
     {
-        sprintf(tmp, "[!] %s ha muerto y ya no te sigue. ", character_get_name(char_r2));
+        sprintf(tmp, "[!] %s is dead and he/she's not following you anymore. ", character_get_name(char_r2));
         strncat(narrator, tmp, WORD_SIZE - strlen(narrator) - 1);
     }
 
@@ -673,7 +673,7 @@ Status game_rules_run_rules(Game *game)
     }
     if (r3 > 0)
     {
-        sprintf(tmp, "[!] Mala resena: pierdes %d HP. ", r3);
+        sprintf(tmp, "[!] Bad review: you lose %d HP. ", r3);
         strncat(narrator, tmp, WORD_SIZE - strlen(narrator) - 1);
     }
 
@@ -684,7 +684,7 @@ Status game_rules_run_rules(Game *game)
     }
     if (r4 == 1)
     {
-        strncat(narrator, "[!] Un objeto ha desaparecido misteriosamente de la sala. ", WORD_SIZE - strlen(narrator) - 1);
+        strncat(narrator, "[!] An object has mysteriously disappeared from the room. ", WORD_SIZE - strlen(narrator) - 1);
     }
 
     r5 = game_rules_heavy_backpack_damage(game);
@@ -694,7 +694,7 @@ Status game_rules_run_rules(Game *game)
     }
     if (r5 > 0)
     {
-        sprintf(tmp, "[!] Mochila llena: daño cervical %d HP. ", r5);
+        sprintf(tmp, "[!] Full backpack: cervical damage %d HP. ", r5);
         strncat(narrator, tmp, WORD_SIZE - strlen(narrator) - 1);
     }
 
@@ -715,7 +715,7 @@ Status game_rules_run_rules(Game *game)
         int n_fol_r6 = 0, j = 0;
         Character *fol_r6 = NULL;
 
-        strncat(narrator, "[!] Fuego del jefe final: dano a ti", WORD_SIZE - strlen(narrator) - 1);
+        strncat(narrator, "[!] Final boss fire: damage to you", WORD_SIZE - strlen(narrator) - 1);
 
         player_r6 = game_get_player(game);
         if (player_r6 != NULL)
@@ -742,7 +742,7 @@ Status game_rules_run_rules(Game *game)
     }
     if (r7 == 1)
     {
-        strncat(narrator, "[!] Todos los jugadores son teletransportados a tu       posicion. ", WORD_SIZE - strlen(narrator) - 1);
+        strncat(narrator, "[!] All players are teleported to your position.", WORD_SIZE - strlen(narrator) - 1);
     }
 
     game_set_narrator_msg(game, narrator);

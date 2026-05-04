@@ -366,7 +366,7 @@ void game_actions_attack(Game *game, Command *cmd)
       if (random_attacker == 0)
       {
         /* Damage the player */
-        player_set_health(player, player_get_health(player) - 1 * 10);
+        player_set_health(player, player_get_health(player) - (1 * 10));
       }
       else
       {

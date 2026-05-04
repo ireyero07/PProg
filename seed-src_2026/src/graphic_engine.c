@@ -57,10 +57,10 @@
 #include "player.h"
 #include "inventory.h"
 
-#define WIDTH_MAP 57  /*!< Width of the map area in characters */
-#define WIDTH_DES 59  /*!< Width of the description area in characters */
+#define WIDTH_MAP 70  /*!< Width of the map area in characters */
+#define WIDTH_DES 74  /*!< Width of the description area in characters */
 #define WIDTH_BAN 12  /*!< Width of the banner area in characters */
-#define HEIGHT_MAP 34 /*!< Height of the map area in lines */
+#define HEIGHT_MAP 38 /*!< Height of the map area in lines */
 #define HEIGHT_BAN 1  /*!< Height of the banner area in lines */
 #define HEIGHT_HLP 3  /*!< Height of the help area in lines */
 #define HEIGHT_FDB 3  /*!< Height of the feedback area in lines */
@@ -205,7 +205,7 @@ void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act, Id id_no
 
   sprintf(str, "  +------------------+---------------------+----------+");
   screen_area_puts(ge->map, str);
-  sprintf(str, "  |   Mini Map       | %-20s| Floor:%3d|", space_get_name(space_act), player_get_floor(game_get_player(game)));
+  sprintf(str, "  |   Mini Map       | %-19.19s | Floor: %d |", space_get_name(space_act), player_get_floor(game_get_player(game)));
   screen_area_puts(ge->map, str);
   sprintf(str, "  +------------------+---------------------+----------+");
   screen_area_puts(ge->map, str);
@@ -251,11 +251,9 @@ void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act
   id_west   = game_get_connection(game, id_act, W);
   id_east   = game_get_connection(game, id_act, E);
 
-  /* Obteniendo el player gdesc */
   strncpy(ply, player_get_gdesc(player), MAX_CHR_GDESC);
   ply[MAX_CHR_GDESC] = '\0';
 
-  /* Obteniendo followers*/
   n_followers = game_count_followers(game, player_id);
   if (n_followers > 6) {
     n_followers = 6;
@@ -264,7 +262,6 @@ void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act
     followers[i] = game_get_nth_follower(game, player_id, i);
   }
     
-  /* Obteniendo personajes en el espacio*/
   chr_line1[0] = '\0';
   chr_line2[0] = '\0';
   n_chars = 0;
@@ -288,7 +285,6 @@ void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act
     }
   }
 
-  /* Obteniendo objetos en el espacio*/
   obj_line1[0] = '\0';
   obj_line2[0] = '\0';
   objects = space_get_objects_ids(space_act);
@@ -323,7 +319,6 @@ void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act
     }
   }
 
-  /* miramos si hay conexiones abiertas a izquierda y derecha */
   if (id_west == NO_ID) {
     left_conn = ' ';
   } else if (game_connection_is_open(game, id_act, W)) {
@@ -340,7 +335,6 @@ void graphic_engine_print_actual_space(Graphic_engine *ge, Game *game, Id id_act
     right_conn = 'X';
   }
   space_set_discovered(game_get_space(game,id_act),TRUE);
-  /* Ahora pintamos fila por fila combinando las 3 habitaciones horizontalmente */
   for (i = 0; i < GDESC_LINES + 6; i++) { 
     str[0] = '\0';
     
@@ -424,11 +418,9 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
   n_enemies = game_space_number_of_enemies(game, player_loc);
 
   screen_area_puts(ge->map, "---------------------------------------------------------");
-  screen_area_puts(ge->map, " Accion:");
+  screen_area_puts(ge->map, " Action:");
 
-  /* ---- Mensaje de la accion del jugador ---- */
   if (last_cmd == CHAT) {
-    /* El jugador intenta hablar con un personaje amigo de la sala */
     if (game_get_last_action(game) == OK && chat != NULL && strlen(chat) > 0) {
       chr_id = game_get_character_id_by_name(game, arg);
       ch = game_get_character_by_id(game, chr_id);
@@ -437,148 +429,124 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
         screen_area_puts(ge->map, str);
       }
     } else if (game_get_last_action(game) == ERROR) {
-      /* Posibles causas: personaje no existe, no es amigo, no esta en la sala */
-      sprintf(str, "  No puedes hablar con '%s': no esta aqui o no es un aliado.", arg);
+      sprintf(str, "  You cannot talk to '%s': he/she is not here or he/she is not an ally.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == INSPECT) {
-    /* El jugador inspecciona un objeto de la sala o de su inventario */
     if (game_get_last_action(game) == OK && desc != NULL && strlen(desc) > 0) {
       sprintf(str, "  [%s]: %s", arg, desc);
       screen_area_puts(ge->map, str);
     } else {
-      /* El objeto no existe, no esta en la sala ni en el inventario */
-      sprintf(str, "  No puedes inspeccionar '%s': no lo tienes ni esta aqui.", arg);
+      sprintf(str, "  You cannot inspect '%s': you don't have it and it's not here.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == ATTACK) {
-    /* El jugador ataca a un personaje enemigo de la sala */
     if (game_get_last_action(game) == OK) {
       chr_id = game_get_character_id_by_name(game, arg);
       ch = game_get_character_by_id(game, chr_id);
       if (ch != NULL && character_get_health(ch) <= 0) {
-        sprintf(str, "  Has eliminado a %s!", arg);
+        sprintf(str, "  You have eliminated %s!", arg);
         screen_area_puts(ge->map, str);
       } else {
-        sprintf(str, "  Has atacado a %s. Sigue en pie.", arg);
+        sprintf(str, "  You attacked %s. It's still standing.", arg);
         screen_area_puts(ge->map, str);
       }
     } else {
-      /* Posibles causas: no existe, es amigo, ya esta muerto, no esta en la sala */
-      sprintf(str, "  No puedes atacar a '%s': no esta aqui, ya murio, o es un aliado.", arg);
+      sprintf(str, "  You cannot attack '%s': he/she is not here, he/she is already dead, or he/she is an ally.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == TAKE) {
-    /* El jugador coge un objeto de la sala actual */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  Has cogido '%s' y lo llevas en el inventario.", arg);
+      sprintf(str, "  You've taken '%s' and you have it in your inventory.", arg);
       screen_area_puts(ge->map, str);
     } else {
-      /* Posibles causas: no existe en la sala, inventario lleno, objeto no movible */
-      sprintf(str, "  No puedes coger '%s': no esta aqui, el inventario esta lleno o el objeto esta dentro de un cofre.", arg);
+      sprintf(str, "  You cannot pick up '%s': it's not here, your inventory is full, or the item is inside a chest.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == DROP) {
-    /* El jugador suelta un objeto de su inventario en la sala actual */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  Has soltado '%s' en el suelo.", arg);
+      sprintf(str, "  You dropped '%s' on the ground.", arg);
       screen_area_puts(ge->map, str);
-    } else {
-      /* El jugador no lleva ese objeto */
-      sprintf(str, "  No puedes soltar '%s': no lo llevas encima.", arg);
+    } else {      sprintf(str, "  You can't drop '%s': you don't have it in your inventory.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == USE) {
-    /* El jugador usa un objeto del inventario (sobre si mismo o sobre un personaje) */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  Has usado '%s'. Efecto aplicado.", arg);
+      sprintf(str, "  You have used '%s'. Effect applied.", arg);
       screen_area_puts(ge->map, str);
     } else {
-      /* Posibles causas: no lo lleva, el objetivo no esta en la sala, sintaxis erronea */
-      sprintf(str, "  No puedes usar '%s': no lo tienes, el objetivo no esta aqui o sintaxis incorrecta.", arg);
+      sprintf(str, "  You cannot use '%s': you don't have it, the target is not here, or the syntax is incorrect.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == OPEN) {
-    /* El jugador abre un enlace cerrado usando un objeto del inventario */
     if (game_get_last_action(game) == OK) {
-      screen_area_puts(ge->map, "  Has abierto el camino. Ya puedes pasar.");
+      screen_area_puts(ge->map, "  You've cleared the way. You can go through now.");
     } else {
-      /* Posibles causas: enlace ya abierto, objeto incorrecto, no lo llevas, no pertenece a esta sala */
-      sprintf(str, "  No puedes abrir ese enlace: objeto incorrecto, ya esta abierto o no lo llevas.");
+      sprintf(str, "  You cannot open that link: incorrect object, it is already open, or you do not have it.");
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == RECRUIT) {
-    /* El jugador recluta un personaje amigo de la sala para que le siga */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  %s ahora te sigue. (%d aliado(s) contigo)", arg, n_followers);
+      sprintf(str, "  %s now follows you. (%d allied with you)", arg, n_followers);
       screen_area_puts(ge->map, str);
     } else {
-      /* Posibles causas: no es amigo, no esta en la sala, ya sigue a alguien, no existe */
-      sprintf(str, "  No puedes reclutar a '%s': no esta aqui, ya te sigue o no es un aliado.", arg);
+      sprintf(str, "  You cannot recruit '%s': he is not here, he already follows you, or he is not an ally.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == ABANDON) {
-    /* El jugador abandona a uno de sus seguidores */
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  %s ya no te sigue. Lo has dejado atras.", arg);
+      sprintf(str, "  %s no longer follows you. You've left him behind.", arg);
       screen_area_puts(ge->map, str);
     } else {
-      /* El personaje indicado no estaba siguiendo al jugador */
-      sprintf(str, "  '%s' no te estaba siguiendo.", arg);
+      sprintf(str, "  '%s' wasn't following you.", arg);
       screen_area_puts(ge->map, str);
     }
 
   } else if (last_cmd == MOVE) {
     if (game_get_last_action(game) == ERROR) {
-      /* La direccion esta bloqueada, no existe o es invalida */
-      sprintf(str, "  No puedes moverte hacia '%s': camino bloqueado o no existe.", arg);
+      sprintf(str, "  You cannot move towards '%s': path blocked or does not exist.", arg);
       screen_area_puts(ge->map, str);
     } else {
-      screen_area_puts(ge->map, "  Te has movido correctamente.");
+      screen_area_puts(ge->map, "  You moved correctly.");
     }
 
   } else {
     screen_area_puts(ge->map, " ");
   }
 
-  /* ---- Seccion de Game Rules: estado del entorno tras la accion ---- */
   screen_area_puts(ge->map, " ");
-  screen_area_puts(ge->map, " Entorno:");
+  screen_area_puts(ge->map, " Environment:");
 
   if (n_enemies > 0) {
-    /* Hay enemigos en la sala: pueden atacar aleatoriamente cada turno */
-    sprintf(str, "  [!] %d enemigo(s) en la sala. Pueden atacarte cada        turno.", n_enemies);
+    sprintf(str, "  [!] %d enemy(s) in the room. They can attack you every turn.", n_enemies);
     screen_area_puts(ge->map, str);
   } else {
-    screen_area_puts(ge->map, "  Sin enemigos en esta sala.");
+    screen_area_puts(ge->map, "  No enemies in this room.");
   }
 
   if (player_hp > 0 && player_hp <= 30) {
-    /* Salud critica: el jugador deberia usar un objeto curativo o huir */
-    sprintf(str, "  [!!] Salud critica: %d HP. Usa un objeto curativo o      huye.", player_hp);
+    sprintf(str, "  [!!] Critical state of health: %d HP. Use a healing item or flee.", player_hp);
     screen_area_puts(ge->map, str);
   }
 
   if (n_followers > 0) {
-    /* Los seguidores acompañan al jugador y ayudan en el combate */
-    sprintf(str, "  %d aliado(s) contigo. Atacan junto a ti y pueden ser heridos.", n_followers);
+    sprintf(str, "  %d allies with you. They attack alongside you and can be injured.", n_followers);
     screen_area_puts(ge->map, str);
   }
 
-  /* ---- Sucesos de game_rules ---- */
   {
     char *events = game_get_narrator_msg(game);
     if (events != NULL && strlen(events) > 0) {
       screen_area_puts(ge->map, " ");
-      screen_area_puts(ge->map, " Sucesos:");
+      screen_area_puts(ge->map, " Events:");
       sprintf(str, "  %s", events);
       screen_area_puts(ge->map, str);
     }
@@ -685,7 +653,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     if (character_get_following(ch) == (Id)player_id_dsc) continue;
     ch_space = game_get_space(game, character_get_location(ch));
     if (ch_space && space_get_discovered(ch_space) == TRUE) {
-      const char *type = character_get_friendly(ch) == TRUE ? "Aliado" : "Enemigo";
+      const char *type = character_get_friendly(ch) == TRUE ? "Ally" : "Enemy";
       sprintf(str, "  Location: %s | [%s] [%dhp] %s %s",space_get_name(game_get_space(game,game_get_character_location(game,character_get_id(ch)))) , type, character_get_health(ch),character_get_name(ch),character_get_gdesc(ch));
       screen_area_puts(ge->descript, str);
     }
@@ -695,7 +663,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   n_followers_dsc = player ? game_count_followers(game, (Id)player_id_dsc) : 0;
   if (n_followers_dsc > 0) {
     screen_area_puts(ge->descript, " ");
-    screen_area_puts(ge->descript, "Siguiendo:");
+    screen_area_puts(ge->descript, "Following:");
     for (i = 0; i < n_followers_dsc; i++) {
       fol = game_get_nth_follower(game, (Id)player_id_dsc, i);
       if (!fol) continue;
@@ -717,14 +685,14 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       n_objs = inventory_get_number_objects(player_get_backpack(player));
       if (n_objs == 0) {
         screen_area_puts(ge->descript, " ");
-        screen_area_puts(ge->descript, "No llevas objetos");
+        screen_area_puts(ge->descript, "You do not carry  any object");
       } else {
         if (n_objs >= inventory_get_max_objs(player_get_backpack(player))) {
           screen_area_puts(ge->descript, " ");
-          screen_area_puts(ge->descript, "Inventario: (LLENO)");
+          screen_area_puts(ge->descript, "Inventory: (FULL)");
         } else {
           screen_area_puts(ge->descript, " ");
-          screen_area_puts(ge->descript, "Inventario:");
+          screen_area_puts(ge->descript, "Inventory:");
         }
         for (i = 0; i < n_objs; i++) {
           sprintf(str, "  %s", object_get_name(game_get_object(game, objs[i])));

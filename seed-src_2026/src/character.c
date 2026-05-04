@@ -177,10 +177,15 @@ Status character_set_gdesc(Character *character, char *gdesc)
 
 Status character_set_health(Character *character, int health)
 {
-  if (!character || health < 0)
+  if (!character)
     return ERROR;
 
+
   character->health = health;
+  
+  if(health < 0){
+    character->health = 0;
+  }
   return OK;
 }
 Status character_set_friendly(Character *character, Bool friendly)

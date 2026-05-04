@@ -1,0 +1,124 @@
+#p:11|Chef|C#]|51|100|10|
+#p:12|Grandma|*81|51|100|10|
+
+
+#l:31|Entry North|51|52|0|1|
+#l:32|Barrels South|52|51|1|1|
+
+#l:33|Barrels North|52|54|0|1|
+#l:34|Crates South|54|52|1|1|
+
+#l:35|Barrels East|52|53|2|1|
+#l:36|Pipes West|53|52|3|1|
+
+#l:37|Pipes North|53|55|0|0|
+#l:38|Cockroach King's Taqueria South|55|53|1|1|
+
+#l:39|Cockroach King's Taqueria Up|55|56|4|1|
+#l:310|Corridor Down|56|55|5|1|
+
+#l:311|Corridor North|56|57|0|1|
+#l:312|Kitchen South|57|56|1|1|
+
+#l:313|Kitchen West|57|58|3|1|
+#l:314|Fridge East|58|57|2|1|
+
+#l:315|Kitchen North|57|59|0|1|
+#l:316|Chef Bathroom South|59|57|1|1|
+
+#l:317|Chef Bathroom East|59|510|2|0|
+#l:318|Ratatouille King's Den West|510|59|3|1|
+
+#l:319|Ratatouille King's Den Up|510|511|4|1|
+#l:320|Dining Room Down|511|510|5|1|
+
+#l:321|Dining Room West|511|512|3|1|
+#l:322|Bathroom East|512|511|2|1|
+
+#l:323|Dining Room South|511|513|1|1|
+#l:324|Backyard North|513|511|0|1|
+
+#l:325|Backyard East|513|514|2|1|
+#l:326|Garden West|514|513|3|1|
+
+#l:327|Backyard South|513|515|1|0|
+#l:328|Michelin chef's Room North|515|513|0|1|
+
+
+#s:51|Entry|  _____  | /  !  \ | !  !  ! | ! 0!0 ! |_!__!__!_|
+#s:52|Barrels|  _   _  | / \ / \ | !1! !1! | \_/ \_/ |_!-!_!-!_|
+#s:53|Pipes|_________|_________|______!! | !+! !+! |_!_!_!_!_|
+#s:54|Crates|   ._.   | ._! !   | !_!_!.  | !\/!_!  |_!/\!__!_|
+#s:55|Cockroach King's Taqueria|   ___   | __!_!__ | *=====* | ! 0 0 ! |_*=T-T=*_
+
+#s:56|Corridor|  ./T\.  |.__. .__.|!  ! !()!|! 0! !__!|!__!_____|
+#s:57|Kitchen|!___!____| /_\ 444 |_________|!ooo!    |!!=!! ** |
+#s:58|Fridge|  _____ *|* !!=!!  |  !!=!! *|* !  0!  |__!___!__|
+#s:59|Chef Bathroom|      _  |     ! ! |  ___! ! | (    .' |  )  (   |
+#s:510|Ratatouille King's Den|    M    | *_/0\   | \__  !  |==./  !\ |___!__!\\|
+
+#s:511|Dining Room|  ./T\.  |    *    |!   Y   !|!_=====_!|!!_!!!_!!|
+#s:512|Bathroom|      _  |     ! ! |  ___! ! | (    .' |  )  (   |
+#s:513|Backyard|  _ _ _  |!_!!_!!_!|  _ O _  |( )/ \( )|_ [___] _|
+#s:514|Garden| /\ /\ /\|//\\/\\/\|//\\/\\/\| II II II|_________|
+#s:515|Michelin chef's Room|  !\M/!  |  ! M !. |  !===!!\|  !0.0!!!|mm!\_/!!!|
+
+#s:516|Staircase-top|  ./T\.  |         |_________| !! !_.  | \/   !_ |
+#s:517|Staircase-mid| /\   ._!| !! ._!  |____!____| !! !_.  | \/   !_ |
+#s:518|Staircase-bot| /\   ._!| !! ._!  |____!____|         |         |
+#s:519|Auxiliar Space|         |         |         |         |         |
+
+
+#c:21|Lettuce|\M/|54|60|1|A little bit of green to trick the body|FALSE|
+#c:22|Tomato|(^)|58|60|1|Fresh, recently cut slices|FALSE|
+#c:23|Bread|(=)|51|50|1|I'm the one who puts the rest of the food together|FALSE|
+#c:24|Cheese|(:)|57|70|1|I'm better when I'm melted|FALSE|
+#c:25|Bacon|/=/|511|70|1|Bacon frito, bacon bacon frito, cojo el bacon y lo frio un poquito|FALSE|
+#c:26|Ham|(>3|514|90|1|I am an Iberian ham, a truly Iberian ham|FALSE|
+
+#c:27|Chest|[-]|519|5|1|Take some objects that will help you on your adventure|FALSE|
+#c:28|Trap Chest|[-]|519|5|0|Your greed will be your downfall|FALSE|
+
+#c:29|Ant|0oo|519|20|0|Stop right there, intruder!|FALSE|
+#c:210|Spider|-oO|53|40|0|You'll be a wonderful meal for my babies|FALSE|
+#c:211|Cockroach|-T-|52|20|0|La cucaracha, la cucarcha... No mames wey, I didn't learn the whole song|FALSE|
+#c:212|Cockroach King|-M-|55|70|0|La cucaracha, la cucaracha, ya no puede caminar, porque no tiene, porque le falta, una pata para andar|TRUE|
+
+#c:213|Ratatta|.=-|56|40|0|Ratatta|FALSE|
+#c:214|Raticate|*=-|59|50|0|Raticate|FALSE|
+#c:215|Ratatouille|*^-|519|3|0|My brothers don't have enough brain cells to say anything other than their name|FALSE|
+#c:216|Ratatouille King| M |60|90|0|Give me your cheese or you will suffer from my ratatouille wrath|TRUE|
+
+#c:217|Dishwasher|1o.|512|60|0|Stop right there you dirty punk, I'll drown you in soapy water|FALSE|
+#c:218|Chef|4o.|519|1|0||Surrender or I'll cut you into small pieces|FALSE|
+#c:219|Master Chef|4^*|513|70|0|The main course will be you grilled to perfection|FALSE|
+#c:220|Fat Michelin Chef|4M*|515|200|0|You are so cooked for challenge me to a duel, I will crush you, literally|TRUE|
+
+
+#o:601|Old Wooden Chest|52|A rotten chest that stays in its place|0|0|612|0|
+#o:602|Iron Storage Chest|55|A sturdy iron chest fixed to the floor|0|0|613|0|
+#o:603|Frozen Chest|57|A massive chest bolted inside the freezer|0|0|613|0|
+#o:604|Stone Spice Chest|59|A heavy chest carved out of solid rock|0|0|613|0|
+#o:605|Golden Chef Chest|514|A heavy golden chest that cannot be moved|0|0|614|0|
+#o:606|Master Chef Trunk|511|The ultimate secret chest|0|0|614|0|
+
+#o:607|First Aid Kit|511|Essential supplies to save your life [+100hp](inside the chest)|100|1|614|0|
+#o:608|Hot Chicken Soup|514|Delicious broth that restores your energy[+20hp]|20|1|0|0|
+#o:609|Sizzling Tray|57|A burning hot tray with food that requires oven protection to pick up[+20hp]|20|1|617|0|
+#o:610|Fresh Apple|52|A healthy fruit that heals a small amount[+10hp]|10|1|0|0|
+#o:611|Energy Drink|56|Sugar-filled drink for a quick health boost[+30hp]|30|1|0|0|
+
+#o:612|Silver Key|52|A small silver key|0|1|0|0|
+#o:613|Rusty Key|56|An old key covered in oxidation|0|1|0|0|
+#o:614|Master Key|58|A key to open the most difficult chests (inside the chest)|0|1|0|0|
+
+#o:615|Hammer|55|A tool for taking down doors or windows|0|1|613|317|
+#o:616|Crowbar|52|Used to force open stuck doors or cabinets    (inside the chest)|0|1|612|37|
+#o:617|Oven protection|56|Protective gear needed to handle hot items|0|1|0|0|
+#o:618|Small Screwdriver|514|A tool that you can use to force the lock of a door (inside the chest)|0|1|614|327|
+#o:619|Bottle of water|53|Almost useless [+1hp]|1|1|0|0|
+#o:620|Cup of water|511|Almost useless [+1hp]|1|1|0|0|
+
+#o:621|Poison bottle|55|A bottle of posion that you can throw to enemies[-10hp]|-10|1|0|0|
+#o:622|Venomous bottle|510|An extremely venomous bottle that you can throw to enemies[-15hp]|-10|1|0|0|
+#o:623|Killer grenade|515|A grenade that you can throw to enemies[-30hp]|-10|1|0|0|

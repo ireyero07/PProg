@@ -64,29 +64,53 @@ clean:
 
 #############################################################################
 
-run:
+run1:
 	@echo ">>>>>> Running castle"
-	./castle castle.dat
+	./castle castle1p.dat
 
-runv:
+runv1:
 	@echo ">>>>>> Running castle with valgrind"
-	valgrind --leak-check=full ./castle castle.dat
+	valgrind --leak-check=full ./castle castle1p.dat
 
-run_log:
+run_log1:
 	@echo ">>>>>> Running castle with LOG and valgrind"
-	valgrind --leak-check=full ./castle castle.dat -l output.log
+	valgrind --leak-check=full ./castle castle1p.dat -l output.log
 
-run_deterministic:
+run_deterministic1:
 	@echo ">>>>>> Running castle with deterministic seed and valgrind"
-	valgrind --leak-check=full ./castle castle.dat -d
+	valgrind --leak-check=full ./ castle.dat -d
 
-run_deterministic_with_log:
+run_deterministic_with_log1:
 	@echo ">>>>>> Running castle with deterministic seed, LOG and valgrind"
-	valgrind --leak-check=full ./castle castle.dat -l output.log -d
+	valgrind --leak-check=full ./castle castle1p.dat -l output.log -d
 
-run_cmd:
-	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
-	valgrind --leak-check=full ./castle castle.dat -l game1.log < game1.cmd
+# run_cmd1:
+# 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
+# 	valgrind --leak-check=full ./castle castle1p.dat -l game1.log < game1.cmd
+
+run2:
+	@echo ">>>>>> Running castle"
+	./castle castle2p.dat
+
+runv2:
+	@echo ">>>>>> Running castle with valgrind"
+	valgrind --leak-check=full ./castle castle2p.dat
+
+run_log2:
+	@echo ">>>>>> Running castle with LOG and valgrind"
+	valgrind --leak-check=full ./castle castle2p.dat -l output.log
+
+run_deterministic2:
+	@echo ">>>>>> Running castle with deterministic seed and valgrind"
+	valgrind --leak-check=full ./ castle.dat -d
+
+run_deterministic_with_log2:
+	@echo ">>>>>> Running castle with deterministic seed, LOG and valgrind"
+	valgrind --leak-check=full ./castle castle2p.dat -l output.log -d
+
+# run_cmd2:
+# 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
+# 	valgrind --leak-check=full ./castle castle2p.dat -l game1.log < game1.cmd
 
 run_tests: 
 	./tests.sh 1
