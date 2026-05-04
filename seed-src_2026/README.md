@@ -1,3 +1,4 @@
+~~~
 En el F16, cuando dice "Este argumento será compatible con el de log, pudiendo combinarse ambos en cualquier orden"
 nosotros hemos hecho que no se pueda combinar el orden, es decir, si fueran compatibles, el orden sería: 
 ./executable dataFile -l logFile -d
@@ -280,3 +281,4 @@ FUNCIONALIDADES DEMOSTRADAS EN ESTA GUIA:
   use      -> Fresh Apple, Sizzling Tray, Energy Drink, First Aid Kit, Hot Chicken Soup
   open     -> Pipes North, Chef Bathroom East, Backyard South
 =======================================================
+~~~

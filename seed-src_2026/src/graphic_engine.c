@@ -456,7 +456,7 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
 
   } else if (last_cmd == TAKE) {
     if (game_get_last_action(game) == OK) {
-      sprintf(str, "  You've taken '%s' and you have it in your inventory.", arg);
+      sprintf(str, "  You've taken '%s' and you have it in your inventory. If you used a key, it disapeared as well as the chest.", arg);
       screen_area_puts(ge->map, str);
     } else {
       sprintf(str, "  You cannot pick up '%s': it's not here, your inventory is full, or the item is inside a chest.", arg);

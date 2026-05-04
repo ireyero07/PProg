@@ -210,8 +210,10 @@ void game_actions_take(Game *game, Command *cmd)
   Inventory *backpack = NULL;
   Id player_location = NO_ID;
   Id obj_id = NO_ID;
+  Id *space_ids;
   Object *object;
   Space *space = NULL;
+  int i, j;
   const char *object_name;
 
   if (!game || !cmd)
@@ -235,6 +237,7 @@ void game_actions_take(Game *game, Command *cmd)
   }
   obj_id = game_get_object_id_by_name(game, object_name);
   object = game_get_object(game, obj_id);
+  space_ids = space_get_objects_ids(space);
 
   if (obj_id != NO_ID && space_has_object(space, obj_id) == TRUE && (player_has_object(game_get_player(game), object_get_dependency(object))==TRUE || object_get_dependency(object) == NO_ID) && object_get_movable(object) == TRUE)
   {
@@ -245,6 +248,16 @@ void game_actions_take(Game *game, Command *cmd)
       return;
     }
     space_del_object(space, obj_id);
+    if(player_has_object(game_get_player(game), object_get_dependency(object))==TRUE){
+      player_del_object(game_get_player(game), object_get_dependency(object));
+      for(i=0; i<space_get_number_objects(space); i++){
+        for(j=601; j<=606; j++){
+          if(space_ids[i] == j){
+            space_del_object(space, j);
+          }
+        }
+      }
+    }
     player_add_object(game_get_player(game), obj_id);
     game_set_last_action(game, OK);
   }

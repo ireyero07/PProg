@@ -107,8 +107,8 @@
 #o:610|Fresh Apple|52|A healthy fruit that heals a small amount[+10hp]|10|1|0|0|
 #o:611|Energy Drink|56|Sugar-filled drink for a quick health boost[+30hp]|30|1|0|0|
 
-#o:612|Silver Key|52|A small silver key|0|1|0|0|
-#o:613|Rusty Key|56|An old key covered in oxidation|0|1|0|0|
+#o:612|Silver Key|54|A small silver key|0|1|0|0|
+#o:613|Rusty Key|52|An old key covered in oxidation|0|1|0|0|
 #o:614|Master Key|58|A key to open the most difficult chests (inside the chest)|0|1|0|0|
 
 #o:615|Hammer|55|A tool for taking down doors or windows|0|1|613|317|
