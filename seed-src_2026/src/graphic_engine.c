@@ -444,13 +444,9 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
 
   } else if (last_cmd == ATTACK) {
     if (game_get_last_action(game) == OK) {
-      chr_id = game_get_character_id_by_name(game, arg);
-      ch = game_get_character_by_id(game, chr_id);
-      if (ch != NULL && character_get_health(ch) <= 0) {
-        sprintf(str, "  You have eliminated %s!", arg);
-        screen_area_puts(ge->map, str);
-      } else {
-        sprintf(str, "  You attacked %s. It's still standing.", arg);
+      char *attack_msg = game_get_narrator_msg(game);
+      if (attack_msg != NULL && strlen(attack_msg) > 0) {
+        sprintf(str, "  %s", attack_msg);
         screen_area_puts(ge->map, str);
       }
     } else {
@@ -544,7 +540,7 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
 
   {
     char *events = game_get_narrator_msg(game);
-    if (events != NULL && strlen(events) > 0) {
+    if (events != NULL && strlen(events) > 0 && last_cmd != ATTACK) {
       screen_area_puts(ge->map, " ");
       screen_area_puts(ge->map, " Events:");
       sprintf(str, "  %s", events);

@@ -135,6 +135,7 @@ Status game_actions_update(Game *game, Command *command)
   CommandCode cmd;
 
   game_set_last_command(game, command);
+  game_set_narrator_msg(game, "");
 
   cmd = command_get_code(command);
 
@@ -306,9 +307,11 @@ void game_actions_attack(Game *game, Command *cmd)
   Id space_id = NO_ID;
   Player *player = NULL;
   Character *enemy = NULL, *follower = NULL;
-  int roll, num_followers, attackers, random_attacker;
+  int roll, num_followers, attackers, random_attacker, dmg;
   const char *enemy_name;
   Id enemy_id;
+  char narrator[WORD_SIZE];
+  char tmp[256];
 
   if (!game || !cmd)
   {
@@ -337,7 +340,7 @@ void game_actions_attack(Game *game, Command *cmd)
     game_set_last_action(game, ERROR);
     return;
   }
-  
+
   enemy_id = game_get_character_id_by_name(game, enemy_name);
   enemy = game_get_character_by_id(game, enemy_id);
 
@@ -350,11 +353,13 @@ void game_actions_attack(Game *game, Command *cmd)
   player = game_get_player(game);
   num_followers = game_count_followers(game, player_get_id(player));
   attackers = 1 + num_followers;
+  narrator[0] = '\0';
 
   if (game_get_deterministic(game))
   {
-    /* siempre hacer daño al enemigo */
-    character_set_health(enemy, character_get_health(enemy) - attackers * 10);
+    dmg = attackers * 10;
+    character_set_health(enemy, character_get_health(enemy) - dmg);
+    sprintf(narrator, "[Attack] You deal %d damage to %s. ", dmg, character_get_name(enemy));
   }
   else
   {
@@ -365,37 +370,46 @@ void game_actions_attack(Game *game, Command *cmd)
       random_attacker = rand() % attackers;
       if (random_attacker == 0)
       {
-        /* Damage the player */
-        player_set_health(player, player_get_health(player) - (1 * 10));
+        player_set_health(player, player_get_health(player) - 10);
+        sprintf(narrator, "[Attack] %s counterattacks! %s receives 10 damage. ",
+                character_get_name(enemy),
+                player_get_name(player));
       }
       else
       {
-        /* Damage the follower */
         follower = game_get_nth_follower(game, player_get_id(player), random_attacker - 1);
         if (follower)
         {
-          character_set_health(follower, character_get_health(follower) - 1 * 10);
-
+          character_set_health(follower, character_get_health(follower) - 10);
+          sprintf(narrator, "[Attack] %s counterattacks! %s receives 10 damage. ",
+          character_get_name(enemy),
+          character_get_name(follower));
           if (character_get_health(follower) <= 0)
           {
             character_set_following(follower, NO_ID);
             character_set_location(follower, NO_ID);
+            sprintf(tmp, "%s has died. ", character_get_name(follower));
+            strncat(narrator, tmp, WORD_SIZE - strlen(narrator) - 1);
           }
         }
       }
     }
     else
     {
-      /* daño al enemigo */
-      character_set_health(enemy, character_get_health(enemy) - attackers * 10);
+      dmg = attackers * 10;
+      character_set_health(enemy, character_get_health(enemy) - dmg);
+      sprintf(narrator, "[Attack] You deal %d damage to %s. ", dmg, character_get_name(enemy));
     }
   }
 
   if (character_get_health(enemy) <= 0)
   {
     character_set_location(enemy, NO_ID);
+    sprintf(tmp, "%s has been defeated! ", character_get_name(enemy));
+    strncat(narrator, tmp, WORD_SIZE - strlen(narrator) - 1);
   }
 
+  game_set_narrator_msg(game, narrator);
   game_set_last_action(game, OK);
 }
 
