@@ -137,40 +137,137 @@ void test1_object_print();
  */
 void test2_object_print();
 
+/**
+ * @test Test object_print
+ * @pre NULL object
+ * @post Returns ERROR
+ */
+void test2_object_print();
+
+/**
+ * @test Test object_set_health
+ * @pre NULL object
+ * @post Returns ERROR
+ */
 void test1_object_set_health();
 
+/**
+ * @test Test object_set_health
+ * @pre Valid object and health value
+ * @post Returns OK
+ */
 void test2_object_set_health();
 
+/**
+ * @test Test object_get_health
+ * @pre Valid object
+ * @post Returns correct health value
+ */
 void test1_object_get_health();
 
+/**
+ * @test Test object_get_health
+ * @pre NULL object
+ * @post Returns -1
+ */
 void test2_object_get_health();
 
+/**
+ * @test Test object_set_movable
+ * @pre Valid object and movable value
+ * @post Returns OK
+ */
 void test1_object_set_movable();
 
+/**
+ * @test Test object_set_movable
+ * @pre NULL object
+ * @post Returns ERROR
+ */
 void test2_object_set_movable();
 
+/**
+ * @test Test object_get_movable
+ * @pre Valid object
+ * @post Returns TRUE
+ */
 void test1_object_get_movable();
 
+/**
+ * @test Test object_get_movable
+ * @pre NULL object
+ * @post Returns ERROR
+ */
 void test2_object_get_movable();
 
+/**
+ * @test Test object_Set_dependency
+ * @pre Valid object and valid dependency value
+ * @post Returns OK
+ */
 void test1_object_set_dependency();
 
+/**
+ * @test Test object_set_dependency
+ * @pre Valid object and invalid dependency value
+ * @post Returns ERROR
+ */
 void test2_object_set_dependency();
 
+/**
+ * @test Test object_set_dependency
+ * @pre NULL object
+ * @post Returns ERROR
+ */
 void test3_object_set_dependency();
 
+/**
+ * @test Test object_get_dependency
+ * @pre Valid object with set dependency
+ * @post Returns correct dependency value
+ */
 void test1_object_get_dependency();
 
+/**
+ * @test Test object_get_dependency
+ * @pre NULL object
+ * @post Returns NO_ID
+ */
 void test2_object_get_dependency();
 
+/**
+ * @test Test object_set_open
+ * @pre Valid object and valid open value
+ * @post Returns OK
+ */
 void test1_object_set_open();
 
+/**
+ * @test Test object_set_open
+ * @pre Valid object and invalid open value
+ * @post Returns ERROR
+ */
 void test2_object_set_open();
 
+/**
+ * @test Test object_set_open
+ * @pre NULL object
+ * @post Returns ERROR
+ */
 void test3_object_set_open();
 
+/**
+ * @test Test object_get_open
+ * @pre Valid object with set open value
+ * @post Returns correct open value
+ */
 void test1_object_get_open();
 
+/**
+ * @test Test object_get_open
+ * @pre NULL object
+ * @post Returns NO_ID
+ */
 void test2_object_get_open();
 
 #endif
