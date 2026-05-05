@@ -1,6 +1,5 @@
 ================================================================================
                      F14 - DOCUMENTACIÓN DEL PROYECTO
-                          PPROG 2025/2026 - Castle
 ================================================================================
 ────────────────────────────────────────────────────────────────────────────────
 (a) DESCRIPCIÓN DEL PROYECTO
@@ -11,6 +10,7 @@ llegar al Salón del Chef Michelin y derrotar al jefe final: el Fat Michelin
 Chef. Para llegar hasta él, es necesario superar varios jefes intermedios,
 resolver puzzles de llaves y puertas, y reclutar hasta 6 aliados que combaten
 a tu lado.
+
 El juego dispone de dos modos:
   · MODO UN JUGADOR (castle1p.dat)
     Un único jugador, el Chef, recorre el castillo solo. El objetivo es matar
@@ -22,24 +22,27 @@ El juego dispone de dos modos:
     dos jugadores y al final se suman todos para calcular la puntuación conjunta.
     Al ser cooperativo, no se trata de competir sino de coordinarse para
     conseguir la victoria perfecta.
+
 CONDICIÓN DE VICTORIA:
   El juego termina cuando el Fat Michelin Chef es derrotado en su habitación
   (Michelin Chef's Room). Dependiendo del número total de aliados vivos
   (propios en 1p, suma de ambos jugadores en 2p) se obtiene:
-    6 aliados  →  VICTORIA PERFECTA  (Bread, Lettuce, Cheese, Tomato, Bacon, Ham)
+    6 aliados   →  VICTORIA PERFECTA  (Bread, Lettuce, Cheese, Tomato, Bacon, Ham)
     3-5 aliados →  Victoria normal
     1-2 aliados →  Victoria ajustada
-    0 aliados  →  Victoria al límite
+    0 aliados   →  Victoria al límite
   Si algún jugador muere (HP llega a 0), la partida termina en GAME OVER.
+
 LOS 6 ALIADOS (ingredientes):
   1. Bread   (=)  ·  Entry (inicio)
-  2. Lettuce \M/  ·  Crates (1p) / Crates (2p)
+  2. Lettuce \M/  ·  Crates
   3. Cheese  (:)  ·  Kitchen
   4. Tomato  (^)  ·  Fridge
   5. Bacon   /=/  ·  Dining Room
-  6. Ham    (>3   ·  Garden
+  6. Ham     (>3  ·  Garden
 Cada aliado reclutado aumenta el daño de ataque en 10 puntos. Un jugador con
 los 6 aliados inflige 70 de daño por ataque.
+
 ────────────────────────────────────────────────────────────────────────────────
 (b) MANUAL DE USO
 ────────────────────────────────────────────────────────────────────────────────
@@ -49,6 +52,7 @@ COMPILACIÓN
   Esto genera el ejecutable "castle" en el directorio raíz.
   Para limpiar objetos y ejecutable:
     make clean
+
 EJECUCIÓN
   Forma general:
     ./castle <fichero_de_datos> [opciones]
@@ -57,49 +61,51 @@ EJECUCIÓN
     ./castle castle1p.dat
     # Modo multijugador (normal)
     ./castle castle2p.dat
-    # Con log de comandos (guarda un registro en fichero)
+    # Con log de comandos 1 jugador (guarda un registro en fichero)
     ./castle castle1p.dat -l log/partida.txt
-    # Modo determinista (sin aleatoriedad, los ataques siempre tienen éxito)
+    # Modo determinista 1 jugador (sin aleatoriedad, los ataques siempre tienen éxito)
     ./castle castle1p.dat -d
-    # Determinista + log
+    # Determinista + log 1 jugador 
     ./castle castle1p.dat -d -l log/partida.txt
   Nota: el flag -d desactiva las game_rules (eventos aleatorios) y hace que
   los ataques siempre hagan daño fijo (10 × número de atacantes).
+  
 COMANDOS DISPONIBLES
   ┌──────────────────────┬───────┬─────────────────────────────────────────┐
   │ Comando completo     │ Corto │ Descripción                             │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
-  │ move <dirección>     │ m     │ Mover al jugador. Direcciones:          │
+  │ move <direction>     │ m     │ Mover al jugador. Direcciones:          │
   │                      │       │ n(norte) s(sur) e(este) w(oeste)        │
   │                      │       │ u(arriba) d(abajo)                      │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
-  │ take <objeto>        │ t     │ Recoger un objeto del suelo.            │
+  │ take <object>        │ t     │ Recoger un objeto del suelo.            │
   │                      │       │ Algunos objetos requieren tener una     │
   │                      │       │ llave concreta en el inventario.        │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
-  │ drop <objeto>        │ d     │ Soltar un objeto al suelo.              │
+  │ drop <object>        │ d     │ Soltar un objeto al suelo.              │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
-  │ attack <personaje>   │ a     │ Atacar a un enemigo. El jugador y todos │
+  │ attack <character>   │ a     │ Atacar a un enemigo. El jugador y todos │
   │                      │       │ sus aliados atacan juntos.              │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
-  │ chat <personaje>     │ c     │ Hablar con un personaje amistoso.       │
+  │ chat <character>     │ c     │ Hablar con un personaje amistoso.       │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
-  │ inspect <objeto>     │ i     │ Inspeccionar un objeto para ver su      │
+  │ inspect <object>     │ i     │ Inspeccionar un objeto para ver su      │
   │                      │       │ descripción detallada.                  │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
-  │ recruit <personaje>  │ r     │ Reclutar a un aliado para que te siga.  │
+  │ recruit <character>  │ r     │ Reclutar a un aliado para que te siga.  │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
-  │ abandon <personaje>  │ ab    │ Dejar de llevar a un aliado.            │
+  │ abandon <character>  │ ab    │ Dejar de llevar a un aliado.            │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
   │ use <obj> over <chr> │ u     │ Usar un objeto sobre un personaje u     │
-  │                      │       │ objeto (p.ej. curar a un aliado).       │
+  │                      │       │ objeto (ej: curar a un aliado).         │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
-  │ open <enlace> <dir>  │ o     │ Abrir una puerta o paso bloqueado       │
-  │   with <herramienta> │       │ usando la herramienta correcta.         │
-  │                      │       │ Ej: open pipes north with crowbar       │
+  │ open <link> with     │ o     │ Abrir una puerta o paso bloqueado       │
+  │ <object>             │       │ usando la herramienta correcta.         │
+  │                      │       │ (ej: open pipes north with crowbar)     │
   ├──────────────────────┼───────┼─────────────────────────────────────────┤
   │ exit                 │ e     │ Salir del juego.                        │
   └──────────────────────┴───────┴─────────────────────────────────────────┘
+  
 MECÁNICAS Y NOTAS IMPORTANTES
   · ATAQUES Y DAÑO
     Cada ataque inflige 10 × (1 + nº_aliados) de daño al enemigo.
@@ -107,9 +113,9 @@ MECÁNICAS Y NOTAS IMPORTANTES
     contraataque al jugador o a un aliado por 10 HP en lugar de recibir daño.
   · PUERTAS BLOQUEADAS
     Hay tres pasos bloqueados que requieren herramientas específicas:
-      - Pipes North     → necesita Crowbar       (requiere Silver Key para tomarla)
-      - Chef Bathroom E → necesita Hammer        (requiere Rusty Key para tomarlo)
-      - Backyard South  → necesita Screwdriver   (requiere Master Key para tomarlo)
+      - Pipes North        → necesita Crowbar       (requiere Silver Key para tomarla)
+      - Chef Bathroom East → necesita Hammer        (requiere Rusty Key para tomarlo)
+      - Backyard South     → necesita Screwdriver   (requiere Master Key para tomarlo)
   · LLAVES Y COFRES
     Los objetos dentro de cofres sólo se pueden recoger si se tiene la llave
     correcta en el inventario. No hace falta un comando especial: simplemente
@@ -132,12 +138,13 @@ MECÁNICAS Y NOTAS IMPORTANTES
     Los objetos recogidos son del inventario de cada jugador por separado.
     Al final de la partida, la puntuación se calcula sumando los aliados
     de ambos jugadores.
+
 ────────────────────────────────────────────────────────────────────────────────
 (c) MAPA DEL JUEGO
 ────────────────────────────────────────────────────────────────────────────────
   El mapa es idéntico en modo 1 jugador y multijugador (mismas salas y
-  conexiones). Las diferencias entre modos están en la posición de algunos
-  objetos y en los HP de los enemigos.
+  conexiones). Las diferencias entre modos están en los HP de los jefes.
+
   LEYENDA:
     [Sala]         Habitación
     ─── / │        Conexión abierta
@@ -146,6 +153,8 @@ MECÁNICAS Y NOTAS IMPORTANTES
     ♦ Nombre       Aliado (aliado) en esa sala
     ✖ Nombre       Enemigo en esa sala
     ★ Nombre       JEFE en esa sala
+
+  MAPA:
                          [54 Crates]
                          ♦ Lettuce
                               │ N/S
@@ -183,6 +192,7 @@ MECÁNICAS Y NOTAS IMPORTANTES
                                                              │
                                                     [515 Michelin Chef's Room]
                                                     ★★ FAT MICHELIN CHEF (FINAL BOSS)
+
   OBJETOS CLAVE Y SUS POSICIONES:
     Modo 1 jugador (castle1p.dat):
       Silver Key    → Crates (54)       [libre]
@@ -195,14 +205,12 @@ MECÁNICAS Y NOTAS IMPORTANTES
       First Aid Kit → Dining Room (511) [necesita Master Key en inventario]
       Energy Drink  → Corridor (56)     [libre]
       Fresh Apple   → Barrels (52)      [libre]
-    Modo multijugador (castle2p.dat):
-      Silver Key    → Barrels (52)      [libre]   ← diferente al 1p
-      Rusty Key     → Corridor (56)     [libre]   ← diferente al 1p
-      (resto de objetos en la misma posición que en 1p)
+
   RESUMEN DE PUERTAS BLOQUEADAS (ambos modos):
     Pipes North          (53 → 55)  →  open pipes north with crowbar
     Chef Bathroom East   (59 → 510) →  open chef bathroom east with hammer
     Backyard South       (513 → 515)→  open backyard south with small screwdriver
+
 ────────────────────────────────────────────────────────────────────────────────
 (d) PRUEBAS DE JUEGO - WALKTHROUGH ÓPTIMO
 ────────────────────────────────────────────────────────────────────────────────
