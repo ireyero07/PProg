@@ -99,7 +99,7 @@ Bool game_space_have_characters(Game *game, Id id);
  * @author Gonzalez Hijano, Ivan
  *
  * @param game a pointer to the game structure
- * @param id the id of the space
+ * @param space_id the id of the space
  * @return Number of enemies in a space
  */
 int game_space_number_of_enemies(Game *game, Id space_id);
@@ -414,6 +414,7 @@ int game_count_followers(Game *game, Id player_id);
  *
  * @param game a pointer to the game structure
  * @param player_ids the array of ids
+ * @param array_size Size of the array given
  * @return the number of players included in the array
  */
 int game_get_list_of_player_ids(Game *game, Id *player_ids, int array_size);

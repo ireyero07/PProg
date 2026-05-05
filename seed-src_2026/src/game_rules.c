@@ -25,7 +25,7 @@ PRIVATE FUNCTIONS
  * @brief It determinates if an event occurs or not with a percentaje given
  * @author Gonzalez Hijano Ivan
  *
- * @param percentaje the percentaje that has the event to occur
+ * @param percentage the percentaje that has the event to occur
  * @return TIf the event occurs (TRUE) or not (FALSE)
  */
 Bool game_rules_event_occurs(int percentage);
@@ -112,6 +112,9 @@ Status game_rules_close_doors_when_boss(Game *game);
  * @author Gonzalez Hijano Ivan
  *
  * @param game a pointer to the game structure
+ * @param damage_players the amount of damage done to each player
+ * @param damage_followers the amount of damage done to each follower
+ * @param final_boss_pos the id of the space where the final boss is located
  * @return -1 in case of ERROR, 0 in case all OK and 1 in case all OK and the action occurs
  */
 int game_rules_final_boss_fire(Game *game, int damage_players, int damage_followers, Id final_boss_pos);

@@ -33,10 +33,92 @@
  */
 Status game_reader_load(Game *game, const char *filename);
 
+/**
+ * @brief It creates a space with the provided data
+ * @author Ivan Reyero
+ * @param numspaces the current number of spaces
+ * @param game a pointer to the game structure
+ * @param idSpace the ID of the space to create
+ * @param name the name of the space
+ * @param gdesc the graphics description lines for the space
+ * @param file the file pointer
+ * @param space a pointer to the space structure
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
 Status game_reader_set_space(int numspaces, Game *game, Id idSpace, char *name, char gdesc[GDESC_LINES][GDESC_LENGTH + 1], FILE *file, Space *space);
+
+/**
+ * @brief It creates an object with the provided data
+ * @author Ivan Reyero
+ * @param numobjects the current number of objects
+ * @param game a pointer to the game structure
+ * @param idSpace the ID of the space where the object is located
+ * @param name the name of the object
+ * @param obj_desc the description of the object
+ * @param obj_health the health value of the object
+ * @param obj_movable whether the object can be moved
+ * @param obj_dependency the ID of the object this one depends on
+ * @param obj_open the ID of the object this one can open
+ * @param idObject the ID of the object to create
+ * @param file the file pointer
+ * @param object a pointer to the object structure
+ * @param space a pointer to the space structure
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
 Status game_reader_set_object(int numobjects, Game *game, Id idSpace, char *name, char obj_desc[MAX_DESC], int obj_health, Bool obj_movable, Id obj_dependency, Id obj_open, Id idObject, FILE *file, Object *object, Space *space);
+
+/**
+ * @brief It creates a player with the provided data
+ * @author Ivan Reyero
+ * @param numplayers the current number of players
+ * @param game a pointer to the game structure
+ * @param idPlayer the ID of the player to create
+ * @param name the name of the player
+ * @param player_gdesc the graphics description of the player
+ * @param idSpace the ID of the space where the player is located
+ * @param health the health value of the player
+ * @param backpack_capacity the capacity of the player's backpack
+ * @param file the file pointer
+ * @param player a pointer to the player structure
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
 Status game_reader_set_player(int numplayers, Game *game, Id idPlayer, char *name, char player_gdesc[MAX_PLAYER_GDESC + 1], Id idSpace, int health, int backpack_capacity, FILE *file, Player *player);
+
+/**
+ * @brief It creates a character with the provided data
+ * @author Ivan Reyero
+ * @param numchr the current number of characters
+ * @param game a pointer to the game structure
+ * @param idCharacter the ID of the character to create
+ * @param name the name of the character
+ * @param character_gdesc the graphics description
+ * @param idSpace the ID of the space where the character is located
+ * @param health the health value of the character
+ * @param friendly whether the character is friendly
+ * @param char_msg the message of the character
+ * @param boss whether the character is a boss
+ * @param file the file pointer
+ * @param character a pointer to the character structure
+ * @param space a pointer to the space structure
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
 Status game_reader_set_character(int numchr, Game *game, Id idCharacter, char *name, char character_gdesc[MAX_CHR_GDESC + 1], Id idSpace, int health, int friendly, char *char_msg, Bool boss, FILE *file, Character *character, Space *space);
+
+/**
+ * @brief It creates a link with the provided data
+ * @author Ivan Reyero
+ * @param numlinks the current number of links
+ * @param game a pointer to the game structure
+ * @param idLink the ID of the link
+ * @param name the name of the link
+ * @param idSpace the ID of the origin space
+ * @param idFinal the ID of the destination space
+ * @param direction the direction of the link
+ * @param open whether the link is open
+ * @param file the file pointer
+ * @param link a pointer to the link structure
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
 Status game_reader_set_link(int numlinks, Game *game, Id idLink, char *name, Id idSpace, Id idFinal, int direction, int open, FILE *file, Link *link);
 
 /**
@@ -199,16 +281,22 @@ Status game_reader_load(Game *game, const char *filename)
       obj_health = atol(toks);
 
       toks = strtok(NULL, "|");
-      if(atol(toks) == 0){
+      if (atol(toks) == 0)
+      {
         obj_movable = FALSE;
-      } else {
+      }
+      else
+      {
         obj_movable = TRUE;
       }
 
       toks = strtok(NULL, "|");
-      if(atol(toks) == 0){
+      if (atol(toks) == 0)
+      {
         obj_dependency = NO_ID;
-      }else{
+      }
+      else
+      {
         obj_dependency = atol(toks);
       }
 
@@ -502,7 +590,7 @@ Status game_reader_set_character(int numchr, Game *game, Id idCharacter, char *n
         {
           character_set_boss(character, boss);
         }
-        
+
         space_add_character(space, idCharacter);
       }
 
@@ -543,4 +631,3 @@ Status game_reader_set_link(int numlinks, Game *game, Id idLink, char *name, Id 
   }
   return OK;
 }
-
