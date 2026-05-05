@@ -205,7 +205,7 @@ void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act, Id id_no
 
   sprintf(str, "      +------------------+---------------------+----------+");
   screen_area_puts(ge->map, str);
-  sprintf(str, "      |   Mini Map       | %-19.19s | Floor: %d |", space_get_name(space_act), player_get_floor(game_get_player(game)));
+  sprintf(str, "      |     Mini Map     | %-19.19s | Floor: %d |", space_get_name(space_act), player_get_floor(game_get_player(game)));
   screen_area_puts(ge->map, str);
   sprintf(str, "      +------------------+---------------------+----------+");
   screen_area_puts(ge->map, str);
@@ -540,7 +540,7 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
 
   {
     char *events = game_get_narrator_msg(game);
-    if (events != NULL && strlen(events) > 0 && last_cmd != ATTACK) {
+    if (events != NULL && strlen(events) > 0) {
       screen_area_puts(ge->map, " ");
       screen_area_puts(ge->map, " Events:");
       sprintf(str, "  %s", events);
@@ -659,7 +659,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   n_followers_dsc = player ? game_count_followers(game, (Id)player_id_dsc) : 0;
   if (n_followers_dsc > 0) {
     screen_area_puts(ge->descript, " ");
-    screen_area_puts(ge->descript, "Following:");
+    screen_area_puts(ge->descript, " Following:");
     for (i = 0; i < n_followers_dsc; i++) {
       fol = game_get_nth_follower(game, (Id)player_id_dsc, i);
       if (!fol) continue;
@@ -681,7 +681,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       n_objs = inventory_get_number_objects(player_get_backpack(player));
       if (n_objs == 0) {
         screen_area_puts(ge->descript, " ");
-        screen_area_puts(ge->descript, " You do not carry  any object");
+        screen_area_puts(ge->descript, " You do not carry any object");
       } else {
         if (n_objs >= inventory_get_max_objs(player_get_backpack(player))) {
           screen_area_puts(ge->descript, " ");

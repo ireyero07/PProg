@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "command.h"
 #include "game.h"
@@ -78,9 +79,16 @@ int main(int argc, char *argv[])
     log_active = 1;
   }
 
-  if (argc >= 5 && strcmp(argv[2], "-l") == 0 && strcmp(argv[4], "-d") == 0)
+  if (argc >= 5 && strcmp(argv[3], "-l") == 0 && strcmp(argv[2], "-d") == 0)
   {
     deterministic = 1;
+    log_file = fopen(argv[4], "w");
+    if (!log_file)
+    {
+      fprintf(stderr, "Error opening log file.\n");
+      return 1;
+    }
+    log_active = 1;
   }
 
   if (argc >= 3 && strcmp(argv[2], "-d") == 0)
@@ -160,6 +168,13 @@ int main(int argc, char *argv[])
     if (game_get_deterministic(game) == FALSE)
     {
       game_rules_run_rules(game);
+    }
+
+    graphic_engine_paint_game(gengine, game);
+
+    if (game_get_n_players(game) > 1)
+    {
+      sleep(2);
     }
 
     if (game_is_any_player_death(game) == FALSE && game_get_finished(game) == FALSE)

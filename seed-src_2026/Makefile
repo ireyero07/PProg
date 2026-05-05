@@ -60,7 +60,7 @@ clear:
 	rm -rf $(OBJDIR)/*.o 
 
 clean:
-	rm -rf $(OBJDIR) $(EXE) *_test $(DOCDIR)
+	rm -rf $(OBJDIR) $(EXE) *_test $(DOCDIR) *.log
 
 #############################################################################
 
@@ -78,15 +78,15 @@ run_log1:
 
 run_deterministic1:
 	@echo ">>>>>> Running castle with deterministic seed and valgrind"
-	valgrind --leak-check=full ./ castle.dat -d
+	valgrind --leak-check=full ./castle castle1p.dat -d
 
 run_deterministic_with_log1:
 	@echo ">>>>>> Running castle with deterministic seed, LOG and valgrind"
-	valgrind --leak-check=full ./castle castle1p.dat -l output.log -d
+	valgrind --leak-check=full ./castle castle1p.dat -d -l output.log
 
-# run_cmd1:
-# 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
-# 	valgrind --leak-check=full ./castle castle1p.dat -l game1.log < game1.cmd
+run_cmd1:
+	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
+	valgrind --leak-check=full ./castle castle1p.dat -d -l proof1p.log < proof1p.cmd
 
 run2:
 	@echo ">>>>>> Running castle"
@@ -106,7 +106,7 @@ run_deterministic2:
 
 run_deterministic_with_log2:
 	@echo ">>>>>> Running castle with deterministic seed, LOG and valgrind"
-	valgrind --leak-check=full ./castle castle2p.dat -l output.log -d
+	valgrind --leak-check=full ./castle castle2p.dat -d -l output.log
 
 # run_cmd2:
 # 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
