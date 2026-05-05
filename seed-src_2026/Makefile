@@ -9,6 +9,9 @@ OBJDIR = ./obj
 LIBDIR = ./lib
 DOCDIR = ./doc
 TESTDIR = ./test
+CMDDIR = ./cmd
+TXTDIR = ./txt
+LOGDIR = ./log
 
 OBJS = $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/game_loop.o \
        $(OBJDIR)/game_reader.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o \
@@ -18,16 +21,19 @@ OBJS = $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/game_loop.o \
 
 #############################################################################
 
-all: $(EXE)
+all: dirs $(EXE)
+
+dirs:
+	@mkdir -p $(OBJDIR) $(CMDDIR) $(TXTDIR) $(LOGDIR)
 
 $(EXE): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ -lscreen -L$(LIBDIR)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #############################################################################
+# TESTS
 
 tests: $(TESTS)
 
@@ -56,14 +62,16 @@ interface_data_test: $(OBJDIR)/interface_data_test.o $(OBJDIR)/interface_data.o 
 	$(CC) $(CFLAGS) -o $@ $^
 
 #############################################################################
+# CLEAN
 
 clear:
 	rm -rf $(OBJDIR)/*.o 
 
 clean:
-	rm -rf $(OBJDIR) $(EXE) *_test $(DOCDIR) *.log
+	rm -rf $(OBJDIR) $(EXE) $(TESTDIR) $(DOCDIR) $(LOGDIR)
 
 #############################################################################
+# RUN 1 PLAYER
 
 run1:
 	@echo ">>>>>> Running castle"
@@ -85,17 +93,18 @@ run_deterministic_with_log1:
 	@echo ">>>>>> Running castle with deterministic seed, LOG and valgrind"
 	valgrind --leak-check=full ./castle castle1p.dat -d -l output.log
 
-run_cmd1:
+run_cmd1: dirs
 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
-	valgrind --leak-check=full ./castle castle1p.dat -d -l proof1p.log < proof1p.cmd
-	diff -i proof1p.log proof1p.txt
+	valgrind --leak-check=full ./castle castle1p.dat -d -l $(LOGDIR)/proof1p.log < $(CMDDIR)/proof1p.cmd
+	diff -i $(LOGDIR)/proof1p.log $(TXTDIR)/proof1p.txt
 
-run_cmd_win1:
+run_cmd_win1: dirs
 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
-	valgrind --leak-check=full ./castle castle1p.dat -d -l win1.log < win1.cmd
-	diff -i win1.log win1.txt
+	valgrind --leak-check=full ./castle castle1p.dat -d -l $(LOGDIR)/win1.log < $(CMDDIR)/win1.cmd
+	diff -i -w $(LOGDIR)/win1.log $(TXTDIR)/win1.txt
 
-
+#############################################################################
+# RUN 2 PLAYERS
 
 run2:
 	@echo ">>>>>> Running castle"
@@ -117,10 +126,12 @@ run_deterministic_with_log2:
 	@echo ">>>>>> Running castle with deterministic seed, LOG and valgrind"
 	valgrind --leak-check=full ./castle castle2p.dat -d -l output.log
 
-run_cmd_win2:
+run_cmd_win2: dirs
 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
-	valgrind --leak-check=full ./castle castle2p.dat -d -l win2.log < win2.cmd
-	diff -i win2.log win2.txt
+	valgrind --leak-check=full ./castle castle2p.dat -d -l $(LOGDIR)/win2.log < $(CMDDIR)/win2.cmd
+	diff -i -w $(LOGDIR)/win2.log $(TXTDIR)/win2.txt
+
+#############################################################################
 
 run_tests: 
 	./tests.sh 1
