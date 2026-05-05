@@ -649,6 +649,23 @@ char *game_get_narrator_msg(Game *game);
 Status game_set_narrator_msg(Game *game, const char *msg);
 
 /**
+ * @brief Gets the events message set by game_rules for this turn.
+ *
+ * @param game a pointer to the game structure
+ * @return Pointer to the events message string, or NULL on error
+ */
+char *game_get_events_msg(Game *game);
+
+/**
+ * @brief Sets the events message for this turn.
+ *
+ * @param game a pointer to the game structure
+ * @param msg the message to display in the events area
+ * @return OK if stored correctly, ERROR otherwise
+ */
+Status game_set_events_msg(Game *game, const char *msg);
+
+/**
  * @brief It prints the game information
  * @author Ivan
  *

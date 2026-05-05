@@ -745,10 +745,7 @@ Status game_rules_run_rules(Game *game)
         strncat(narrator, "[!] All players are teleported to your position.", WORD_SIZE - strlen(narrator) - 1);
     }
 
-    if (command_get_code(game_get_last_command(game)) != ATTACK)
-    {
-        game_set_narrator_msg(game, narrator);
-    }
+    game_set_events_msg(game, narrator);
 
     return OK;
 }

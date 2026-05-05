@@ -553,7 +553,7 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
   }
 
   {
-    char *events = game_get_narrator_msg(game);
+    char *events = game_get_events_msg(game);
 
     if (events != NULL && strlen(events) > 0) {
       screen_area_puts(ge->map, " ");
