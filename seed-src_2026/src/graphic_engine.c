@@ -109,6 +109,20 @@ void graphic_engine_destroy(Graphic_engine *ge) {
   free(ge);
 }
 
+void graphic_engine_get_direction_name(char *dest, Direction dir) {
+  if (dir == NO_DIRECTION){
+    strcpy(dest, "   ");
+  } else if (dir == N) {
+    strcpy(dest, "North");
+  } else if (dir == S) {
+    strcpy(dest, "South");
+  } else if (dir == E) {
+    strcpy(dest, "East");
+  } else if (dir == W) {
+    strcpy(dest, "West");
+  }
+}
+
 void graphic_engine_get_space_symbol(char *dest, Space *space, int is_player) {
   if (!space || space_get_discovered(space) == FALSE) {
     strcpy(dest, "   ");
@@ -540,6 +554,7 @@ void graphic_engine_print_narrator(Graphic_engine *ge, Game *game){
 
   {
     char *events = game_get_narrator_msg(game);
+
     if (events != NULL && strlen(events) > 0) {
       screen_area_puts(ge->map, " ");
       screen_area_puts(ge->map, " Events:");
@@ -556,7 +571,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Player *player = NULL;
   Status result;
   const char *result_str;
-  char str[WORD_SIZE + 100];
+  char str[WORD_SIZE + 100], direction[WORD_SIZE];
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
   int i;
@@ -569,6 +584,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Id id_act = NO_ID, id_north = NO_ID, id_south = NO_ID, id_west = NO_ID, id_east = NO_ID, id_up = NO_ID, id_down = NO_ID;
   int n_followers_dsc, player_id_dsc;
   Character *fol = NULL;
+  Link *link_n = NULL, *link_w = NULL, *link_e = NULL, *link_s = NULL;
 
   
   /* Paint the in the map area */
@@ -697,6 +713,43 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       }
     }
   }
+
+  /* ---------- CLOSED LINKS ---------- */
+  link_n = game_get_link(game, id_act ,id_north);
+  link_e = game_get_link(game, id_act ,id_east);
+  link_s = game_get_link(game, id_act ,id_south);
+  link_w = game_get_link(game, id_act ,id_west);
+
+  if((link_get_open(link_n) == FALSE && link_n) || (link_get_open(link_s) == FALSE && link_s) || (link_get_open(link_e) == FALSE && link_e) || (link_get_open(link_w) == FALSE && link_w)){
+    screen_area_puts(ge->descript, " ");
+    screen_area_puts(ge->descript, " Closed links:");
+    if(link_get_open(link_n) == FALSE && link_n){
+      graphic_engine_get_direction_name(direction, link_get_direction(link_n));
+      sprintf(str, "  [%s] %s", direction, link_get_name(link_n));
+      screen_area_puts(ge->descript, str);
+    }
+    if(link_get_open(link_s) == FALSE && link_s){
+      graphic_engine_get_direction_name(direction, link_get_direction(link_s));
+      sprintf(str, "  [%s] %s", direction, link_get_name(link_s));
+      screen_area_puts(ge->descript, str);
+    }
+    if(link_get_open(link_e) == FALSE && link_e){
+      graphic_engine_get_direction_name(direction, link_get_direction(link_e));
+      sprintf(str, "  [%s] %s", direction, link_get_name(link_e));
+      screen_area_puts(ge->descript, str);
+    }
+    if(link_get_open(link_w) == FALSE && link_w){
+      graphic_engine_get_direction_name(direction, link_get_direction(link_w));
+      sprintf(str, "  [%s] %s", direction, link_get_name(link_w));
+      screen_area_puts(ge->descript, str);
+    }
+  } else {
+    screen_area_puts(ge->descript, " ");
+    screen_area_puts(ge->descript, " All Links open");
+  }
+
+
+
 
   /* Paint in the banner area */
   sprintf(str, " Player %d/%d ", game_get_turn(game) + 1, game_get_n_players(game));

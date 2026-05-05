@@ -1,67 +1,67 @@
-move north: OK
-attack cockroach: OK
-attack cockroach: OK
-attack cockroach: ERROR
-attack spider: ERROR
-take crowbar: ERROR
-take silver key: ERROR
-move north: OK
-take silver key: OK
-move south: OK
-take rusty key: OK
-take crowbar: OK
-move south: OK
-open pipes north with crowbar: ERROR
-recruit lettuce: ERROR
-recruit bread: OK
-move north: OK
-move north: OK
-recruit lettuce: OK
-chat lettuce: OK
-chat ham: ERROR
-move south: OK
-inspect silver key: ERROR
-inspect bottle of water: ERROR
-take old wooden chest: ERROR
-take bottle of water: ERROR
-move west: ERROR
-move east: OK
-take bottle of water: OK
-move north: ERROR
-open crates south with crowbar: ERROR
-open pipes north with silver key: ERROR
-open pipes north with crowbar: OK
-use silver key: ERROR
-use bottle of water: OK
-drop bottle of water: ERROR
-drop silver key: ERROR
-move east: ERROR
-move west: OK
-drop crowbar: ERROR
-abandon lettuce: OK
-abandon ham: ERROR
-take fresh apple: OK
-chat lettuce: OK
-move east: OK
-recruit lettuce: ERROR
-chat lettuce: ERROR
-move west: OK
-recruit lettuce: OK
-move east: OK
-inspect fresh apple: OK
-inspect bottle of water: ERROR
-inspect crowbar: ERROR
-inspect old wooden chest: ERROR
-move north: OK
-attack Cockroach King: OK
-attack Cockroach King: OK
-attack Cockroach King: OK
-attack Cockroach King: ERROR
-move down: ERROR
-move up: OK
-move down: OK
-move up: OK
-take energy drink: OK
-use energy drink over ham: ERROR
-use energy drink over lettuce: OK
-use bottle of water over lettuce: ERROR
+move north: OK (Player 1)
+attack cockroach: OK (Player 1)
+attack cockroach: OK (Player 1)
+attack cockroach: ERROR (Player 1)
+attack spider: ERROR (Player 1)
+take crowbar: ERROR (Player 1)
+take silver key: ERROR (Player 1)
+move north: OK (Player 1)
+take silver key: OK (Player 1)
+move south: OK (Player 1)
+take rusty key: OK (Player 1)
+take crowbar: OK (Player 1)
+move south: OK (Player 1)
+open pipes north with crowbar: ERROR (Player 1)
+recruit lettuce: ERROR (Player 1)
+recruit bread: OK (Player 1)
+move north: OK (Player 1)
+move north: OK (Player 1)
+recruit lettuce: OK (Player 1)
+chat lettuce: OK (Player 1)
+chat ham: ERROR (Player 1)
+move south: OK (Player 1)
+inspect silver key: ERROR (Player 1)
+inspect bottle of water: ERROR (Player 1)
+take old wooden chest: ERROR (Player 1)
+take bottle of water: ERROR (Player 1)
+move west: ERROR (Player 1)
+move east: OK (Player 1)
+take bottle of water: OK (Player 1)
+move north: ERROR (Player 1)
+open crates south with crowbar: ERROR (Player 1)
+open pipes north with silver key: ERROR (Player 1)
+open pipes north with crowbar: OK (Player 1)
+use silver key: ERROR (Player 1)
+use bottle of water: OK (Player 1)
+drop bottle of water: ERROR (Player 1)
+drop silver key: ERROR (Player 1)
+move east: ERROR (Player 1)
+move west: OK (Player 1)
+drop crowbar: ERROR (Player 1)
+abandon lettuce: OK (Player 1)
+abandon ham: ERROR (Player 1)
+take fresh apple: OK (Player 1)
+chat lettuce: OK (Player 1)
+move east: OK (Player 1)
+recruit lettuce: ERROR (Player 1)
+chat lettuce: ERROR (Player 1)
+move west: OK (Player 1)
+recruit lettuce: OK (Player 1)
+move east: OK (Player 1)
+inspect fresh apple: OK (Player 1)
+inspect bottle of water: ERROR (Player 1)
+inspect crowbar: ERROR (Player 1)
+inspect old wooden chest: ERROR (Player 1)
+move north: OK (Player 1)
+attack Cockroach King: OK (Player 1)
+attack Cockroach King: OK (Player 1)
+attack Cockroach King: OK (Player 1)
+attack Cockroach King: ERROR (Player 1)
+move down: ERROR (Player 1)
+move up: OK (Player 1)
+move down: OK (Player 1)
+move up: OK (Player 1)
+take energy drink: OK (Player 1)
+use energy drink over ham: ERROR (Player 1)
+use energy drink over lettuce: OK (Player 1)
+use bottle of water over lettuce: ERROR (Player 1)

@@ -41,7 +41,7 @@ void test2_object_set_name();
 
 /**
  * @test Test function for object_name setting
- * @pre pointer to object_name = NULL (point to object = NON NULL)
+ * @pre pointer to object_name = NULL (point to object = NON NULL);
  * @post Output==ERROR
  */
 void test3_object_set_name();
@@ -62,7 +62,7 @@ void test2_object_set_description();
 
 /**
  * @test Test function for object_description setting
- * @pre pointer to object_description = NULL (point to object = NON NULL)
+ * @pre pointer to object_description = NULL (point to object = NON NULL);
  * @post Output==ERROR
  */
 void test3_object_set_description();
@@ -136,5 +136,41 @@ void test1_object_print();
  * @post Returns ERROR
  */
 void test2_object_print();
+
+void test1_object_set_health();
+
+void test2_object_set_health();
+
+void test1_object_get_health();
+
+void test2_object_get_health();
+
+void test1_object_set_movable();
+
+void test2_object_set_movable();
+
+void test1_object_get_movable();
+
+void test2_object_get_movable();
+
+void test1_object_set_dependency();
+
+void test2_object_set_dependency();
+
+void test3_object_set_dependency();
+
+void test1_object_get_dependency();
+
+void test2_object_get_dependency();
+
+void test1_object_set_open();
+
+void test2_object_set_open();
+
+void test3_object_set_open();
+
+void test1_object_get_open();
+
+void test2_object_get_open();
 
 #endif

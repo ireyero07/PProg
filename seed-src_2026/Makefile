@@ -8,6 +8,7 @@ INCDIR = ./include
 OBJDIR = ./obj
 LIBDIR = ./lib
 DOCDIR = ./doc
+TESTDIR = ./test
 
 OBJS = $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/game_loop.o \
        $(OBJDIR)/game_reader.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o \
@@ -87,6 +88,14 @@ run_deterministic_with_log1:
 run_cmd1:
 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
 	valgrind --leak-check=full ./castle castle1p.dat -d -l proof1p.log < proof1p.cmd
+	diff -i proof1p.log proof1p.txt
+
+run_cmd_win1:
+	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
+	valgrind --leak-check=full ./castle castle1p.dat -d -l win1.log < win1.cmd
+	diff -i win1.log win1.txt
+
+
 
 run2:
 	@echo ">>>>>> Running castle"
@@ -108,9 +117,10 @@ run_deterministic_with_log2:
 	@echo ">>>>>> Running castle with deterministic seed, LOG and valgrind"
 	valgrind --leak-check=full ./castle castle2p.dat -d -l output.log
 
-# run_cmd2:
-# 	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
-# 	valgrind --leak-check=full ./castle castle2p.dat -l game1.log < game1.cmd
+run_cmd_win2:
+	@echo ">>>>>> Running castle with cmd, LOG and valgrind"
+	valgrind --leak-check=full ./castle castle2p.dat -d -l win2.log < win2.cmd
+	diff -i win2.log win2.txt
 
 run_tests: 
 	./tests.sh 1

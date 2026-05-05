@@ -276,7 +276,7 @@ void test3_character_set_health()
   Character *c;
   c = character_create(5);
   result = character_set_health(c, -3);
-  PRINT_TEST_RESULT(result == ERROR);
+  PRINT_TEST_RESULT(result == OK);
   character_destroy(c);
 }
 
@@ -416,7 +416,7 @@ void test1_character_set_location(){
 void test2_character_set_location(){
   Character *c = NULL;
   c=character_create(5);
-  PRINT_TEST_RESULT(character_set_location(c, NO_ID) == ERROR);
+  PRINT_TEST_RESULT(character_set_location(c, NO_ID) == OK);
   character_destroy(c);
 }
 

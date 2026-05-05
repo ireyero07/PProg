@@ -15,7 +15,7 @@
 #include "object_test.h"
 #include "test.h"
 
-#define MAX_TESTS 18 /*!< Total number of object tests */
+#define MAX_TESTS 36 /*!< Total number of object tests */
 
 /**
  * @brief Main function for OBJECT unit tests.
@@ -84,6 +84,42 @@ int main(int argc, char **argv)
     test1_object_print();
   if (all || test == 18)
     test2_object_print();
+  if (all || test == 19)
+    test1_object_set_health();
+  if (all || test == 20)
+    test2_object_set_health();
+  if (all || test == 21)
+    test1_object_get_health();
+  if (all || test == 22)
+    test2_object_get_health();
+  if (all || test == 23)
+    test1_object_set_movable();
+  if (all || test == 24)
+    test2_object_set_movable();
+  if (all || test == 25)
+    test1_object_get_movable();
+  if (all || test == 26)
+    test2_object_get_movable();
+  if (all || test == 27)
+    test1_object_set_dependency();
+  if (all || test == 28)
+    test2_object_set_dependency();
+  if (all || test == 29)
+    test3_object_set_dependency();
+  if (all || test == 30)
+    test1_object_get_dependency();
+  if (all || test == 31)
+    test2_object_get_dependency();
+  if (all || test == 32)
+    test1_object_set_open();
+  if (all || test == 33)
+    test2_object_set_open();
+  if (all || test == 34)
+    test3_object_set_open();
+  if (all || test == 35)
+    test1_object_get_open();
+  if (all || test == 36)
+    test2_object_get_open();
 
   PRINT_PASSED_PERCENTAGE;
 
@@ -221,4 +257,138 @@ void test2_object_print()
 {
   Object *o = NULL;
   PRINT_TEST_RESULT(object_print(o) == ERROR);
+}
+
+void test1_object_set_health()
+{
+  Object *obj = NULL;
+  int health = 5;
+  PRINT_TEST_RESULT(object_set_health(obj, health) == ERROR);
+}
+
+void test2_object_set_health()
+{
+  Object *obj = NULL;
+  int health = 5;
+  obj = object_create(10);
+  PRINT_TEST_RESULT(object_set_health(obj, health) == OK);
+  object_destroy(obj);
+}
+
+void test1_object_get_health()
+{
+  Object *obj = NULL;
+  int health = 5;
+  obj = object_create(10);
+  object_set_health(obj, health);
+  PRINT_TEST_RESULT(object_get_health(obj) == 5);
+  object_destroy(obj);
+}
+void test2_object_get_health()
+{
+  Object *obj = NULL;
+  PRINT_TEST_RESULT(object_get_health(obj) == -1);
+}
+
+void test1_object_set_movable()
+{
+  Object *obj = NULL;
+  obj = object_create(10);
+  PRINT_TEST_RESULT(object_set_movable(obj, TRUE) == OK);
+  object_destroy(obj);
+}
+
+void test2_object_set_movable()
+{
+  Object *obj = NULL;
+  PRINT_TEST_RESULT(object_set_movable(obj, TRUE) == ERROR);
+}
+
+void test1_object_get_movable()
+{
+  Object *obj = NULL;
+  obj = object_create(10);
+  object_set_movable(obj, TRUE);
+  PRINT_TEST_RESULT(object_get_movable(obj) == TRUE);
+  object_destroy(obj);
+}
+
+void test2_object_get_movable()
+{
+  Object *obj = NULL;
+  PRINT_TEST_RESULT(object_get_movable(obj) == FALSE);
+}
+
+void test1_object_set_dependency()
+{
+  Object *obj = NULL;
+  obj = object_create(10);
+  PRINT_TEST_RESULT(object_set_dependency(obj, 10) == OK);
+  object_destroy(obj);
+}
+
+void test2_object_set_dependency()
+{
+  Object *obj = NULL;
+  obj = object_create(10);
+  PRINT_TEST_RESULT(object_set_dependency(obj, -5) == ERROR);
+  object_destroy(obj);
+}
+
+void test3_object_set_dependency()
+{
+  Object *obj = NULL;
+  PRINT_TEST_RESULT(object_set_dependency(obj, -5) == ERROR);
+}
+
+void test1_object_get_dependency()
+{
+  Object *obj = NULL;
+  obj = object_create(10);
+  object_set_dependency(obj, 10);
+  PRINT_TEST_RESULT(object_get_dependency(obj) == 10);
+  object_destroy(obj);
+}
+
+void test2_object_get_dependency()
+{
+  Object *obj = NULL;
+  PRINT_TEST_RESULT(object_get_dependency(obj) == NO_ID);
+}
+
+void test1_object_set_open()
+{
+  Object *obj = NULL;
+  obj = object_create(10);
+  PRINT_TEST_RESULT(object_set_open(obj, 10) == OK);
+  object_destroy(obj);
+}
+
+void test2_object_set_open()
+{
+  Object *obj = NULL;
+  obj = object_create(10);
+  PRINT_TEST_RESULT(object_set_open(obj, -10) == ERROR);
+  object_destroy(obj);
+}
+
+void test3_object_set_open()
+{
+  Object *obj = NULL;
+  PRINT_TEST_RESULT(object_set_open(obj, 10) == ERROR);
+}
+
+void test1_object_get_open()
+{
+  Object *obj = NULL;
+  obj = object_create(10);
+  object_set_open(obj, 10);
+  PRINT_TEST_RESULT(object_get_open(obj) == 10);
+  object_destroy(obj);
+}
+
+void test2_object_get_open()
+{
+  Object *obj = NULL;
+  PRINT_TEST_RESULT(object_get_open(obj) == NO_ID);
 }

@@ -19,5 +19,3 @@ CALL_GRAPH             = NO
 CALLER_GRAPH           = NO
 GRAPHICAL_HIERARCHY    = NO
 DIRECTORY_GRAPH        = NO
-
-HTML_EXTRA_STYLESHEET = doxygen-awesome.css

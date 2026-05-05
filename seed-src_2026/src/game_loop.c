@@ -170,12 +170,11 @@ int main(int argc, char *argv[])
       game_rules_run_rules(game);
     }
 
-    // graphic_engine_paint_game(gengine, game);
-
-    // if (game_get_n_players(game) > 1)
-    // {
-    //   sleep(2);
-    // }
+    if (game_get_n_players(game) > 1 && log_active == 0)
+    {
+      graphic_engine_paint_game(gengine, game);
+      sleep(2);
+    }
 
     if (game_is_any_player_death(game) == FALSE && game_get_finished(game) == FALSE)
     {
