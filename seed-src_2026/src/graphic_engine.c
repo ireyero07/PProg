@@ -110,6 +110,11 @@ void graphic_engine_destroy(Graphic_engine *ge) {
   free(ge);
 }
 
+/**
+ * @brief Converts a Direction value to its display name string.
+ * @param dest Buffer where the direction name is written.
+ * @param dir  The direction to convert.
+ */
 void graphic_engine_get_direction_name(char *dest, Direction dir) {
   if (dir == NO_DIRECTION){
     strcpy(dest, "   ");
@@ -124,6 +129,12 @@ void graphic_engine_get_direction_name(char *dest, Direction dir) {
   }
 }
 
+/**
+ * @brief Returns the map symbol for a space depending on discovery and player presence.
+ * @param dest      Buffer where the symbol string is written.
+ * @param space     The space to represent.
+ * @param is_player Non-zero if the player is currently in this space.
+ */
 void graphic_engine_get_space_symbol(char *dest, Space *space, int is_player) {
   if (!space || space_get_discovered(space) == FALSE) {
     strcpy(dest, "   ");
@@ -134,6 +145,14 @@ void graphic_engine_get_space_symbol(char *dest, Space *space, int is_player) {
   }
 }
 
+/**
+ * @brief Returns the vertical connection arrow symbol between two spaces.
+ * @param dest Buffer where the arrow character is written.
+ * @param game Pointer to the game.
+ * @param from Id of the origin space.
+ * @param to   Id of the destination space (NO_ID if no connection).
+ * @param dir  Direction of the connection.
+ */
 void graphic_engine_get_vertical_arrow(char *dest, Game *game, Id from, Id to, Direction dir) {
   if (to != NO_ID) {
     if (game_connection_is_open(game, from, dir) == TRUE) {
@@ -146,6 +165,14 @@ void graphic_engine_get_vertical_arrow(char *dest, Game *game, Id from, Id to, D
   }
 }
 
+/**
+ * @brief Returns the horizontal connection arrow symbol between two spaces.
+ * @param dest Buffer where the arrow string is written.
+ * @param game Pointer to the game.
+ * @param from Id of the origin space.
+ * @param to   Id of the destination space (NO_ID if no connection).
+ * @param dir  Direction of the connection.
+ */
 void graphic_engine_get_horizontal_arrow(char *dest, Game *game, Id from, Id to, Direction dir) {
   if (to != NO_ID) {
     if (game_connection_is_open(game, from, dir) == TRUE) {
@@ -158,6 +185,13 @@ void graphic_engine_get_horizontal_arrow(char *dest, Game *game, Id from, Id to,
   }
 }
 
+/**
+ * @brief Returns the upward staircase arrow symbol for a space.
+ * @param dest Buffer where the arrow character is written.
+ * @param game Pointer to the game.
+ * @param from Id of the origin space.
+ * @param to   Id of the space above (NO_ID if no connection).
+ */
 void graphic_engine_get_up_arrow(char *dest, Game *game, Id from, Id to) {
   if (to != NO_ID) {
     if (game_connection_is_open(game, from, UP) == TRUE) {
@@ -170,6 +204,13 @@ void graphic_engine_get_up_arrow(char *dest, Game *game, Id from, Id to) {
   }
 }
 
+/**
+ * @brief Returns the downward staircase arrow symbol for a space.
+ * @param dest Buffer where the arrow character is written.
+ * @param game Pointer to the game.
+ * @param from Id of the origin space.
+ * @param to   Id of the space below (NO_ID if no connection).
+ */
 void graphic_engine_get_down_arrow(char *dest, Game *game, Id from, Id to) {
   if (to != NO_ID) {
     if (game_connection_is_open(game, from, DOWN) == TRUE) {
@@ -182,6 +223,18 @@ void graphic_engine_get_down_arrow(char *dest, Game *game, Id from, Id to) {
   }
 }
 
+/**
+ * @brief Renders the minimap row showing the current space and its neighbours.
+ * @param ge       Pointer to the graphic engine.
+ * @param game     Pointer to the game.
+ * @param id_act   Id of the current (active) space.
+ * @param id_north Id of the space to the north (NO_ID if none).
+ * @param id_south Id of the space to the south (NO_ID if none).
+ * @param id_west  Id of the space to the west (NO_ID if none).
+ * @param id_east  Id of the space to the east (NO_ID if none).
+ * @param id_up    Id of the space above (NO_ID if none).
+ * @param id_down  Id of the space below (NO_ID if none).
+ */
 void graphic_engine_info_row(Graphic_engine *ge, Game *game, Id id_act, Id id_north, Id id_south, Id id_west, Id id_east, Id id_up, Id id_down) {
   Space *space_act = NULL, *space_north = NULL, *space_south = NULL, *space_west = NULL, *space_east = NULL;
   char gdesc[GDESC_LINES][GDESC_LENGTH + 1];
