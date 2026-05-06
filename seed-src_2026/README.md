@@ -139,74 +139,86 @@ MECANICAS Y NOTAS IMPORTANTES
   El mapa es identico en modo 1 jugador y multijugador (mismas salas y
   conexiones). Las diferencias entre modos estan en la posicion de algunos
   objetos y en los HP de los enemigos.
+
   LEYENDA:
-    [Nombre]     Habitacion / sala
-    ---  /  |    Conexion abierta (N=norte, S=sur, E=este, W=oeste)
-    ===  /  #    Conexion BLOQUEADA (requiere herramienta)
-    (herram.)    Herramienta necesaria para abrir ese paso
-    +Nombre      Aliado reclutable en esa sala
-    xNombre      Enemigo en esa sala
-    *Nombre      JEFE en esa sala
-    [U]/[D]      Escaleras hacia arriba (Up) / hacia abajo (Down)
+    +--------+   Habitacion / sala        ---  /  |   Conexion abierta
+    x Nombre     Enemigo en la sala        ##       Conexion BLOQUEADA
+    + Nombre     Aliado reclutable         (herram.) Herramienta necesaria
+    * Nombre     JEFE de zona             [U]/[D]   Escaleras arriba/abajo
+    **Nombre     JEFE FINAL
+
   ============================================================
-  PLANTA 0 - SOTANO
+  PLANTA 0 - SOTANO             (acceso inicial)
   ============================================================
-  (Acceso inicial. Escaleras hacia Planta 1 desde CK Taqueria)
-                     N               N
-                     |               |
-           [CK's Taqueria]      [Crates / 54]
-           * Cockroach King      + Lettuce
-                     |
-              N*(locked)
-              (crowbar)
-                     |
-              [Pipes / 53] ---W/E--- [Barrels / 52] ---S/N--- [Entry / 51]
-              x Spider               x Cockroach               + Bread
-                                     Rusty Key
-                                     Fresh Apple
-  Escaleras:  CK's Taqueria (55) --[U]--> Corridor (Planta 1)
+
+    +----------------+           +--------------------+
+    |  Crates  (54)  |           |  CK's Taqueria(55) |
+    |  + Lettuce     |           |  * Cockroach King  |
+    |  Silver Key    |           |  [U] -> Corridor   |
+    +------+---------+           +----------##--------+
+           |                                ##  (crowbar)
+           | N                              ##
+    +------+---------+   E/W   +-----------+--------+
+    |  Barrels  (52) |<------->|     Pipes  (53)    |
+    |  x Cockroach   |         |     x Spider       |
+    |  Rusty Key     |         +--------------------+
+    |  Fresh Apple   |
+    +------+---------+
+           | N
+    +------+---------+
+    |  Entry   (51)  |
+    |  + Bread       |
+    +----------------+
+
   ============================================================
   PLANTA 1 - PRIMERA PLANTA
   ============================================================
-  (Acceso desde Planta 0. Escaleras hacia Planta 2 desde RK Den)
-           [Chef Bathroom / 59] ===E*(locked)=== [RK Den / 510]
-           x Raticate                (hammer)    * Ratatouille King
-                     |
-                     N
-                     |
-           [Fridge / 58] ---W/E--- [Kitchen / 57]
-           + Tomato                 + Cheese
-           Master Key
-                                         |
-                                         N
-                                         |
-                                   [Corridor / 56]
-                                   x Ratatta
-                                   Oven Protection
-                                   Energy Drink
-  Escaleras:  Corridor (56)  --[D]--> CK's Taqueria (Planta 0)
-              RK Den (510)   --[U]--> Dining Room (Planta 2)
+
+    +--------------------+    ##(hammer)   +--------------------+
+    |  Chef Bathroom(59) |================|    RK's Den (510)  |
+    |  x Raticate        |                |  * Ratatouille King|
+    +--------+-----------+                |  [U] -> Dining Room|
+             | N                          +--------------------+
+    +--------+-----------+    E/W    +--------------------+
+    |    Fridge  (58)    |<--------->|    Kitchen  (57)   |
+    |    + Tomato        |           |    + Cheese        |
+    |    Master Key      |           |    Sizzling Tray*  |
+    +--------------------+           +----------+---------+
+                                                | N
+                                     +----------+---------+
+                                     |   Corridor  (56)   |
+                                     |   x Ratatta        |
+                                     |   Oven Protection  |
+                                     |   Energy Drink     |
+                                     |   [D] -> CK's Taq  |
+                                     +--------------------+
+
   ============================================================
-  PLANTA 2 - SEGUNDA PLANTA / EXTERIOR
+  PLANTA 2 - SEGUNDA PLANTA / EXTERIOR    (jefe final aqui)
   ============================================================
-  (Acceso desde Planta 1. Aqui se encuentra el jefe final)
-  [Bathroom / 512] ---W/E--- [Dining Room / 511]
-  x Dishwasher                + Bacon
-                                    |
-                                    S
-                                    |
-                   [Garden / 514] ---E/W--- [Backyard / 513]
-                   + Ham                    x Master Chef
-                   Hot Chicken Soup
-                                                  |
-                                             S*(locked)
-                                             (screwdriver)
-                                                  |
-                                     [Michelin Chef's Room / 515]
-                                     ** FAT MICHELIN CHEF (JEFE FINAL)
-                                        Killer Grenade
-  Escaleras:  Dining Room (511) --[D]--> RK Den (Planta 1)
-  OBJETOS CLAVE (ambos modos usan estas posiciones):
+
+    +--------------------+    E/W    +---------------------+
+    |   Bathroom (512)   |<--------->|   Dining Room (511) |
+    |   x Dishwasher     |           |   + Bacon           |
+    +--------------------+           |   First Aid Kit*    |
+                                     |   [D] -> RK's Den   |
+                                     +-----------+---------+
+                                                 | S
+                                     +-----------+---------+    E/W    +--------------------+
+                                     |   Backyard   (513)  |<--------->|    Garden  (514)   |
+                                     |   x Master Chef     |           |    + Ham           |
+                                     +----------##---------+           |    Hot Chicken Soup|
+                                                ##  (screwdriver)      |    Screwdriver*    |
+                                                ##                     +--------------------+
+                                     +----------+---------+
+                                     |  Michelin Chef's   |
+                                     |     Room  (515)    |
+                                     |  ** Fat Michelin   |
+                                     |        Chef        |
+                                     |   Killer Grenade   |
+                                     +--------------------+
+
+  OBJETOS CLAVE:
   +------------------+--------------------+-------+------------------------+
   | Objeto           | Sala               | Libre | Uso                    |
   +------------------+--------------------+-------+------------------------+
@@ -220,10 +232,11 @@ MECANICAS Y NOTAS IMPORTANTES
   | First Aid Kit    | Dining Room (511)  | No*   | Curacion +100 HP       |
   +------------------+--------------------+-------+------------------------+
   * Necesita la llave correspondiente en el inventario para poder cogerse.
+
   PUERTAS BLOQUEADAS:
-    Pipes North          (53->55)   open pipes north with crowbar
-    Chef Bathroom East   (59->510)  open chef bathroom east with hammer
-    Backyard South       (513->515) open backyard south with small screwdriver
+    Pipes (53)  -> North  -> CK's Taqueria (55)   :  open pipes north with crowbar
+    Chef Bath.(59) -> East -> RK's Den (510)       :  open chef bathroom east with hammer
+    Backyard (513) -> South -> Michelin Room (515)  :  open backyard south with small screwdriver
 --------------------------------------------------------------------------------
 (d) PRUEBAS DE JUEGO - WALKTHROUGH OPTIMO
 --------------------------------------------------------------------------------

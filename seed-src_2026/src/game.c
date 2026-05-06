@@ -740,6 +740,10 @@ Status game_next_turn(Game *game)
     return ERROR;
   }
   game->turn = (game->turn + 1) % game->n_players;
+  if (game->n_players > 1) {
+    game->narrator_msg[0] = '\0';
+    game->events_msg[0] = '\0';
+  }
   return OK;
 }
 
