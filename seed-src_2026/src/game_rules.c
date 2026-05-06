@@ -624,6 +624,7 @@ Status game_rules_run_rules(Game *game)
     }
 
     narrator[0] = '\0';
+    game_set_events_msg(game, "");
 
     r1 = game_rules_random_enemy_attack(game, probability_random_enemy_attack);
     if (r1 == -1)

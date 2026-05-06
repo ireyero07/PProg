@@ -44,4 +44,12 @@ void graphic_engine_destroy(Graphic_engine *ge);
  */
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game);
 
+/**
+ * @brief Paints the final screen VICTORY or DEFEAT.
+ *
+ * @param ge Pointer to the graphic engine.
+ * @param game Pointer to the game.
+ */
+void graphic_engine_paint_game_over(Graphic_engine *ge, Game *game);
+
 #endif

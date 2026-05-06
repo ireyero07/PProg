@@ -56,6 +56,7 @@
 #include "types.h"
 #include "player.h"
 #include "inventory.h"
+#include "character.h"
 
 #define WIDTH_MAP 70  /*!< Width of the map area in characters */
 #define WIDTH_DES 74  /*!< Width of the description area in characters */
@@ -785,4 +786,63 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   else{
     fprintf(stdout, "prompt:> ");
   }
+}
+
+void graphic_engine_paint_game_over(Graphic_engine *ge, Game *game) {
+  int i, score = 0, n_chars;
+  Character *ch = NULL;
+  char str[256];
+
+  if (!ge || !game) return;
+
+  screen_area_clear(ge->map);
+  screen_area_clear(ge->descript);
+  screen_area_clear(ge->help);
+  screen_area_clear(ge->feedback);
+
+  if (game_is_any_player_death(game)) {
+
+    screen_area_puts(ge->map, "");
+    screen_area_puts(ge->map, " ____  _____ _____ _____    _  _____ ");
+    screen_area_puts(ge->map, "|  _ \\| ____|  ___| ____|  / \\|_   _|");
+    screen_area_puts(ge->map, "| | | |  _| | |_  |  _|   / _ \\ | |  ");
+    screen_area_puts(ge->map, "| |_| | |___|  _| | |___ / ___ \\| |  ");
+    screen_area_puts(ge->map, "|____/|_____|_|   |_____/_/   \\_\\_|  ");
+    screen_area_puts(ge->map, "");
+    screen_area_puts(ge->map, "        You have been defeated. Better luck next time!");
+    screen_area_puts(ge->map, "");
+    screen_area_puts(ge->map, "                  Press ENTER to exit...");
+  } else {
+    n_chars = game_get_n_characters(game);
+    for (i = 0; i < n_chars; i++) {
+      ch = game_get_character_by_position(game, i);
+      if (ch && character_get_following(ch) != NO_ID) {
+        score += character_get_health(ch);
+      }
+    }
+
+    screen_area_puts(ge->map, "");
+    screen_area_puts(ge->map, "__   __  ___    ____   _____   ___    ____  __   __");
+    screen_area_puts(ge->map, "\\ \\ / / |_ _|  / ___| |_   _| / _ \\  |  _ \\ \\ \\ / /");
+    screen_area_puts(ge->map, " \\ V /   | |  | |       | |  | | | | | |_) |  \\ V /");
+    screen_area_puts(ge->map, "  \\_/    | |  | |___    | |  | |_| | |  _ <    | |");
+    screen_area_puts(ge->map, "        |___|  \\____|   |_|   \\___/  |_| \\_\\   |_|");
+    screen_area_puts(ge->map, "");
+    screen_area_puts(ge->map, "        The Michelin Chef has been defeated!");
+    screen_area_puts(ge->map, "");
+    sprintf(str, "        SCORE:  %d  (total HP of surviving followers)", score);
+    screen_area_puts(ge->map, str);
+    screen_area_puts(ge->map, "");
+    if (score >= 370)
+      screen_area_puts(ge->map, "           PERFECT VICTORY - All followers survived! ");
+    else if (score > 0)
+      screen_area_puts(ge->map, "        Some ingredients did not make it... but you won!");
+    else
+      screen_area_puts(ge->map, "        You won alone. Poor ingredients.");
+    screen_area_puts(ge->map, "");
+    screen_area_puts(ge->map, "                  Press ENTER to exit...");
+  }
+
+  screen_paint(0);
+  getchar();
 }

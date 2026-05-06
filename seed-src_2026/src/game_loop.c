@@ -183,6 +183,7 @@ int main(int argc, char *argv[])
   }
 
   graphic_engine_paint_game(gengine, game);
+  graphic_engine_paint_game_over(gengine, game);
 
   if (log_active)
   {
