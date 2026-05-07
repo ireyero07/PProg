@@ -4,11 +4,11 @@ attack cockroach
 attack cockroach
 attack spider
 take crowbar
-take silver key
+take wooden key
 move north
-take silver key
+take wooden key
 move south
-take rusty key
+take iron key
 take crowbar
 move south
 open pipes north with crowbar
@@ -20,7 +20,7 @@ recruit lettuce
 chat lettuce 
 chat ham
 move south
-inspect silver key
+inspect wooden key
 inspect bottle of water
 take old wooden chest
 take bottle of water
@@ -29,12 +29,12 @@ move east
 take bottle of water
 move north
 open crates south with crowbar
-open pipes north with silver key
+open pipes north with wooden key
 open pipes north with crowbar
-use silver key
+use wooden key
 use bottle of water
 drop bottle of water
-drop silver key
+drop wooden key
 move east
 move west
 drop crowbar

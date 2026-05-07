@@ -97,28 +97,29 @@
 
 #o:601|Old Wooden Chest|52|A rotten chest that stays in its place|0|0|612|0|
 #o:602|Iron Storage Chest|55|A sturdy iron chest fixed to the floor|0|0|613|0|
-#o:603|Frozen Chest|57|A massive chest bolted inside the freezer|0|0|613|0|
-#o:604|Stone Spice Chest|59|A heavy chest carved out of solid rock|0|0|613|0|
-#o:605|Golden Chef Chest|514|A heavy golden chest that cannot be moved|0|0|614|0|
-#o:606|Master Chef Trunk|511|The ultimate secret chest|0|0|614|0|
+#o:603|Frozen Chest|57|A massive chest bolted inside the freezer|0|0|614|0|
+#o:605|Golden Chef Chest|514|A heavy golden chest that cannot be moved|0|0|616|0|
+#o:606|Master Chef Trunk|511|The ultimate secret chest|0|0|617|0|
 
 #o:607|First Aid Kit|511|Essential supplies to save your life [+100hp](inside the chest)|100|1|614|0|
 #o:608|Hot Chicken Soup|514|Delicious broth that restores your energy[+20hp]|20|1|0|0|
-#o:609|Sizzling Tray|57|A burning hot tray with food that requires oven protection to pick up[+20hp]|20|1|617|0|
+#o:609|Sizzling Tray|57|A burning hot tray with food that requires oven protection to pick up[+20hp]|20|1|620|0|
 #o:610|Fresh Apple|52|A healthy fruit that heals a small amount[+10hp]|10|1|0|0|
 #o:611|Energy Drink|56|Sugar-filled drink for a quick health boost[+30hp]|30|1|0|0|
 
-#o:612|Silver Key|54|A small silver key|0|1|0|0|
-#o:613|Rusty Key|52|An old key covered in oxidation|0|1|0|0|
-#o:614|Master Key|58|A key to open the most difficult chests (inside the chest)|0|1|0|0|
+#o:612|Wooden Key|54|A small wooden key (opens Old Wooden Chest)|0|1|0|0|
+#o:613|Iron Key|52|An old metallic key (opens Iron Storage Chest)|0|1|0|0|
+#o:614|Frozen Key|56|A key that has been for too much time in the freezer (opens Frozen Chest)|0|1|0|0|
+#o:616|Golden Key|512|A shiny key made of pure gold (opens Golden Chef Chest)|0|1|0|0|
+#o:617|Master Key|510|A key to open the most difficult chests (opens Master Chef Trunk)|0|1|0|0|
 
-#o:615|Hammer|55|A tool for taking down doors or windows|0|1|613|317|
-#o:616|Crowbar|52|Used to force open stuck doors or cabinets    (inside the chest)|0|1|612|37|
-#o:617|Oven protection|56|Protective gear needed to handle hot items|0|1|0|0|
-#o:618|Small Screwdriver|514|A tool that you can use to force the lock of a door (inside the chest)|0|1|614|327|
-#o:619|Bottle of water|53|Almost useless [+1hp]|1|1|0|0|
-#o:620|Cup of water|511|Almost useless [+1hp]|1|1|0|0|
+#o:618|Hammer|55|A tool for taking down doors or windows (inside the chest)|0|1|613|317|
+#o:619|Crowbar|52|Used to force open stuck doors or cabinets (inside the chest)|0|1|612|37|
+#o:620|Oven protection|56|Protective gear needed to handle hot items (inside the chest)|0|1|614|0|
+#o:621|Small Screwdriver|514|A tool that you can use to force the lock of a door (inside the chest)|0|1|616|327|
+#o:622|Bottle of water|53|Almost useless [+1hp]|1|1|0|0|
+#o:623|Cup of water|511|Almost useless [+1hp]|1|1|0|0|
 
-#o:621|Poison bottle|55|A bottle of posion that you can throw to enemies[-10hp]|-10|1|0|0|
-#o:622|Venomous bottle|510|An extremely venomous bottle that you can throw to enemies[-15hp]|-10|1|0|0|
-#o:623|Killer grenade|515|A grenade that you can throw to enemies[-30hp]|-10|1|0|0|
+#o:624|Poison bottle|55|A bottle of posion that you can throw to enemies[-10hp]|-10|1|0|0|
+#o:625|Venomous bottle|510|An extremely venomous bottle that you can throw to enemies[-15hp]|-15|1|0|0|
+#o:626|Killer grenade|515|A grenade that you can throw to enemies[-30hp]|-30|1|0|0|
