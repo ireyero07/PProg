@@ -1,8 +1,11 @@
 recruit bread
+abandon bread
+recruit bread
 move north
 attack cockroach
 take iron key
 take fresh apple
+use fresh apple
 move north
 take wooden key
 recruit lettuce
@@ -18,8 +21,10 @@ attack cockroach king
 attack cockroach king
 attack cockroach king
 move up
+take frozen key
 take oven protection
 take energy drink
+use energy drink over bread
 attack ratatta
 attack ratatta
 move north
@@ -27,18 +32,21 @@ recruit cheese
 take sizzling tray
 move west
 recruit tomato
-take master key
 move east
 move north
 attack raticate
 open chef bathroom east with hammer
 move east
+take master key
 attack ratatouille king
 attack ratatouille king
 attack ratatouille king
 move up
 recruit bacon
 take first aid kit
+move west
+take golden key
+move east
 move south
 attack master chef
 attack master chef
