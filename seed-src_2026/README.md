@@ -44,7 +44,7 @@ CONDICION DE VICTORIA:
 
 LOS 6 ALIADOS (ingredientes):
   1. Bread   (=)  ·  Entry (inicio)
-  2. Lettuce \M/  ·  Crates
+  2. Lettuce \\f[M]/  ·  Crates
   3. Cheese  (:)  ·  Kitchen
   4. Tomato  (^)  ·  Fridge
   5. Bacon   /=/  ·  Dining Room
@@ -72,7 +72,7 @@ COMPILACION
 EJECUCION
   Forma general:
 
-    ./castle <fichero_de_datos> [opciones]
+    ./castle &lt;fichero_de_datos&gt; [opciones]
 
   Ejemplos:
 
@@ -98,34 +98,34 @@ COMANDOS DISPONIBLES
   +-----------------------+-------+-----------------------------------------+
   | Comando completo      | Corto | Descripcion                             |
   +-----------------------+-------+-----------------------------------------+
-  | move <direccion>      | m     | Mover al jugador. Direcciones:          |
+  | move &lt;direccion&gt;      | m     | Mover al jugador. Direcciones:          |
   |                       |       | n(norte) s(sur) e(este) w(oeste)        |
   |                       |       | u(arriba) d(abajo)                      |
   +-----------------------+-------+-----------------------------------------+
-  | take <objeto>         | t     | Recoger un objeto del suelo.            |
+  | take &lt;objeto&gt;         | t     | Recoger un objeto del suelo.            |
   |                       |       | Algunos objetos requieren tener una     |
   |                       |       | llave concreta en el inventario.        |
   +-----------------------+-------+-----------------------------------------+
-  | drop <objeto>         | d     | Soltar un objeto al suelo.              |
+  | drop &lt;obj&gt;         | d     | Soltar un objeto al suelo.              |
   +-----------------------+-------+-----------------------------------------+
-  | attack <personaje>    | a     | Atacar a un enemigo. El jugador y todos |
+  | attack &lt;chr&gt;    | a     | Atacar a un enemigo. El jugador y todos |
   |                       |       | sus aliados atacan juntos.              |
   +-----------------------+-------+-----------------------------------------+
-  | chat <personaje>      | c     | Hablar con un personaje amistoso.       |
+  | chat &lt;chr&gt;      | c     | Hablar con un personaje amistoso.       |
   +-----------------------+-------+-----------------------------------------+
-  | inspect <objeto>      | i     | Inspeccionar un objeto para ver su      |
+  | inspect &lt;obj&gt;      | i     | Inspeccionar un objeto para ver su      |
   |                       |       | descripcion detallada.                  |
   +-----------------------+-------+-----------------------------------------+
-  | recruit <personaje>   | r     | Reclutar a un aliado para que te siga.  |
+  | recruit &lt;chr&gt;   | r     | Reclutar a un aliado para que te siga.  |
   +-----------------------+-------+-----------------------------------------+
-  | abandon <personaje>   | ab    | Dejar de llevar a un aliado.            |
+  | abandon &lt;chr&gt;   | ab    | Dejar de llevar a un aliado.            |
   +-----------------------+-------+-----------------------------------------+
-  | use <obj>             | u     | Usar un objeto de salud: lo consume y   |
-  |  [over <chr>]         |       | aplica sus HP al jugador. Si se indica  |
+  | use &lt;obj&gt;             | u     | Usar un objeto de salud: lo consume y   |
+  |  [over &lt;obj&gt;]         |       | aplica sus HP al jugador. Si se indica  |
   |                       |       | un aliado, los HP van a ese personaje.  |
-  |                       |       | El argumento over <chr> es opcional.    |
+  |                       |       | El argumento over &lt;obj&gt; es opcional.    |
   +-----------------------+-------+-----------------------------------------+
-  | open <lnk> with <obj> | o     | Abrir un enlace bloqueado usando el     |
+  | open &lt;lnk&gt; with &lt;obj&gt; | o     | Abrir un enlace bloqueado usando el     |
   |                       |       | objeto adecuado (llave o herramienta).  |
   |                       |       | Ej: open pipes north with crowbar       |
   +-----------------------+-------+-----------------------------------------+
@@ -148,7 +148,7 @@ MECANICAS Y NOTAS IMPORTANTES
   · LLAVES Y COFRES
     Los objetos dentro de cofres solo se pueden recoger si se tiene la llave
     correcta en el inventario. No hace falta un comando especial: simplemente
-    ejecuta "take <objeto>" y el juego verifica si tienes la llave.
+    ejecuta "take &lt;obj&gt;" y el juego verifica si tienes la llave.
 
   · EVENTOS ALEATORIOS (game_rules)
     En modo normal, cada turno pueden ocurrir eventos aleatorios:
