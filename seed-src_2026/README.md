@@ -490,212 +490,111 @@ MECANICAS Y NOTAS IMPORTANTES
  (d.2) MODO MULTIJUGADOR  -  castle2p.dat
 ================================================================================
 
+ Inicio: ambos en Entry (51) | Daño inicial: 10 cada uno
+ CONDICION DE VICTORIA: Fat Michelin Chef muerto en 515.
+ PUNTUACION: 6 aliados vivos.
 
- Inicio: ambos jugadores en Entry (51) | Daño inicial: 10 cada uno
- CONDICION DE VICTORIA: derrotar al Fat Michelin Chef en sala 515.
- PUNTUACION: suma de HP de todos los aliados vivos al terminar (ambos jugadores).
-
-
- --- ENTRY (51) --------------------------------------------------------------
- 1.  P1: recruit bread
-        --> Bread se une a P1. P1 Daño: 20.        [DEMO: recruit]
- 2.  P2: move south
-        --> P2 en Barrels (52).
- 3.  P1: move south
-        --> Ambos en Barrels (52).
-
-
- --- BARRELS (52) ------------------------------------------------------------
- 4.  P1: attack cockroach
-        --> Cockroach: 20 HP --> 1 ataque (20 dmg). Muerto.
- 5.  P2: take iron key
+ --- ENTRY (51) → BARRELS (52) → PIPES (53) -----------------------------------
+ 1.  P1: recruit bread              --> P1 Daño: 20 [DEMO recruit]
+ 2.  P2: move south                 --> P2 Barrels
+ 3.  P1: move south                 --> Ambos Barrels
+ 4.  P1: attack cockroach           --> Muerto
+ 5.  P2: take iron key              --> [Libre en 52]
  6.  P1: take fresh apple
- 7.  P2: move north
-        --> P2 en Crates (54).
+ 7.  P2: move east                  --> P2 Pipes(53)
+ 8.  P1: move east                  --> Ambos Pipes
 
+ --- PIPES (53) → PREPARAR CROWBAR -------------------------------------------
+ 9.  P1: attack spider              --> Spider 40→20HP
+ 10. P2: move west                  --> P2 Barrels(52)
+ 11. P1: move west                  --> Ambos Barrels
+ 12. P2: take wooden key            --> [Libre en 54? coord]
+ 13. P1: move east                  --> P1 Pipes
+ 14. P2: take crowbar               --> [Wooden Key OK, #o:619 req #o:612]
+ 15. P2: move east                  --> Ambos Pipes
+ 16. P1: attack spider              --> Spider MUERTO
 
- --- CRATES (54) -------------------------------------------------------------
- 8.  P1: move north
-        --> Ambos en Crates (54).
- 9.  P2: take wooden key
- 10. P1: abandon bread
-        --> Bread deja de seguir.                 [DEMO: abandon]
- 11. P2: recruit lettuce
-        --> Lettuce se une a P2. P2 Daño: 20.
+ --- PIPES(53) → CK TAQUERIA(55) ---------------------------------------------
+ 17. P2: open pipes north with crowbar --> #l:37 desbloqueado [DEMO open #1]
+ 18. P1: move north                 --> P1 Taqueria(55)
+ 19. P2: move north                 --> Ambos Taqueria
+ 20. P1: take hammer                --> [Iron Key P2 OK, #o:618 req #o:613]
+ 21. P1: attack cockroach king      --> 70→50HP
+ 22. P2: attack cockroach king      --> 50→30HP  
+ 23. P1: attack cockroach king      --> 30→10HP
+ 24. P2: attack cockroach king      --> **MUERTO**
 
+ --- CORRIDOR(56) → PREPARAR OVEN PROTECTION ----------------------------------
+ 25. P1: move up                    --> P1 Corridor(56)
+ 26. P2: move up                    --> Ambos Corridor
+ 27. P1: take frozen key            --> [Libre #o:614]
+ 28. P2: take energy drink
+ 29. P1: take oven protection       --> [Frozen Key OK, #o:620 req #o:614]
+ 30. P2: use energy drink over lettuce --> +30HP [DEMO use over]
+ 31. P1: attack ratatta             --> 40→20HP
+ 32. P2: abandon lettuce            --> [DEMO abandon]
+ 33. P1: attack ratatta             --> **MUERTO**
+ 34. P2: recruit lettuce
 
- --- BARRELS (52) ------------------------------------------------------------
- 12. P1: recruit bread
-        --> Bread se une a P1. P1 Daño: 20.
- 13. P1: move south
- 14. P2: move south
-        --> Ambos en Barrels (52).
- 15. P2: take crowbar
-        [Wooden Key en inventario P2 --> puede cogerse; dep=Wooden Key]
+ --- KITCHEN(57) → SIZZLING TRAY ---------------------------------------------
+ 35. P1: move north                 --> P1 Kitchen(57)
+ 36. P2: move north                 --> Ambos Kitchen
+ 37. P1: recruit cheese             --> P1 Daño: 30
+ 38. P2: take sizzling tray         --> [Oven Prot P1 OK, #o:609 req #o:620]
+ 39. P1: move west                  --> P1 Fridge(58)
+ 40. P2: move west                  --> Ambos Fridge
 
+ --- FRIDGE(58) → CHEF BATH(59) ----------------------------------------------
+ 41. P1: recruit tomato             --> P1 Daño: 40
+ 42. P2: move east                  --> P2 Kitchen
+ 43. P1: move east                  --> Ambos Kitchen
+ 44. P1: move north                 --> P1 Chef Bath(59)
+ 45. P2: move north                 --> Ambos Chef Bath
+ 46. P1: attack raticate            --> 50→10HP
+ 47. P2: open chef bathroom east with hammer --> #l:317 OK [DEMO open #2]
+ 48. P1: move east                  --> P1 RK Den(510)
+ 49. P2: move east                  --> Ambos RK Den
 
- --- PIPES (53) --------------------------------------------------------------
- 16. P1: move east
- 17. P2: move east
-        --> Ambos en Pipes (53).
- 18. P1: attack spider
-        --> Spider: 40 HP --> 20 HP restantes (20 dmg).
- 19. P2: open pipes north with crowbar
-        --> Paso norte desbloqueado.             [DEMO: open]
+ --- RK DEN(510) → DINING(511) -----------------------------------------------
+ 50. P1: take master key            --> [Libre #o:617]
+ 51. P1: attack ratatouille king    --> 90→50HP
+ 52. P2: attack ratatouille king    --> 50→20HP
+ 53. P1: attack ratatouille king    --> **MUERTO**
+ 54. P2: move up                    --> P2 Dining(511)
+ 55. P1: move up                    --> Ambos Dining
 
+ --- DINING(511) → BATHROOM(512) ---------------------------------------------
+ 56. P1: recruit bacon              --> P1 Daño: 50
+ 57. P2: take first aid kit         --> [Master Key OK, #o:607 req #o:617]
+ 58. P1: move west                  --> P1 Bathroom(512)
+ 59. P2: move west                  --> Ambos Bathroom
+ 60. P1: take golden key            --> [Libre #o:616]
 
- --- COCKROACH KING'S TAQUERIA (55) ------------------------------------------
- 20. P1: move north
- 21. P2: move north
-        --> Ambos en Taqueria (55).
- 22. P1: take hammer
-        [Iron Key en inventario P2 --> puede cogerse; dep=Iron Key]
- 23. P1: attack cockroach king
-        --> CK: 70 HP --> 50 HP (20 dmg).
- 24. P2: attack cockroach king
-        --> CK: 50 HP --> 30 HP (20 dmg).
- 25. P1: attack cockroach king
-        --> CK: 30 HP --> 10 HP (20 dmg).
- 26. P2: attack cockroach king
-        --> Cockroach King: 10 HP --> 0 HP. Muerto.
-        [Jefe caido: puertas asociadas se abren automaticamente]
+ --- BACKYARD(513) → GARDEN(514) ---------------------------------------------
+ 61. P1: move east                  --> P1 Backyard(513)
+ 62. P2: move east                  --> Ambos Backyard
+ 63. P1: attack master chef         --> 70→20HP
+ 64. P1: attack master chef         --> **MUERTO**
+ 65. P2: move east                  --> P2 Garden(514)
+ 66. P1: move east                  --> Ambos Garden
+ 67. P2: recruit ham                --> P2 Daño: 40 ***6/6 ALIADOS***
+ 68. P1: take small screwdriver     --> [Golden Key OK, #o:621 req #o:616]
 
-
- --- CORRIDOR (56) -----------------------------------------------------------
- 27. P1: move up
- 28. P2: move up
-        --> Ambos en Corridor (56).
- 29. P1: take frozen key
- 30. P2: take energy drink
- 31. P1: take oven protection
-        [Frozen Key en inventario P1 --> puede cogerse; dep=Frozen Key]
- 32. P2: use energy drink over lettuce
-        --> Lettuce: +30 HP.                     [DEMO: use over]
- 33. P1: attack ratatta
-        --> Ratatta: 40 HP --> 20 HP (20 dmg).
- 34. P2: abandon lettuce
-        --> Lettuce deja de seguir.             [DEMO: abandon]
- 35. P1: attack ratatta
-        --> Ratatta: 20 HP --> 0 HP. Muerto.
- 36. P2: recruit lettuce
-        --> Lettuce se une a P2 de nuevo.
-
-
- --- KITCHEN (57) ------------------------------------------------------------
- 37. P1: move north
- 38. P2: move north
-        --> Ambos en Kitchen (57).
- 39. P1: recruit cheese
-        --> Cheese se une a P1. P1 Daño: 30.
- 40. P2: take sizzling tray
-        [Oven Protection coord P1 --> puede cogerse; dep=Oven Protection]
-
-
- --- FRIDGE (58) -------------------------------------------------------------
- 41. P1: move west
- 42. P2: move west
-        --> Ambos en Fridge (58).
- 43. P1: recruit tomato
-        --> Tomato se une a P1. P1 Daño: 40.
-
-
- --- CHEF BATHROOM (59) ------------------------------------------------------
- 44. P1: move east
- 45. P2: move east
-        --> Ambos en Kitchen (57).
- 46. P1: move north
- 47. P2: move north
-        --> Ambos en Chef Bathroom (59).
- 48. P1: attack raticate
-        --> Raticate: 50 HP --> 10 HP (40 dmg).
- 49. P2: open chef bathroom east with hammer
-        --> Paso este desbloqueado.
-
-
- --- RATATOUILLE KING'S DEN (510) --------------------------------------------
- 50. P1: move east
- 51. P2: move east
-        --> Ambos en RK Den (510).
- 52. P1: take master key
-        [Master Key se encuentra en esta sala, libre]
- 53. P1: attack ratatouille king
-        --> RK: 90 HP --> 50 HP (40 dmg).
- 54. P2: attack ratatouille king
-        --> RK: 50 HP --> 20 HP (30 dmg).
- 55. P1: attack ratatouille king
-        --> Ratatouille King: 20 HP --> 0 HP. Muerto.
-        [Jefe caido: puertas asociadas se abren automaticamente]
-
-
- --- DINING ROOM (511) -------------------------------------------------------
- 56. P1: move up
- 57. P2: move up
-        --> Ambos en Dining Room (511).
- 58. P1: recruit bacon
-        --> Bacon se une a P1. P1 Daño: 50.
- 59. P2: take first aid kit
-        [Master Key coord P1 --> puede cogerse; dep=Master Key]
-
-
- --- BATHROOM (512) ----------------------------------------------------------
- 60. P1: move west
- 61. P2: move west
-        --> Ambos en Bathroom (512).
- 62. P1: take golden key
- 63. P2: move east
-        --> P2 regresa a Dining Room (511).
-
-
- --- BACKYARD (513) ----------------------------------------------------------
- 64. P1: move east
- 65. P2: move south
-        --> P1 Backyard (513), P2 Dining→Backyard.
- 66. P1: attack master chef
-        --> Master Chef: 70 HP --> 20 HP (50 dmg).
- 67. P1: attack master chef
-        --> Master Chef: 20 HP --> 0 HP. Muerto.
-
-
- --- GARDEN (514) ------------------------------------------------------------
- 68. P1: move east
- 69. P2: move east
-        --> Ambos en Garden (514).
- 70. P2: recruit ham
-        --> Ham se une a P2. P2 Daño: 40. *** LOS 6 ALIADOS RECLUTADOS ***
- 71. P1: take small screwdriver
-        [Golden Key en inventario P1 --> puede cogerse; dep=Golden Key]
-
-
- --- BACKYARD (513) --> MICHELIN CHEF'S ROOM (515) ---------------------------
- 72. P1: move west
- 73. P2: move west
-        --> Ambos en Backyard (513).
- 74. P1: open backyard south with small screwdriver
-        --> Paso sur desbloqueado.
- 75. P2: move south
-        --> P2 en Michelin Room (515).
- 76. P1: move south
-        --> Ambos en Michelin Room (515).
-
-
- --- MICHELIN CHEF'S ROOM (515) - JEFE FINAL ---------------------------------
- 77. P1: attack fat michelin chef
-        --> FMC: 200 HP --> 150 HP (50 dmg).
- 78. P2: attack fat michelin chef
-        --> FMC: 150 HP --> 120 HP (30 dmg).
- 79. P1: attack fat michelin chef
-        --> FMC: 120 HP --> 70 HP (50 dmg).
- 80. P2: attack fat michelin chef
-        --> FMC: 70 HP --> 40 HP (30 dmg).
- 81. P1: attack fat michelin chef
-        --> Fat Michelin Chef: 40 HP --> 0 HP. Muerto.
-
+ --- FINAL MICHELIN(515) ------------------------------------------------------
+ 69. P1: move west                  --> Ambos Backyard
+ 70. P2: move west
+ 71. P1: open backyard south with small screwdriver --> #l:327 OK [DEMO open #3]
+ 72. P2: move south                 --> P2 Michelin(515)
+ 73. P1: move south                 --> Ambos Michelin
+ 74. P1: attack fat michelin chef   --> 200→150HP
+ 75. P2: attack fat michelin chef   --> 150→120HP
+ 76. P1: attack fat michelin chef   --> 120→70HP
+ 77. P2: attack fat michelin chef   --> 70→40HP
+ 78. P1: attack fat michelin chef   --> **40→0HP MUERTO!**
 
  ===========================================================================
-   VICTORIA PERFECTA | 6/6 aliados | 81 comandos (42 turnos)
-   P1: Bread . Cheese . Tomato . Bacon     (4 aliados, 50 dmg)
-   P2: Lettuce . Ham                       (2 aliados, 40 dmg)
-   Comandos nuevos demostrados: recruit, abandon, use over, open (x2)
+  VICTORIA PERFECTA | 6/6 aliados | 78 comandos (39 turnos)
+  Comandos demostrados: recruit, abandon, use over, open (x3)
  ===========================================================================
 
 
