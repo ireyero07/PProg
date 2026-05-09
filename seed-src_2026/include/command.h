@@ -11,6 +11,7 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
+#include <stdio.h>
 #include "types.h"
 
 #define N_CMDT 2  /*!< Number of command type formats: short and long */
@@ -100,5 +101,13 @@ Status command_set_arg(Command *command,const char *arg);
  * @return String with the command name, or NULL if error
  */
 const char* command_get_name(Command *command);
+
+/**
+ * @brief Sets a command file to read from before falling back to stdin.
+ * @author Jian Feng Yin Chen
+ *
+ * @param f Open file pointer to read commands from. Pass NULL to reset to stdin.
+ */
+void command_set_input_file(FILE *f);
 
 #endif

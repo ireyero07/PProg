@@ -17,6 +17,8 @@
 
 #define CMD_LENGHT 256 /*!< Maximum length of a command string read from input */
 
+static FILE *cmd_input_file = NULL;
+
 /** @brief Table mapping command codes to their short and long string representations */
 char *cmd_to_str[N_CMD][N_CMDT] = {
   {"", "No command"}, 
@@ -90,10 +92,15 @@ CommandCode command_get_code(Command* command) {
   return command->code;
 }
 
+void command_set_input_file(FILE *f) {
+  cmd_input_file = f;
+}
+
 Status command_get_user_input(Command* command) {
   char input[CMD_LENGHT] = "", *token = NULL;
   int i = UNKNOWN - NO_CMD + 1,len;
   CommandCode cmd;
+  FILE *src;
 
   if (!command) {
     return ERROR;
@@ -101,7 +108,22 @@ Status command_get_user_input(Command* command) {
 
   command->arg[0] = '\0';
 
-  if (fgets(input, CMD_LENGHT, stdin)) {
+  if (cmd_input_file) {
+    src = cmd_input_file;
+    if (feof(src)) {
+      fclose(cmd_input_file);
+      cmd_input_file = NULL;
+      src = stdin;
+    }
+  } else {
+    src = stdin;
+  }
+
+  if (fgets(input, CMD_LENGHT, src)) {
+    if (src == cmd_input_file && feof(src)) {
+      fclose(cmd_input_file);
+      cmd_input_file = NULL;
+    }
     token = strtok(input, " \n");
     if (!token) {
       return command_set_code(command, UNKNOWN);
@@ -142,8 +164,14 @@ Status command_get_user_input(Command* command) {
     }
     return command_set_code(command, cmd);
   }
-  else
+  else {
+    if (src == cmd_input_file) {
+      fclose(cmd_input_file);
+      cmd_input_file = NULL;
+      return command_get_user_input(command);
+    }
     return command_set_code(command, EXIT);
+  }
   
 }
 

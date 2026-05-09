@@ -105,7 +105,7 @@ run_cmd_win1: dirs
 
 run_continue1: dirs
 	@echo ">>>>>> Running castle with cmd then interactive"
-	(cat $(CMDDIR)/proof1p.cmd; cat) | ./castle castle1p.dat -d
+	./castle castle1p.dat -d -c $(CMDDIR)/proof1p.cmd
 
 #############################################################################
 # RUN 2 PLAYERS

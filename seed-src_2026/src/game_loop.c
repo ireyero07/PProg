@@ -57,15 +57,25 @@ int main(int argc, char *argv[])
 {
   Game *game = NULL;
   Graphic_engine *gengine = NULL;
-  int result = 0;
+  int result = 0, i;
   Command *last_cmd = NULL;
-  FILE *log_file = NULL;
+  FILE *log_file = NULL, *cmd_file = NULL;
   int log_active = 0, deterministic = 0;
 
   if (argc < 2)
   {
     fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
     return 1;
+  }
+
+  for (i = 2; i < argc; i++) {
+    if (strcmp(argv[i], "-c") == 0 && i + 1 < argc) {
+      cmd_file = fopen(argv[++i], "r");
+      if (!cmd_file) {
+        fprintf(stderr, "Error opening cmd file.\n");
+        return 1;
+      }
+    }
   }
 
   if (argc >= 4 && strcmp(argv[2], "-l") == 0)
@@ -122,6 +132,10 @@ int main(int argc, char *argv[])
   if (!last_cmd)
   {
     return 1;
+  }
+
+  if (cmd_file) {
+    command_set_input_file(cmd_file);
   }
 
   while ((game_get_finished(game) == FALSE) && (game_is_any_player_death(game) == FALSE))
