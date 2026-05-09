@@ -60,4 +60,3 @@ attack fat michelin chef
 attack fat michelin chef
 attack fat michelin chef
 attack fat michelin chef
-attack fat michelin chef

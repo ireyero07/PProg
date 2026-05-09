@@ -103,16 +103,9 @@ run_cmd_win1: dirs
 	valgrind --leak-check=full ./castle castle1p.dat -d -l $(LOGDIR)/win1.log < $(CMDDIR)/win1.cmd
 	diff -i -w $(LOGDIR)/win1.log $(TXTDIR)/win1.txt
 
-run_continue1: dirs
-	@echo ">>>>>> Running castle with cmd then interactive"
-	./castle castle1p.dat -d -c $(CMDDIR)/proof1p.cmd
-
 #############################################################################
 # RUN 2 PLAYERS
 
-run2:
-	@echo ">>>>>> Running castle"
-	./castle castle2p.dat
 
 runv2:
 	@echo ">>>>>> Running castle with valgrind"
@@ -135,6 +128,22 @@ run_cmd_win2: dirs
 	valgrind --leak-check=full ./castle castle2p.dat -d -l $(LOGDIR)/win2.log < $(CMDDIR)/win2.cmd
 	diff -i -w $(LOGDIR)/win2.log $(TXTDIR)/win2.txt
 
+
+
+#############################################################################
+#PRESENTACION
+
+run:
+	@echo ">>>>>> Running castle"
+	./castle castle3.dat -d
+
+run_win1: dirs
+	@echo ">>>>>> Running castle"
+	./castle castle1p.dat -d -c $(CMDDIR)/win1.cmd
+
+run2:
+	@echo ">>>>>> Running castle"
+	./castle castle2p.dat -d
 #############################################################################
 
 run_tests: 
