@@ -103,6 +103,10 @@ run_cmd_win1: dirs
 	valgrind --leak-check=full ./castle castle1p.dat -d -l $(LOGDIR)/win1.log < $(CMDDIR)/win1.cmd
 	diff -i -w $(LOGDIR)/win1.log $(TXTDIR)/win1.txt
 
+run_continue1: dirs
+	@echo ">>>>>> Running castle with cmd then interactive"
+	(cat $(CMDDIR)/proof1p.cmd; cat) | ./castle castle1p.dat -d
+
 #############################################################################
 # RUN 2 PLAYERS
 
@@ -138,7 +142,7 @@ run_tests:
 
 #############################################################################
 
-.PHONY: all clear clean run runv run_log run_cmd tests run_tests
+.PHONY: all clear clean run runv run_log run_cmd tests run_tests run_continue1
 
 #############################################################################
 
