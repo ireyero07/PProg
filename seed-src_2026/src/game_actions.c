@@ -420,6 +420,11 @@ void game_actions_attack(Game *game, Command *cmd)
     character_set_location(enemy, NO_ID);
     sprintf(tmp, "%s has been defeated! ", character_get_name(enemy));
     strncat(narrator, tmp, WORD_SIZE - strlen(narrator) - 1);
+
+    if (character_get_boss(enemy) == TRUE && player_loc == 515)
+    {
+      game_set_finished(game, TRUE);
+    }
   }
 
   game_set_narrator_msg(game, narrator);
