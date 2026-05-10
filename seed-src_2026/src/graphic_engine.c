@@ -897,5 +897,11 @@ void graphic_engine_paint_game_over(Graphic_engine *ge, Game *game) {
   }
 
   screen_paint(0);
-  getchar();
+
+  /* Solo esperar ENTER si estamos en modo interactivo (no batch) */
+  FILE *in = fopen("/dev/tty", "r");
+  if (in) {
+    fgetc(in);
+    fclose(in);
+  }
 }
