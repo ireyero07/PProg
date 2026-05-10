@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
       fprintf(log_file, "%s: %s (Player %d)\n", line, (game_get_last_action(game) == OK) ? "OK" : "ERROR", game_get_turn(game) + 1);
     }
 
-    if (game_get_deterministic(game) == FALSE)
+    if (game_get_deterministic(game) == FALSE && game_get_finished(game) == FALSE && game_is_any_player_death(game) == FALSE)
     {
       game_rules_run_rules(game);
     }
