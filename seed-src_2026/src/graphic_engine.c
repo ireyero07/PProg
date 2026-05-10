@@ -845,6 +845,7 @@ void graphic_engine_paint_game_over(Graphic_engine *ge, Game *game) {
   int i, score = 0, n_chars;
   Character *ch = NULL;
   char str[256];
+  FILE *in = NULL;
 
   if (!ge || !game) return;
 
@@ -899,7 +900,7 @@ void graphic_engine_paint_game_over(Graphic_engine *ge, Game *game) {
   screen_paint(0);
 
   /* Solo esperar ENTER si estamos en modo interactivo (no batch) */
-  FILE *in = fopen("/dev/tty", "r");
+  in = fopen("/dev/tty", "r");
   if (in) {
     fgetc(in);
     fclose(in);
